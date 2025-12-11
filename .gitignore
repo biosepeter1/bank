@@ -41,3 +41,6 @@ yarn-error.log*
 # Misc
 *.pem
 .cache/
+
+# Documentation (exclude all .md files)
+*.md
