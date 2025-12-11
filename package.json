@@ -1,0 +1,19 @@
+{
+  "name": "rdn-banking-platform",
+  "version": "1.0.0",
+  "description": "Corporate Digital Banking Platform - Monorepo",
+  "private": true,
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run start:dev",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "install:all": "cd frontend && npm install && cd ../backend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
