@@ -26,7 +26,7 @@ function _ts_param(paramIndex, decorator) {
 }
 // Use environment variable for API key - NEVER commit API keys to git
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 let ChatController = class ChatController {
     async sendMessage(body) {
         const { message, history = [], siteName = 'Our Bank', supportPhone = '+234 800 900 7777', supportEmail = 'support@bank.com' } = body;
