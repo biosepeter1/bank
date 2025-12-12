@@ -74,6 +74,22 @@ _ts_decorate([
     (0, _classvalidator.IsString)(),
     _ts_metadata("design:type", String)
 ], GeneralSettingsDto.prototype, "bankCode", void 0);
+_ts_decorate([
+    (0, _swagger.ApiPropertyOptional)({
+        description: 'Primary brand color (hex code e.g., #4F46E5)'
+    }),
+    (0, _classvalidator.IsOptional)(),
+    (0, _classvalidator.IsString)(),
+    _ts_metadata("design:type", String)
+], GeneralSettingsDto.prototype, "brandPrimaryColor", void 0);
+_ts_decorate([
+    (0, _swagger.ApiPropertyOptional)({
+        description: 'Secondary brand color (hex code e.g., #7C3AED)'
+    }),
+    (0, _classvalidator.IsOptional)(),
+    (0, _classvalidator.IsString)(),
+    _ts_metadata("design:type", String)
+], GeneralSettingsDto.prototype, "brandSecondaryColor", void 0);
 let PaymentSettingsDto = class PaymentSettingsDto {
 };
 _ts_decorate([

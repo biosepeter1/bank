@@ -42,6 +42,16 @@ class GeneralSettingsDto {
   @IsOptional()
   @IsString()
   bankCode?: string;
+
+  @ApiPropertyOptional({ description: 'Primary brand color (hex code e.g., #4F46E5)' })
+  @IsOptional()
+  @IsString()
+  brandPrimaryColor?: string;
+
+  @ApiPropertyOptional({ description: 'Secondary brand color (hex code e.g., #7C3AED)' })
+  @IsOptional()
+  @IsString()
+  brandSecondaryColor?: string;
 }
 
 class PaymentSettingsDto {
