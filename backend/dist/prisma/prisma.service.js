@@ -43,7 +43,9 @@ let PrismaService = class PrismaService extends _client.PrismaClient {
     }
     constructor(){
         super({
-            log: [
+            log: process.env.NODE_ENV === 'production' ? [
+                'error'
+            ] : [
                 'query',
                 'error',
                 'warn'

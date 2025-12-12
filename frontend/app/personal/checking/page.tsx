@@ -110,11 +110,16 @@ export default function CheckingPage() {
                             <p className="text-xl text-slate-600 mb-8 leading-relaxed">
                                 No monthly fees. No minimum balance. No nonsense. Just simple, powerful checking that puts you in control.
                             </p>
-                            <div className="mb-8">
+                            <div className="flex flex-col sm:flex-row gap-4 mb-8">
                                 <Link href="/register">
                                     <Button size="lg" className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-14 px-8 text-base rounded-xl">
                                         Open Free Account
                                         <ArrowRight className="ml-2 w-5 h-5" />
+                                    </Button>
+                                </Link>
+                                <Link href="#features">
+                                    <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl border-2 hover:bg-slate-50">
+                                        See All Features
                                     </Button>
                                 </Link>
                             </div>
@@ -333,4 +338,3 @@ export default function CheckingPage() {
         </div>
     );
 }
-

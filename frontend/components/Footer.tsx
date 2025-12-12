@@ -71,7 +71,7 @@ export default function Footer() {
     { name: 'Digital Services', href: '/digital-services' },
     { name: 'Contact Us', href: '/contact' },
     { name: 'FAQ', href: '/faq' },
-    { name: 'Careers', href: '/careers' },
+    { name: 'Careers', href: '#' },
   ];
 
   const legal = [
@@ -118,14 +118,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              {settings?.general?.logo ? (
-                <img src={settings.general.logo} alt={siteName} className="h-10 w-auto object-contain" />
-              ) : (
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+            <Link href="/" className="flex items-center space-x-2 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center overflow-hidden">
+                {settings?.general?.logo ? (
+                  <img src={settings.general.logo} alt={siteName} className="w-full h-full object-cover" />
+                ) : (
                   <Zap className="w-6 h-6 text-white" />
-                </div>
-              )}
+                )}
+              </div>
               <span className="text-2xl font-bold" suppressHydrationWarning>{siteName}</span>
             </Link>
             <p className="text-gray-300 mb-6 leading-relaxed">
