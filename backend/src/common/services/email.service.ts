@@ -15,7 +15,7 @@ export class EmailService {
   private readonly logger = new Logger(EmailService.name);
   private cachedBrand: Brand | null = null;
 
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(private readonly settingsService: SettingsService) { }
 
   private async getBrand(): Promise<Brand> {
     // Always fetch fresh to get latest brand colors
@@ -97,7 +97,7 @@ export class EmailService {
     const { email, firstName, code, purpose } = params;
     const brand = await this.getBrand();
     const subject = `${brand.name} · ${purpose || 'Verification'} Code`;
-    
+
     const otpBox = `
       <div style="background:linear-gradient(135deg, ${brand.primary}08 0%, ${brand.secondary}08 100%);border:3px solid ${brand.primary}30;border-radius:16px;padding:32px 24px;margin:24px 0;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.08)">
         <div style="color:#64748b;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">Your Verification Code</div>
@@ -106,7 +106,7 @@ export class EmailService {
         <div style="color:#94a3b8;font-size:13px;font-weight:500">⏰ Expires in 5 minutes</div>
       </div>
     `;
-    
+
     const html = this.renderTemplate(brand, {
       title: `🔐 ${purpose || 'Verification'} Code`,
       intro: `Hi ${firstName}, please use the verification code below to continue:`,
@@ -122,7 +122,7 @@ export class EmailService {
     const { email, firstName, code } = params;
     const brand = await this.getBrand();
     const subject = `${brand.name} · Verify Your Email Address`;
-    
+
     const verificationBox = `
       <div style="background:linear-gradient(135deg, ${brand.primary}10 0%, ${brand.secondary}10 100%);border:3px dashed ${brand.primary}50;border-radius:20px;padding:40px 32px;margin:24px 0;text-align:center;position:relative;overflow:hidden">
         <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:${brand.primary}15;border-radius:50%;filter:blur(30px)"></div>
@@ -134,7 +134,7 @@ export class EmailService {
         <div style="color:#94a3b8;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px"><span>⏱️</span> Valid for 5 minutes</div>
       </div>
     `;
-    
+
     const html = this.renderTemplate(brand, {
       title: '✨ Verify Your Email',
       intro: `Hi ${firstName}! Welcome to ${brand.name}. Please verify your email address to activate your account.`,
@@ -173,7 +173,7 @@ export class EmailService {
     this.logSend(email, subject, html);
   }
 
-  async sendTransferCodeEmail(params: { email: string; firstName: string; type: 'COT'|'IMF'|'TAX'; code: string }): Promise<void> {
+  async sendTransferCodeEmail(params: { email: string; firstName: string; type: 'COT' | 'IMF' | 'TAX'; code: string }): Promise<void> {
     const { email, firstName, type, code } = params;
     const brand = await this.getBrand();
     const subject = `${brand.name} · ${type} Code Issued`;
@@ -192,7 +192,7 @@ export class EmailService {
     const { email, firstName, ticketId, subject: ticketSubject, message } = params;
     const brand = await this.getBrand();
     const subject = `${brand.name} · Support Ticket #${ticketId}`;
-    
+
     const ticketBox = `
       <div style="background:linear-gradient(135deg, ${brand.primary}08 0%, ${brand.secondary}08 100%);border:2px solid ${brand.primary}30;border-radius:16px;padding:24px;margin:24px 0;box-shadow:0 8px 32px rgba(0,0,0,0.08)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
@@ -217,7 +217,7 @@ export class EmailService {
         </div>
       </div>
     `;
-    
+
     const html = this.renderTemplate(brand, {
       title: '🎯 Support Request Received',
       intro: `Hi ${firstName}, thank you for contacting us! We've received your support request and our team will respond shortly.`,
@@ -243,7 +243,7 @@ export class EmailService {
   }): Promise<void> {
     const { email, firstName, loanAmount, currency, processingFee, cryptoWalletAddress, cryptoType, feeDescription } = params;
     const brand = await this.getBrand();
-    
+
     const subject = `${brand.name} · Loan Processing Fee Required`;
     const html = this.renderTemplate(brand, {
       title: '💳 Loan Processing Fee Required',
@@ -282,7 +282,7 @@ export class EmailService {
   }): Promise<void> {
     const { email, firstName, loanAmount, currency, monthlyPayment, duration, interestRate } = params;
     const brand = await this.getBrand();
-    
+
     const subject = `${brand.name} · Loan Approved!`;
     const html = this.renderTemplate(brand, {
       title: '✅ Loan Approved',
@@ -317,7 +317,7 @@ export class EmailService {
   }): Promise<void> {
     const { email, firstName, loanAmount, currency, monthlyPayment, duration } = params;
     const brand = await this.getBrand();
-    
+
     const subject = `${brand.name} · Loan Disbursed!`;
     const html = this.renderTemplate(brand, {
       title: '💰 Loan Disbursed',
@@ -351,14 +351,14 @@ export class EmailService {
   }): Promise<void> {
     const { email, firstName, transactionType, amount, currency, balance, reference, description } = params;
     const brand = await this.getBrand();
-    
+
     const isCredit = ['DEPOSIT', 'PAYMENT_GATEWAY_DEPOSIT'].includes(transactionType) || (description || '').toLowerCase().includes('from');
     const title = isCredit ? 'Money Received' : 'Transaction Alert';
     const emoji = isCredit ? '💰' : '📤';
     const badgeBg = isCredit ? '#dcfce7' : '#fee2e2';
     const badgeText = isCredit ? '#166534' : '#991b1b';
     const badgeLabel = isCredit ? 'CREDIT' : 'DEBIT';
-    
+
     const detailsCard = `
       <div style="margin-top:24px;border:2px solid #e2e8f0;border-radius:16px;padding:24px;background:#ffffff;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
@@ -381,7 +381,7 @@ export class EmailService {
         </div>
       </div>
     `.trim();
-    
+
     const subject = `${brand.name} · ${title}`;
     const html = this.renderTemplate(brand, {
       title: `${emoji} ${title}`,
@@ -397,16 +397,35 @@ export class EmailService {
     try {
       const brandSettings = await this.settingsService.getSettings();
       const emailCfg = brandSettings.email || {} as any;
-      if (emailCfg.smtpHost && emailCfg.smtpUser && emailCfg.smtpPass) {
+
+      // Check if SMTP is configured (support both service-based and host-based config)
+      const hasServiceConfig = emailCfg.smtpService && emailCfg.smtpUser && emailCfg.smtpPass;
+      const hasHostConfig = emailCfg.smtpHost && emailCfg.smtpUser && emailCfg.smtpPass;
+
+      if (hasServiceConfig || hasHostConfig) {
         // Lazy import to avoid hard dependency if not installed
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const nodemailer = require('nodemailer');
-        const transporter = nodemailer.createTransport({
-          host: emailCfg.smtpHost,
-          port: Number(emailCfg.smtpPort) || 587,
-          secure: Number(emailCfg.smtpPort) === 465, // true for 465
-          auth: { user: emailCfg.smtpUser, pass: emailCfg.smtpPass },
-        });
+
+        // Build transport config based on what's available
+        let transportConfig: any;
+        if (hasServiceConfig) {
+          // Use service shorthand (e.g., 'gmail', 'outlook', 'yahoo')
+          transportConfig = {
+            service: emailCfg.smtpService,
+            auth: { user: emailCfg.smtpUser, pass: emailCfg.smtpPass },
+          };
+        } else {
+          // Use explicit host/port configuration
+          transportConfig = {
+            host: emailCfg.smtpHost,
+            port: Number(emailCfg.smtpPort) || 587,
+            secure: Number(emailCfg.smtpPort) === 465,
+            auth: { user: emailCfg.smtpUser, pass: emailCfg.smtpPass },
+          };
+        }
+
+        const transporter = nodemailer.createTransport(transportConfig);
         await transporter.sendMail({
           from: `${emailCfg.fromName || brandSettings.general.siteName} <${emailCfg.fromAddress || brandSettings.general.supportEmail}>`,
           to,
@@ -430,9 +449,9 @@ export class EmailService {
     const primary = brand.primary;
     const secondary = brand.secondary;
     const textLines = lines.map((line) => (line.startsWith('<') ? line : `<p style=\"margin:0 0 14px;color:#475569;line-height:1.65;font-size:15px\">${line}</p>`)).join('');
-    
+
     // Render intro - if it contains <br> tags, it's already formatted HTML
-    const introHtml = intro.includes('<br>') || intro.includes('<strong>') 
+    const introHtml = intro.includes('<br>') || intro.includes('<strong>')
       ? `<div style=\"margin:0 0 20px;color:#475569;line-height:1.7;font-size:15px\" class=\"dark-text-secondary\">${intro}</div>`
       : `<p style=\"margin:0 0 20px;color:#475569;line-height:1.6;font-size:15px\" class=\"dark-text-secondary\">${intro}</p>`;
 
