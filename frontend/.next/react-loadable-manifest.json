@@ -1,0 +1,71 @@
+{
+  "..\\components\\chat\\ChatbotLoader.tsx -> @/components/chat/ChatbotWidget": {
+    "id": 93360,
+    "files": [
+      "static/chunks/3358-f155fa6afc87c80d.js",
+      "static/chunks/9829-1d93d6e89556abfa.js",
+      "static/chunks/7520.21a61c5c7a56a4d9.js",
+      "static/chunks/3360.9785f779ed72a7cf.js"
+    ]
+  },
+  "..\\components\\wallet\\LazyModals.tsx -> @/components/wallet/DepositModal": {
+    "id": 85001,
+    "files": [
+      "static/chunks/2663-f687c55a17bdfa1b.js",
+      "static/chunks/3148-403f14a36b408853.js",
+      "static/chunks/1691-2e45b62c95b4af18.js",
+      "static/chunks/5001.facfdf4289fc15d9.js"
+    ]
+  },
+  "..\\components\\wallet\\LazyModals.tsx -> @/components/wallet/TransferModal": {
+    "id": 40628,
+    "files": [
+      "static/chunks/2663-f687c55a17bdfa1b.js",
+      "static/chunks/3148-403f14a36b408853.js",
+      "static/chunks/1691-2e45b62c95b4af18.js",
+      "static/chunks/2518-a1b776e45bc1031d.js",
+      "static/chunks/4657-6e61a9c470eb0a6f.js",
+      "static/chunks/8687-bfe9fc790b79107c.js",
+      "static/chunks/2265.68fb78fa9b473623.js",
+      "static/chunks/628.496a7305f6041d13.js"
+    ]
+  },
+  "..\\components\\wallet\\LazyModals.tsx -> @/components/wallet/WithdrawModal": {
+    "id": 72981,
+    "files": [
+      "static/chunks/2663-f687c55a17bdfa1b.js",
+      "static/chunks/3148-403f14a36b408853.js",
+      "static/chunks/1691-2e45b62c95b4af18.js",
+      "static/chunks/2981.b8ccd77dba684902.js"
+    ]
+  },
+  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
+    "id": 11482,
+    "files": [
+      "static/chunks/bc98253f.d6fc8a0138855acd.js",
+      "static/chunks/4199.3bd7b883de5fc42a.js"
+    ]
+  },
+  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> dompurify": {
+    "id": 82931,
+    "files": [
+      "static/chunks/2931.ddde249eba11921d.js"
+    ]
+  },
+  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> html2canvas": {
+    "id": 54264,
+    "files": []
+  },
+  "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
+    "id": 45139,
+    "files": [
+      "static/chunks/5139.e4ff9cc3669129ed.js"
+    ]
+  },
+  "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
+    "id": 31646,
+    "files": [
+      "static/chunks/1646.a93085a0445ba909.js"
+    ]
+  }
+}

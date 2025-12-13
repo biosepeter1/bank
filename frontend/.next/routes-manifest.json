@@ -1,0 +1,371 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/admin/analytics",
+      "regex": "^/admin/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/analytics(?:/)?$"
+    },
+    {
+      "page": "/admin/card-requests",
+      "regex": "^/admin/card\\-requests(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/card\\-requests(?:/)?$"
+    },
+    {
+      "page": "/admin/cards",
+      "regex": "^/admin/cards(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/cards(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard",
+      "regex": "^/admin/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard(?:/)?$"
+    },
+    {
+      "page": "/admin/deposits",
+      "regex": "^/admin/deposits(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/deposits(?:/)?$"
+    },
+    {
+      "page": "/admin/kyc",
+      "regex": "^/admin/kyc(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/kyc(?:/)?$"
+    },
+    {
+      "page": "/admin/loans",
+      "regex": "^/admin/loans(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/loans(?:/)?$"
+    },
+    {
+      "page": "/admin/settings",
+      "regex": "^/admin/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/support",
+      "regex": "^/admin/support(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/support(?:/)?$"
+    },
+    {
+      "page": "/admin/transactions",
+      "regex": "^/admin/transactions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/transactions(?:/)?$"
+    },
+    {
+      "page": "/admin/transfer-codes",
+      "regex": "^/admin/transfer\\-codes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/transfer\\-codes(?:/)?$"
+    },
+    {
+      "page": "/admin/transfers",
+      "regex": "^/admin/transfers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/transfers(?:/)?$"
+    },
+    {
+      "page": "/admin/users",
+      "regex": "^/admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/users(?:/)?$"
+    },
+    {
+      "page": "/auth/forgot-password",
+      "regex": "^/auth/forgot\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/forgot\\-password(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/auth/register",
+      "regex": "^/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/register(?:/)?$"
+    },
+    {
+      "page": "/business/corporate",
+      "regex": "^/business/corporate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/business/corporate(?:/)?$"
+    },
+    {
+      "page": "/business/loans",
+      "regex": "^/business/loans(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/business/loans(?:/)?$"
+    },
+    {
+      "page": "/business/merchant",
+      "regex": "^/business/merchant(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/business/merchant(?:/)?$"
+    },
+    {
+      "page": "/business/payroll",
+      "regex": "^/business/payroll(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/business/payroll(?:/)?$"
+    },
+    {
+      "page": "/business-banking",
+      "regex": "^/business\\-banking(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/business\\-banking(?:/)?$"
+    },
+    {
+      "page": "/careers",
+      "regex": "^/careers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/careers(?:/)?$"
+    },
+    {
+      "page": "/contact",
+      "regex": "^/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contact(?:/)?$"
+    },
+    {
+      "page": "/debug",
+      "regex": "^/debug(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/debug(?:/)?$"
+    },
+    {
+      "page": "/digital-services",
+      "regex": "^/digital\\-services(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/digital\\-services(?:/)?$"
+    },
+    {
+      "page": "/faq",
+      "regex": "^/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/faq(?:/)?$"
+    },
+    {
+      "page": "/forgot-password",
+      "regex": "^/forgot\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/forgot\\-password(?:/)?$"
+    },
+    {
+      "page": "/loans-investments",
+      "regex": "^/loans\\-investments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/loans\\-investments(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/personal/cards",
+      "regex": "^/personal/cards(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/personal/cards(?:/)?$"
+    },
+    {
+      "page": "/personal/checking",
+      "regex": "^/personal/checking(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/personal/checking(?:/)?$"
+    },
+    {
+      "page": "/personal/savings",
+      "regex": "^/personal/savings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/personal/savings(?:/)?$"
+    },
+    {
+      "page": "/personal-banking",
+      "regex": "^/personal\\-banking(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/personal\\-banking(?:/)?$"
+    },
+    {
+      "page": "/register",
+      "regex": "^/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register(?:/)?$"
+    },
+    {
+      "page": "/reset-password",
+      "regex": "^/reset\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reset\\-password(?:/)?$"
+    },
+    {
+      "page": "/super-admin/admins",
+      "regex": "^/super\\-admin/admins(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin/admins(?:/)?$"
+    },
+    {
+      "page": "/super-admin/audit-logs",
+      "regex": "^/super\\-admin/audit\\-logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin/audit\\-logs(?:/)?$"
+    },
+    {
+      "page": "/super-admin/dashboard",
+      "regex": "^/super\\-admin/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin/dashboard(?:/)?$"
+    },
+    {
+      "page": "/super-admin/settings",
+      "regex": "^/super\\-admin/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin/settings(?:/)?$"
+    },
+    {
+      "page": "/super-admin/users",
+      "regex": "^/super\\-admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin/users(?:/)?$"
+    },
+    {
+      "page": "/user/cards",
+      "regex": "^/user/cards(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/cards(?:/)?$"
+    },
+    {
+      "page": "/user/dashboard",
+      "regex": "^/user/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/dashboard(?:/)?$"
+    },
+    {
+      "page": "/user/deposit",
+      "regex": "^/user/deposit(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/deposit(?:/)?$"
+    },
+    {
+      "page": "/user/international",
+      "regex": "^/user/international(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/international(?:/)?$"
+    },
+    {
+      "page": "/user/kyc",
+      "regex": "^/user/kyc(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/kyc(?:/)?$"
+    },
+    {
+      "page": "/user/loans",
+      "regex": "^/user/loans(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/loans(?:/)?$"
+    },
+    {
+      "page": "/user/profile",
+      "regex": "^/user/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/profile(?:/)?$"
+    },
+    {
+      "page": "/user/settings",
+      "regex": "^/user/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/settings(?:/)?$"
+    },
+    {
+      "page": "/user/support",
+      "regex": "^/user/support(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/support(?:/)?$"
+    },
+    {
+      "page": "/user/transactions",
+      "regex": "^/user/transactions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/transactions(?:/)?$"
+    },
+    {
+      "page": "/user/transfer",
+      "regex": "^/user/transfer(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/transfer(?:/)?$"
+    },
+    {
+      "page": "/user/wallet",
+      "regex": "^/user/wallet(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/wallet(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
