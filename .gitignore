@@ -10,7 +10,7 @@ coverage/
 # Production
 build/
 # dist/ - removed to allow backend/dist for pre-built deployment
-.next/
+# .next/ - removed to allow frontend/.next for pre-built deployment
 out/
 
 # Environment variables
