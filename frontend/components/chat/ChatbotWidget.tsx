@@ -70,7 +70,12 @@ export default function ChatbotWidget() {
         // Clean existing socket if any
         if (socket) socket.disconnect();
 
-        const newSocket = io('http://localhost:3001/live-chat');
+        // Determine socket URL based on environment
+        const socketUrl = typeof window !== 'undefined' &&
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:3001/live-chat'
+            : `http://${window.location.hostname}/live-chat`;
+        const newSocket = io(socketUrl);
 
         newSocket.on('connect', () => {
             console.log('Connected to live chat');
