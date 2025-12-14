@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const defaultUrl = process.env.NODE_ENV === 'production'
+  ? 'http://64.227.45.177/api'
+  : 'http://localhost:3001/api';
+
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || defaultUrl,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -47,7 +51,8 @@ apiClient.interceptors.response.use(
       }
 
       // Create a more user-friendly error
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      // Create a more user-friendly error
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || defaultUrl;
       const networkError = new Error(
         `Cannot connect to server at ${apiUrl}. Please check your connection.`
       );
