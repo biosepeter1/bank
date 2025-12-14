@@ -8,6 +8,7 @@ export class PrismaService
   private readonly logger = new Logger(PrismaService.name);
   private readonly maxRetries = 5;
   private readonly retryDelay = 3000; // 3 seconds
+  private keepAliveInterval: NodeJS.Timeout | null = null;
 
   constructor() {
     super({
@@ -24,6 +25,7 @@ export class PrismaService
 
   async onModuleInit() {
     await this.connectWithRetry();
+    this.startKeepAlive();
   }
 
   private async connectWithRetry(attempt = 1): Promise<void> {
@@ -46,8 +48,41 @@ export class PrismaService
   }
 
   async onModuleDestroy() {
+    this.stopKeepAlive();
     await this.$disconnect();
     this.logger.log('👋 Database disconnected');
+  }
+
+  // Start periodic keep-alive pings to prevent idle connection timeout
+  private startKeepAlive() {
+    // Ping every 4 minutes (Supabase/PgBouncer typically times out at 5 min)
+    const KEEP_ALIVE_INTERVAL = 4 * 60 * 1000; // 4 minutes
+
+    this.keepAliveInterval = setInterval(async () => {
+      try {
+        await this.$queryRaw`SELECT 1`;
+        this.logger.debug('💓 Database keep-alive ping successful');
+      } catch (error) {
+        this.logger.warn('⚠️ Keep-alive ping failed, attempting reconnect...');
+        try {
+          await this.$disconnect();
+          await this.connectWithRetry();
+        } catch (reconnectError) {
+          this.logger.error(`❌ Keep-alive reconnect failed: ${reconnectError}`);
+        }
+      }
+    }, KEEP_ALIVE_INTERVAL);
+
+    this.logger.log('💓 Database keep-alive started (4 min interval)');
+  }
+
+  // Stop keep-alive pings
+  private stopKeepAlive() {
+    if (this.keepAliveInterval) {
+      clearInterval(this.keepAliveInterval);
+      this.keepAliveInterval = null;
+      this.logger.log('💓 Database keep-alive stopped');
+    }
   }
 
   // Health check for database connection
