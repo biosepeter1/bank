@@ -1,31 +1,7 @@
 import axios from 'axios';
 
-// Helper to get the correct API URL regardless of environment variables
-const getBaseUrl = () => {
-  // 1. Explicit environment variable always wins
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
-
-  // 2. In browser: Check current hostname
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    // If running solely on specific local domains, use local API
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://localhost:3001/api';
-    }
-    // Otherwise assume production (VPS IP or domain)
-    return 'http://64.227.45.177/api';
-  }
-
-  // 3. Server-side / Build-time fallback
-  return process.env.NODE_ENV === 'production'
-    ? 'http://64.227.45.177/api'
-    : 'http://localhost:3001/api';
-};
-
 const apiClient = axios.create({
-  baseURL: getBaseUrl(),
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -71,7 +47,7 @@ apiClient.interceptors.response.use(
       }
 
       // Create a more user-friendly error
-      const apiUrl = getBaseUrl();
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
       const networkError = new Error(
         `Cannot connect to server at ${apiUrl}. Please check your connection.`
       );
