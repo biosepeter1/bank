@@ -465,11 +465,12 @@ export default function CardsPage() {
                   </div>
                 </motion.div>
 
-                {/* CTA Button */}
+                {/* CTA Button - Hidden on mobile, shown after card on mobile */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
+                  className="hidden sm:block"
                 >
                   <Button
                     onClick={handleCreateCard}
@@ -561,6 +562,35 @@ export default function CardsPage() {
                     </div>
                   </div>
                 </div>
+              </motion.div>
+
+              {/* Mobile CTA Button - Below card preview */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="block sm:hidden mt-4 text-center"
+              >
+                <Button
+                  onClick={handleCreateCard}
+                  disabled={creating || kycStatus !== 'APPROVED'}
+                  className="bg-white hover:bg-white/90 font-semibold px-6 py-5 text-base shadow-xl hover:shadow-2xl transition-all w-full"
+                  style={{
+                    color: branding.colors.primary
+                  }}
+                >
+                  {creating ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      Apply Now
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </>
+                  )}
+                </Button>
               </motion.div>
             </div>
           </div>

@@ -80,7 +80,7 @@ export default function EnhancedUserDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch user data including wallet balance
       const userResponse = await apiClient.get('/auth/me');
       const userData = userResponse.data;
@@ -91,7 +91,7 @@ export default function EnhancedUserDashboard() {
       setDisplayBalance(targetBalance); // Show immediately without animation
       setCurrency(userCurrency);
       setUserName(userFirstName);
-      
+
       console.log('💰 User wallet balance:', targetBalance, userCurrency);
 
       // Fetch stats from backend
@@ -162,9 +162,9 @@ export default function EnhancedUserDashboard() {
       'EUR': 'en-EU',
       'NGN': 'en-NG',
     };
-    
+
     const locale = localeMap[currency] || 'en-US';
-    
+
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency,
@@ -212,7 +212,7 @@ export default function EnhancedUserDashboard() {
   };
 
   return (
-    <>      
+    <>
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900 p-4 md:p-6">
         <motion.div
           variants={containerVariants}
@@ -223,7 +223,7 @@ export default function EnhancedUserDashboard() {
           {/* Header with animated gradient */}
           <motion.div variants={itemVariants} className="relative">
             <div className="relative z-10">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-4xl md:text-5xl font-extrabold mb-2"
@@ -232,7 +232,7 @@ export default function EnhancedUserDashboard() {
                   Dashboard
                 </span>
               </motion.h1>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -248,38 +248,24 @@ export default function EnhancedUserDashboard() {
 
 
           {/* Main Balance Card - Enhanced with glassmorphism */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.01 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <Card 
+            <Card
               className="relative overflow-hidden border-none shadow-2xl backdrop-blur-xl"
               style={{
                 background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
               }}
             >
-              {/* Animated background shapes */}
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 90, 0]
-                }}
-                transition={{ duration: 20, repeat: Infinity }}
-                className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-2xl" 
-              />
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  rotate: [0, -90, 0]
-                }}
-                transition={{ duration: 15, repeat: Infinity }}
-                className="absolute bottom-0 left-0 w-48 h-48 bg-pink-500/20 rounded-full -ml-24 -mb-24 blur-2xl" 
-              />
+              {/* Static background shapes - no animation for mobile perf */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-2xl" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-pink-500/20 rounded-full -ml-24 -mb-24 blur-2xl" />
               {/* Sparkle effect */}
               <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-              
-              <CardContent className="relative p-8">
+
+              <CardContent className="relative p-4 sm:p-6 md:p-8">
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <p className="text-blue-100 text-sm font-medium mb-2">Total Balance</p>
@@ -288,7 +274,7 @@ export default function EnhancedUserDashboard() {
                         key={displayBalance}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-5xl font-bold text-white"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white"
                       >
                         {showBalance ? formatCurrency(displayBalance) : '••••••'}
                       </motion.h2>
@@ -306,7 +292,7 @@ export default function EnhancedUserDashboard() {
                       </motion.button>
                     </div>
                   </div>
-                  
+
                   <motion.div
                     variants={pulseVariants}
                     initial="initial"
@@ -318,7 +304,7 @@ export default function EnhancedUserDashboard() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-8">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ scale: 1.05, y: -2 }}
                     className="p-4 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-lg"
                   >
@@ -330,8 +316,8 @@ export default function EnhancedUserDashboard() {
                       {formatCurrency(stats.totalIncome)}
                     </p>
                   </motion.div>
-                  
-                  <motion.div 
+
+                  <motion.div
                     whileHover={{ scale: 1.05, y: -2 }}
                     className="p-4 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-lg"
                   >
@@ -368,9 +354,9 @@ export default function EnhancedUserDashboard() {
                   >
                     {/* Gradient overlay on hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br from-${action.color}-500/10 via-${action.color}-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300`} />
-                    
+
                     <div className="relative">
-                      <motion.div 
+                      <motion.div
                         className={`p-3 bg-gradient-to-br from-${action.color}-100 to-${action.color}-50 dark:from-${action.color}-900/30 dark:to-${action.color}-800/20 rounded-xl inline-flex mb-3 shadow-sm`}
                         whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
                         transition={{ duration: 0.5 }}
@@ -387,7 +373,7 @@ export default function EnhancedUserDashboard() {
                         <ChevronRight className="w-4 h-4 text-gray-400" />
                       </motion.div>
                     </div>
-                    
+
                     {/* Shine effect on hover */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 group-hover:animate-shine" />
@@ -411,7 +397,7 @@ export default function EnhancedUserDashboard() {
                         {stats.pendingTransactions}
                       </p>
                     </div>
-                    <motion.div 
+                    <motion.div
                       animate={{ rotate: [0, 10, -10, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
                       className="p-4 bg-gradient-to-br from-yellow-200 to-orange-200 dark:from-yellow-900/50 dark:to-orange-900/50 rounded-2xl shadow-lg"
@@ -434,7 +420,7 @@ export default function EnhancedUserDashboard() {
                         {formatCurrency(stats.savings)}
                       </p>
                     </div>
-                    <motion.div 
+                    <motion.div
                       animate={{ y: [0, -5, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
                       className="p-4 bg-gradient-to-br from-emerald-200 to-green-200 dark:from-emerald-900/50 dark:to-green-900/50 rounded-2xl shadow-lg"
@@ -457,7 +443,7 @@ export default function EnhancedUserDashboard() {
                         {formatCurrency(stats.thisMonth)}
                       </p>
                     </div>
-                    <motion.div 
+                    <motion.div
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                       className="p-4 bg-gradient-to-br from-purple-200 to-pink-200 dark:from-purple-900/50 dark:to-pink-900/50 rounded-2xl shadow-lg"
@@ -500,7 +486,7 @@ export default function EnhancedUserDashboard() {
                   {transactions.map((transaction, index) => {
                     const Icon = getTransactionIcon(transaction.type, transaction.amount, transaction.status);
                     const colorClass = getTransactionColor(transaction.type, transaction.amount, transaction.status);
-                    
+
                     return (
                       <motion.div
                         key={transaction.id}
@@ -527,15 +513,14 @@ export default function EnhancedUserDashboard() {
                               </div>
                             </div>
                           </div>
-                          
+
                           <div className="text-right">
-                            <p className={`text-lg font-bold ${
-                              transaction.status !== 'COMPLETED'
+                            <p className={`text-lg font-bold ${transaction.status !== 'COMPLETED'
                                 ? 'text-gray-500 dark:text-gray-400'
                                 : transaction.amount >= 0
                                   ? 'text-green-600 dark:text-green-400'
                                   : 'text-red-600 dark:text-red-400'
-                            }`}>
+                              }`}>
                               {transaction.status === 'COMPLETED' && transaction.amount >= 0 ? '+' : ''}
                               {formatCurrency(transaction.amount)}
                             </p>
