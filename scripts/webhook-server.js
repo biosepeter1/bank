@@ -10,7 +10,7 @@ const http = require('http');
 const { exec } = require('child_process');
 const crypto = require('crypto');
 
-// Configuration - Change this secret!
+// Configuration
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'your-webhook-secret-change-me';
 const PORT = process.env.WEBHOOK_PORT || 9000;
 const DEPLOY_SCRIPT = '/var/www/bank/scripts/deploy.sh';
@@ -18,7 +18,7 @@ const DEPLOY_SCRIPT = '/var/www/bank/scripts/deploy.sh';
 function verifySignature(payload, signature) {
     if (!WEBHOOK_SECRET || WEBHOOK_SECRET === 'your-webhook-secret-change-me') {
         console.log('⚠️  Warning: Using default webhook secret. Set WEBHOOK_SECRET env var!');
-        return true; // Skip verification if no secret set (not recommended for production)
+        return true;
     }
 
     const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
@@ -61,7 +61,6 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             const signature = req.headers['x-hub-signature-256'];
 
-            // Verify GitHub signature
             if (!verifySignature(body, signature)) {
                 console.log('❌ Invalid signature');
                 res.writeHead(401);
@@ -72,12 +71,10 @@ const server = http.createServer((req, res) => {
             try {
                 const payload = JSON.parse(body);
 
-                // Check if it's a push to main branch
                 if (payload.ref === 'refs/heads/main') {
                     console.log(`📦 Push to main by ${payload.pusher?.name || 'unknown'}`);
                     console.log(`📝 Commit: ${payload.head_commit?.message || 'No message'}`);
 
-                    // Trigger deployment
                     runDeploy();
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -97,7 +94,6 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // 404 for everything else
     res.writeHead(404);
     res.end('Not found');
 });
