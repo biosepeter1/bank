@@ -73,77 +73,82 @@ export default function CheckingPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden">
+            <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-44 lg:pb-32 overflow-hidden">
                 {/* Background Elements */}
                 <div className="absolute inset-0 -z-10">
                     <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50" />
                     <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-primary/5 to-transparent" />
                     <motion.div
-                        className="absolute top-20 right-20 w-72 h-72 bg-brand-primary/10 rounded-full blur-3xl"
+                        className="absolute top-20 right-20 w-72 h-72 bg-brand-primary/10 rounded-full blur-3xl hidden md:block"
                         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
                         transition={{ duration: 8, repeat: Infinity }}
                     />
                     <motion.div
-                        className="absolute bottom-20 left-20 w-96 h-96 bg-brand-secondary/10 rounded-full blur-3xl"
+                        className="absolute bottom-20 left-20 w-96 h-96 bg-brand-secondary/10 rounded-full blur-3xl hidden md:block"
                         animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
                         transition={{ duration: 10, repeat: Infinity }}
                     />
                 </div>
 
                 <div className="container mx-auto px-4 md:px-6">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6 }}
+                            className="text-center lg:text-left"
                         >
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6 border border-brand-primary/20">
-                                <CheckCircle2 className="w-4 h-4" />
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-brand-primary/10 text-brand-primary text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-brand-primary/20">
+                                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 Personal Checking
                             </div>
-                            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-4 sm:mb-6">
                                 Banking That
                                 <span className="block bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                                     Works For You
                                 </span>
                             </h1>
-                            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
                                 No monthly fees. No minimum balance. No nonsense. Just simple, powerful checking that puts you in control.
                             </p>
-                            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+
+                            {/* Stats Grid - Mobile optimized */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-xs sm:text-sm text-slate-600 mb-6 sm:mb-8">
+                                <div className="flex items-center gap-1.5 sm:gap-2 justify-center lg:justify-start">
+                                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
+                                    <span>Open in 5 min</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 sm:gap-2 justify-center lg:justify-start">
+                                    <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500 flex-shrink-0" />
+                                    <span>FDIC Insured</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 sm:gap-2 justify-center lg:justify-start">
+                                    <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                    <span className="font-semibold">50,000+</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 sm:gap-2 justify-center lg:justify-start">
+                                    <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
+                                    <span className="font-semibold">4.9/5</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 sm:gap-2 justify-center lg:justify-start col-span-2 sm:col-span-1">
+                                    <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                    <span className="font-semibold">55K+ ATMs</span>
+                                </div>
+                            </div>
+
+                            {/* Buttons - Below stats */}
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                                 <Link href="/register">
-                                    <Button size="lg" className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-14 px-8 text-base rounded-xl">
+                                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl">
                                         Open Free Account
-                                        <ArrowRight className="ml-2 w-5 h-5" />
+                                        <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                                     </Button>
                                 </Link>
                                 <Link href="#features">
-                                    <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl border-2 hover:bg-slate-50">
+                                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl border-2 hover:bg-slate-50">
                                         See All Features
                                     </Button>
                                 </Link>
-                            </div>
-                            <div className="flex items-center gap-6 text-sm text-slate-600">
-                                <div className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-green-500" />
-                                    <span>Open in 5 minutes</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Shield className="w-4 h-4 text-blue-500" />
-                                    <span>FDIC Insured</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Users className="w-5 h-5" />
-                                    <span className="font-semibold">50,000+ Customers</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Star className="w-5 h-5 text-amber-500" />
-                                    <span className="font-semibold">4.9/5 App Rating</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Globe className="w-5 h-5" />
-                                    <span className="font-semibold">55,000+ ATMs</span>
-                                </div>
                             </div>
                         </motion.div>
 

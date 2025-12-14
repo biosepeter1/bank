@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export function BoldCTA() {
     return (
-        <section className="py-32 relative overflow-hidden">
+        <section className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
             {/* Gradient background using brand colors */}
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary" />
 
@@ -61,25 +61,25 @@ export function BoldCTA() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur rounded-full mb-8 border border-white/20"
+                        className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-white/10 backdrop-blur rounded-full mb-4 sm:mb-8 border border-white/20"
                     >
                         <Sparkles size={18} className="text-yellow-300" />
-                        <span className="font-bold">Join 50,000+ Happy Customers</span>
+                        <span className="font-bold text-sm sm:text-base">Join 50,000+ Happy Customers</span>
                     </motion.div>
 
-                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight">
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-8 leading-tight px-2">
                         Ready to Experience
                         <span className="block text-white/90">
                             The Future of Banking?
                         </span>
                     </h2>
 
-                    <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 mb-8 sm:mb-12 max-w-2xl mx-auto font-medium leading-relaxed px-4">
                         Open your free account in under 3 minutes. No paperwork, no minimum balance, no hidden fees.
                     </p>
 
                     {/* Benefits */}
-                    <div className="flex flex-wrap justify-center gap-6 mb-12">
+                    <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-8 sm:mb-12 px-4">
                         {["Free to open", "No monthly fees", "Instant virtual card", "24/7 support"].map((benefit, i) => (
                             <motion.div
                                 key={i}
@@ -90,7 +90,7 @@ export function BoldCTA() {
                                 className="flex items-center gap-2 text-white/90"
                             >
                                 <CheckCircle size={20} className="text-green-300" />
-                                <span className="font-semibold">{benefit}</span>
+                                <span className="font-semibold text-sm sm:text-base">{benefit}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -101,7 +101,7 @@ export function BoldCTA() {
                             <motion.button
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="h-16 px-12 text-xl font-black rounded-2xl bg-white text-brand-primary hover:bg-white/95 shadow-2xl shadow-black/30 flex items-center gap-3 transition-colors"
+                                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-12 text-base sm:text-lg md:text-xl font-black rounded-xl sm:rounded-2xl bg-white text-brand-primary hover:bg-white/95 shadow-2xl shadow-black/30 flex items-center gap-2 sm:gap-3 transition-colors"
                             >
                                 Get Started Free
                                 <ArrowRight className="group-hover:translate-x-2 transition-transform" size={24} />
@@ -111,7 +111,7 @@ export function BoldCTA() {
                             <motion.button
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="h-16 px-12 text-xl font-bold rounded-2xl border-2 border-white/40 text-white hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center gap-2"
+                                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-12 text-base sm:text-lg md:text-xl font-bold rounded-xl sm:rounded-2xl border-2 border-white/40 text-white hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center gap-2"
                             >
                                 Talk to Sales
                             </motion.button>

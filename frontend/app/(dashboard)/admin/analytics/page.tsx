@@ -25,9 +25,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { 
-  Loader2, 
-  TrendingUp, 
+import {
+  Loader2,
+  TrendingUp,
   Download,
   Calendar,
   DollarSign,
@@ -50,9 +50,9 @@ type AnalyticsData = {
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 export default function AnalyticsPage() {
-  
+
   const { branding } = useBranding();
-const [data, setData] = useState<AnalyticsData>({
+  const [data, setData] = useState<AnalyticsData>({
     users: [],
     transactions: [],
     dailyTransactions: [],
@@ -70,7 +70,7 @@ const [data, setData] = useState<AnalyticsData>({
   const fetchAnalyticsData = async () => {
     try {
       setLoading(true);
-      
+
       const [users, transactions] = await Promise.all([
         adminApi.getUsers(),
         adminApi.getAllTransactions({ limit: 500 }),
@@ -118,7 +118,7 @@ const [data, setData] = useState<AnalyticsData>({
       const date = new Date();
       date.setDate(date.getDate() - (6 - i));
       const dateStr = date.toISOString().split('T')[0];
-      
+
       const dayTransactions = transactions.filter(t => {
         const txDate = new Date(t.createdAt).toISOString().split('T')[0];
         return txDate === dateStr;
@@ -139,7 +139,7 @@ const [data, setData] = useState<AnalyticsData>({
       const date = new Date();
       date.setDate(date.getDate() - (6 - i));
       const dateStr = date.toISOString().split('T')[0];
-      
+
       const newUsers = users.filter(u => {
         const userDate = new Date(u.createdAt).toISOString().split('T')[0];
         return userDate === dateStr;
@@ -199,7 +199,7 @@ const [data, setData] = useState<AnalyticsData>({
         ])
       ];
 
-      const csvContent = csvData.map(row => 
+      const csvContent = csvData.map(row =>
         row.map(cell => `"${cell}"`).join(',')
       ).join('\n');
 
@@ -232,16 +232,16 @@ const [data, setData] = useState<AnalyticsData>({
   const avgTransactionValue = totalVolume / data.transactions.length || 0;
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Analytics & Reports</h1>
-          <p className="text-gray-600 mt-2">Platform insights and performance metrics</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Analytics & Reports</h1>
+          <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">Platform insights and performance metrics</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-[180px]">
-              <Calendar className="mr-2 h-4 w-4" />
+            <SelectTrigger className="w-[140px] sm:w-[180px] h-9 sm:h-10">
+              <Calendar className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -250,82 +250,83 @@ const [data, setData] = useState<AnalyticsData>({
               <SelectItem value="90days">Last 90 Days</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={exportReport}>
-            <Download className="mr-2 h-4 w-4" />
-            Export Report
+          <Button onClick={exportReport} size="sm" className="h-9 sm:h-10">
+            <Download className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Export Report</span>
+            <span className="sm:hidden">Export</span>
           </Button>
         </div>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid gap-6 md:grid-cols-4 mb-8">
+      <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 md:grid-cols-4 mb-4 sm:mb-6 md:mb-8">
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Volume</p>
-                <p className="text-2xl font-bold">₦{totalVolume.toLocaleString()}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Volume</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">₦{totalVolume.toLocaleString()}</p>
                 <p className="text-xs text-green-600 mt-1 flex items-center">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +12.5% from last period
                 </p>
               </div>
-              <div className="p-3 rounded-full bg-blue-50">
-                <DollarSign className="h-6 w-6 text-blue-600" />
+              <div className="p-2 sm:p-3 rounded-full bg-blue-50">
+                <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-blue-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Avg Transaction</p>
-                <p className="text-2xl font-bold">₦{Math.floor(avgTransactionValue).toLocaleString()}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Avg Transaction</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">₦{Math.floor(avgTransactionValue).toLocaleString()}</p>
                 <p className="text-xs text-green-600 mt-1 flex items-center">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +5.2% from last period
                 </p>
               </div>
-              <div className="p-3 rounded-full bg-green-50">
-                <Activity className="h-6 w-6 text-green-600" />
+              <div className="p-2 sm:p-3 rounded-full bg-green-50">
+                <Activity className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Users</p>
-                <p className="text-2xl font-bold">{data.users.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Users</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{data.users.length}</p>
                 <p className="text-xs text-green-600 mt-1 flex items-center">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +8.3% growth rate
                 </p>
               </div>
-              <div className="p-3 rounded-full bg-purple-50">
-                <Users className="h-6 w-6 text-purple-600" />
+              <div className="p-2 sm:p-3 rounded-full bg-purple-50">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-purple-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Transactions</p>
-                <p className="text-2xl font-bold">{data.transactions.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Transactions</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{data.transactions.length}</p>
                 <p className="text-xs text-green-600 mt-1 flex items-center">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +15.7% increase
                 </p>
               </div>
-              <div className="p-3 rounded-full bg-orange-50">
-                <Activity className="h-6 w-6 text-orange-600" />
+              <div className="p-2 sm:p-3 rounded-full bg-orange-50">
+                <Activity className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-orange-600" />
               </div>
             </div>
           </CardContent>
@@ -333,26 +334,26 @@ const [data, setData] = useState<AnalyticsData>({
       </div>
 
       {/* Charts Row 1 */}
-      <div className="grid gap-6 md:grid-cols-2 mb-8">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2 mb-4 sm:mb-6 md:mb-8">
         {/* Daily Transaction Volume */}
         <Card>
-          <CardHeader>
-            <CardTitle>Transaction Volume Trend</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Transaction Volume Trend</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={200} className="sm:!h-[250px] md:!h-[300px]">
               <LineChart data={data.dailyTransactions}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip 
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <Tooltip
                   formatter={(value: any) => `₦${Number(value).toLocaleString()}`}
                 />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="volume" 
-                  stroke="#3b82f6" 
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Line
+                  type="monotone"
+                  dataKey="volume"
+                  stroke="#3b82f6"
                   strokeWidth={2}
                   name="Volume"
                 />
@@ -363,11 +364,11 @@ const [data, setData] = useState<AnalyticsData>({
 
         {/* Transactions by Type */}
         <Card>
-          <CardHeader>
-            <CardTitle>Transaction Distribution</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Transaction Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={200} className="sm:!h-[250px] md:!h-[300px]">
               <PieChart>
                 <Pie
                   data={data.transactionsByType}
@@ -375,7 +376,7 @@ const [data, setData] = useState<AnalyticsData>({
                   cy="50%"
                   labelLine={false}
                   label={(entry) => `${entry.name}: ${entry.value}`}
-                  outerRadius={100}
+                  outerRadius={70}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -391,20 +392,20 @@ const [data, setData] = useState<AnalyticsData>({
       </div>
 
       {/* Charts Row 2 */}
-      <div className="grid gap-6 md:grid-cols-2 mb-8">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2 mb-4 sm:mb-6 md:mb-8">
         {/* Daily Transactions Count */}
         <Card>
-          <CardHeader>
-            <CardTitle>Daily Transaction Activity</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Daily Transaction Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={200} className="sm:!h-[250px] md:!h-[300px]">
               <BarChart data={data.dailyTransactions}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Bar dataKey="deposits" fill="#10b981" name="Deposits" />
                 <Bar dataKey="withdrawals" fill="#ef4444" name="Withdrawals" />
                 <Bar dataKey="transfers" fill="#3b82f6" name="Transfers" />
@@ -415,28 +416,28 @@ const [data, setData] = useState<AnalyticsData>({
 
         {/* User Growth */}
         <Card>
-          <CardHeader>
-            <CardTitle>User Growth</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">User Growth</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={200} className="sm:!h-[250px] md:!h-[300px]">
               <LineChart data={data.userGrowth}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="newUsers" 
-                  stroke="#8b5cf6" 
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Line
+                  type="monotone"
+                  dataKey="newUsers"
+                  stroke="#8b5cf6"
                   strokeWidth={2}
                   name="New Users"
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="total" 
-                  stroke="#3b82f6" 
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#3b82f6"
                   strokeWidth={2}
                   name="Total Users"
                 />
@@ -456,8 +457,8 @@ const [data, setData] = useState<AnalyticsData>({
             {data.transactionsByType.map((type, index) => (
               <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div 
-                    className="w-4 h-4 rounded-full" 
+                  <div
+                    className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
                   />
                   <div>

@@ -49,28 +49,37 @@
 
 :root {
   --radius: 0.5rem;
-  
+
   /* Dynamic Brand Colors (updated by BrandingContext) */
-  --brand-primary: #00416A; /* Default: First Bank blue */
-  --brand-secondary: #FFB81C; /* Default: First Bank gold */
-  --brand-primary-rgb: 0 65 106; /* RGB for Tailwind */
+  --brand-primary: #00416A;
+  /* Default: First Bank blue */
+  --brand-secondary: #FFB81C;
+  /* Default: First Bank gold */
+  --brand-primary-rgb: 0 65 106;
+  /* RGB for Tailwind */
   --brand-secondary-rgb: 255 184 28;
-  
+
   /* Legacy Biopete Bank Colors (kept for compatibility) */
-  --cyan-primary: 200 100% 40%; /* #00C8C8 */
-  --cyan-bright: 180 100% 41%; /* #00D1D1 */
-  --deep-blue: 221 92% 15%; /* #0A1F44 */
-  --deep-blue-dark: 210 100% 8%; /* #00102B */
-  
+  --cyan-primary: 200 100% 40%;
+  /* #00C8C8 */
+  --cyan-bright: 180 100% 41%;
+  /* #00D1D1 */
+  --deep-blue: 221 92% 15%;
+  /* #0A1F44 */
+  --deep-blue-dark: 210 100% 8%;
+  /* #00102B */
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.25);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.147 0.004 49.25);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.6 0.2 200); /* Cyan primary */
+  --primary: oklch(0.6 0.2 200);
+  /* Cyan primary */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.22 0.06 221); /* Deep blue */
+  --secondary: oklch(0.22 0.06 221);
+  /* Deep blue */
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.97 0.001 106.424);
   --muted-foreground: oklch(0.553 0.013 58.071);
@@ -133,33 +142,109 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Poppins', sans-serif;
+  }
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 639px) {
+  html {
+    font-size: 14px;
+  }
+
+  /* Reduce motion for performance on mobile */
+  .animate-float {
+    animation: none;
+  }
+
+  /* Smoother scrolling on mobile */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  /* Touch-friendly focus states */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible {
+    outline-offset: 2px;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-float,
+  .animate-gradient,
+  .animate-shine,
+  .animate-ping,
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
 
 /* Custom animations for Biopete Bank */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes shine {
-  0% { transform: translateX(-100%) skewX(-12deg); }
-  100% { transform: translateX(200%) skewX(-12deg); }
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
 }
 
 .animate-float {
@@ -236,4 +321,25 @@ a.hover\:bg-blue-700:hover,
 a.hover\:bg-blue-600:hover {
   background-color: var(--brand-primary) !important;
   filter: brightness(0.85);
+}
+
+/* Foldable/Tablet specific layout (768px - 900px) */
+@media (min-width: 768px) and (max-width: 900px) {
+
+  /* Hero section - single column with compact spacing */
+  .hero-foldable-override {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    text-align: center !important;
+  }
+
+  .hero-foldable-override>div {
+    text-align: center !important;
+  }
+
+  /* Make visual card smaller */
+  .hero-foldable-override .hero-visual-card {
+    max-width: 280px !important;
+    margin: 0 auto !important;
+  }
 }

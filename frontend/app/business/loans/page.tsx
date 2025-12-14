@@ -148,24 +148,25 @@ export default function SMELoansPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
+            <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-32 lg:pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
                 <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
 
                 <div className="container mx-auto px-4 md:px-6">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
+                            className="text-center lg:text-left"
                         >
-                            <div className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full mb-6">
-                                <span className="text-brand-primary font-semibold text-sm">SME Financing Solutions</span>
+                            <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-brand-primary/10 rounded-full mb-4 sm:mb-6">
+                                <span className="text-brand-primary font-semibold text-xs sm:text-sm">SME Financing Solutions</span>
                             </div>
-                            <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
                                 Fuel Your Business Growth with
                                 <span className="text-brand-primary"> Smart Financing</span>
                             </h1>
-                            <p className="text-xl text-slate-600 leading-relaxed">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
                                 Competitive rates, flexible terms, and fast approval. Get the capital you need to scale your business.
                             </p>
                         </motion.div>

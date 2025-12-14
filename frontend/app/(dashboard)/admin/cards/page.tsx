@@ -28,11 +28,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {
-  Search, 
-  CreditCard, 
-  Eye, 
-  Lock, 
-  Unlock, 
+  Search,
+  CreditCard,
+  Eye,
+  Lock,
+  Unlock,
   Loader2,
   TrendingUp,
   Users,
@@ -43,6 +43,8 @@ import {
   CheckCircle,
   XCircle,
   Clock,
+  Check,
+  X,
 } from 'lucide-react';
 import { adminApi } from '@/lib/api/admin';
 import { cardsApi } from '@/lib/api/cards';
@@ -67,9 +69,9 @@ type CardData = {
 };
 
 export default function AdminCardsPage() {
-  
+
   const { branding } = useBranding();
-const { settings } = useSettings();
+  const { settings } = useSettings();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [tab, setTab] = useState<'cards' | 'requests'>('cards');
@@ -129,7 +131,7 @@ const { settings } = useSettings();
             cardsData = await response.json();
           }
         }
-      } catch (_) {}
+      } catch (_) { }
 
       // Always fetch requests for the Requests tab
       const requestsList = await cardsApi.getAllCardRequests().catch(() => []);
@@ -188,8 +190,8 @@ const { settings } = useSettings();
         toast.error('Not authenticated');
         return;
       }
-      
-      const endpoint = action === 'block' 
+
+      const endpoint = action === 'block'
         ? `${process.env.NEXT_PUBLIC_API_URL}/cards/admin/${cardId}/block`
         : `${process.env.NEXT_PUBLIC_API_URL}/cards/admin/${cardId}/unblock`;
 
@@ -205,9 +207,9 @@ const { settings } = useSettings();
 
       const data = await response.json();
       console.log(`✅ Card ${action}ed:`, data);
-      
+
       const newStatus = action === 'block' ? 'BLOCKED' : 'ACTIVE';
-      
+
       // Update card status in local state
       setCards(prevCards =>
         prevCards.map(card =>
@@ -216,12 +218,12 @@ const { settings } = useSettings();
             : card
         )
       );
-      
+
       // Update selected card if it's the one being modified
       if (selectedCard && selectedCard.id === cardId) {
         setSelectedCard(prev => prev ? { ...prev, status: newStatus } : null);
       }
-      
+
       // Update stats
       setStats(prev => {
         const activeChange = action === 'block' ? -1 : 1;
@@ -232,7 +234,7 @@ const { settings } = useSettings();
           blockedCards: prev.blockedCards + blockedChange,
         };
       });
-      
+
       toast.success(data.message || `Card ${action}ed successfully`);
     } catch (error: any) {
       console.error(`❌ Failed to ${action} card:`, error);
@@ -283,7 +285,7 @@ const { settings } = useSettings();
         toast.error('Not authenticated');
         return;
       }
-      
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/admin/${cardId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
@@ -296,19 +298,19 @@ const { settings } = useSettings();
 
       const data = await response.json();
       console.log('✅ Card deleted:', data);
-      
+
       // Find the card to get its type and status before removing
       const deletedCard = cards.find(c => c.id === cardId);
-      
+
       // Remove card from local state
       setCards(prevCards => prevCards.filter(card => card.id !== cardId));
-      
+
       // Close dialog if the deleted card was selected
       if (selectedCard && selectedCard.id === cardId) {
         setSelectedCard(null);
         setCardDetailsOpen(false);
       }
-      
+
       // Update stats
       if (deletedCard) {
         setStats(prev => ({
@@ -320,7 +322,7 @@ const { settings } = useSettings();
           physicalCards: deletedCard.cardType === 'PHYSICAL' ? prev.physicalCards - 1 : prev.physicalCards,
         }));
       }
-      
+
       toast.success(data.message || 'Card deleted successfully');
     } catch (error: any) {
       console.error('❌ Failed to delete card:', error);
@@ -378,68 +380,68 @@ const { settings } = useSettings();
   }
 
   return (
-    <div className="p-8">
-      
-      <div className="mb-6 flex items-center justify-between">
+    <div className="p-4 sm:p-6 md:p-8">
+
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold">Card Management</h1>
-          <p className="text-gray-600 mt-2">Manage active cards and review requests</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Card Management</h1>
+          <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">Manage active cards and review requests</p>
         </div>
         <div className="inline-flex border rounded-lg overflow-hidden">
-          <button className={`px-4 py-2 text-sm ${tab==='cards' ? 'bg-blue-600 text-white' : 'bg-white'}`} onClick={() => setTab('cards')}>Active Cards</button>
-          <button className={`px-4 py-2 text-sm ${tab==='requests' ? 'bg-blue-600 text-white' : 'bg-white'}`} onClick={() => setTab('requests')}>Requests</button>
+          <button className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm ${tab === 'cards' ? 'bg-blue-600 text-white' : 'bg-white'}`} onClick={() => setTab('cards')}>Active Cards</button>
+          <button className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm ${tab === 'requests' ? 'bg-blue-600 text-white' : 'bg-white'}`} onClick={() => setTab('requests')}>Requests</button>
         </div>
       </div>
 
       {/* Stats */}
       {tab === 'cards' ? (
-        <div className="grid gap-6 md:grid-cols-5 mb-6">
+        <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 mb-4 sm:mb-6">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-3 sm:pt-6">
               <div className="text-center">
-                <CreditCard className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                <p className="text-2xl font-bold">{stats.totalCards}</p>
-                <p className="text-sm text-gray-600">Total Cards</p>
+                <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-blue-600" />
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.totalCards}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Cards</p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-3 sm:pt-6">
               <div className="text-center">
-                <TrendingUp className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                <p className="text-2xl font-bold text-green-600">{stats.activeCards}</p>
-                <p className="text-sm text-gray-600">Active Cards</p>
+                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-green-600" />
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{stats.activeCards}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Active Cards</p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-3 sm:pt-6">
               <div className="text-center">
-                <AlertTriangle className="h-8 w-8 mx-auto mb-2 text-red-600" />
-                <p className="text-2xl font-bold text-red-600">{stats.blockedCards}</p>
-                <p className="text-sm text-gray-600">Blocked Cards</p>
+                <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-red-600" />
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">{stats.blockedCards}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Blocked Cards</p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="p-3 sm:pt-6">
               <div className="text-center">
-                <Activity className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                <p className="text-2xl font-bold text-purple-600">{stats.virtualCards}</p>
-                <p className="text-sm text-gray-600">Virtual Cards</p>
+                <Activity className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-purple-600" />
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">{stats.virtualCards}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Virtual Cards</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="col-span-2 sm:col-span-1">
+            <CardContent className="p-3 sm:pt-6">
               <div className="text-center">
-                <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                <p className="text-2xl font-bold text-blue-600">{stats.physicalCards}</p>
-                <p className="text-sm text-gray-600">Physical Cards</p>
+                <Users className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-blue-600" />
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">{stats.physicalCards}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Physical Cards</p>
               </div>
             </CardContent>
           </Card>
@@ -448,48 +450,48 @@ const { settings } = useSettings();
         (() => {
           const requestStats = {
             total: requests.length,
-            pending: requests.filter((r:any) => (r.status || '').toUpperCase() === 'PENDING').length,
-            approved: requests.filter((r:any) => (r.status || '').toUpperCase() === 'APPROVED').length,
-            rejected: requests.filter((r:any) => (r.status || '').toUpperCase() === 'REJECTED').length,
+            pending: requests.filter((r: any) => (r.status || '').toUpperCase() === 'PENDING').length,
+            approved: requests.filter((r: any) => (r.status || '').toUpperCase() === 'APPROVED').length,
+            rejected: requests.filter((r: any) => (r.status || '').toUpperCase() === 'REJECTED').length,
           };
           return (
-            <div className="grid gap-6 md:grid-cols-4 mb-6">
+            <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 md:grid-cols-4 mb-4 sm:mb-6">
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="p-3 sm:pt-6">
                   <div className="text-center">
-                    <CreditCard className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                    <p className="text-2xl font-bold">{requestStats.total}</p>
-                    <p className="text-sm text-gray-600">Total Requests</p>
+                    <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-blue-600" />
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold">{requestStats.total}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Total Requests</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="p-3 sm:pt-6">
                   <div className="text-center">
-                    <Clock className="h-8 w-8 mx-auto mb-2 text-yellow-600" />
-                    <p className="text-2xl font-bold text-yellow-600">{requestStats.pending}</p>
-                    <p className="text-sm text-gray-600">Pending</p>
+                    <Clock className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-yellow-600" />
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{requestStats.pending}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Pending</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="p-3 sm:pt-6">
                   <div className="text-center">
-                    <CheckCircle className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                    <p className="text-2xl font-bold text-green-600">{requestStats.approved}</p>
-                    <p className="text-sm text-gray-600">Approved</p>
+                    <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-green-600" />
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{requestStats.approved}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Approved</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="p-3 sm:pt-6">
                   <div className="text-center">
-                    <XCircle className="h-8 w-8 mx-auto mb-2 text-red-600" />
-                    <p className="text-2xl font-bold text-red-600">{requestStats.rejected}</p>
-                    <p className="text-sm text-gray-600">Rejected</p>
+                    <XCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 mx-auto mb-1 sm:mb-2 text-red-600" />
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">{requestStats.rejected}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Rejected</p>
                   </div>
                 </CardContent>
               </Card>
@@ -558,11 +560,11 @@ const { settings } = useSettings();
                 <TableHeader>
                   <TableRow>
                     <TableHead>Cardholder</TableHead>
-                    <TableHead>Card Details</TableHead>
+                    <TableHead className="hidden sm:table-cell">Card Details</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead>Last Used</TableHead>
+                    <TableHead className="hidden md:table-cell">Created</TableHead>
+                    <TableHead className="hidden lg:table-cell">Last Used</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -571,57 +573,64 @@ const { settings } = useSettings();
                     <TableRow key={card.id}>
                       <TableCell>
                         <div>
-                          <p className="font-medium">{card.userName}</p>
-                          <p className="text-sm text-gray-500">{card.userEmail}</p>
+                          <p className="font-medium text-sm">{card.userName}</p>
+                          <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[150px]">{card.userEmail}</p>
+                          <p className="text-xs text-gray-400 sm:hidden font-mono">{card.cardNumber}</p>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         <div>
                           <p className="font-mono text-sm">{card.cardNumber}</p>
                           <p className="text-xs text-gray-500">Exp: {card.expiryDate}</p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge(card.cardType)}`}>
+                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getTypeBadge(card.cardType)}`}>
                           {card.cardType}
                         </span>
                       </TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(card.status)}`}>
+                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getStatusBadge(card.status)}`}>
                           {card.status}
                         </span>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <p className="text-sm">{new Date(card.createdAt).toLocaleDateString()}</p>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <p className="text-sm">
                           {card.lastUsed ? new Date(card.lastUsed).toLocaleDateString() : 'Never'}
                         </p>
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
                           {card.cardNumber === '—' ? (
                             <>
-                              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={actionLoading[`approve_${card.id}`]} onClick={() => handleApproveRequest(card.id)}>Approve</Button>
-                              <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50" disabled={actionLoading[`reject_${card.id}`]} onClick={() => handleRejectRequest(card.id)}>Reject</Button>
+                              <Button size="sm" className="bg-green-600 hover:bg-green-700 h-7 sm:h-8 px-2 sm:px-3 text-xs" disabled={actionLoading[`approve_${card.id}`]} onClick={() => handleApproveRequest(card.id)}>
+                                <span className="hidden sm:inline">Approve</span>
+                                <Check className="h-3 w-3 sm:hidden" />
+                              </Button>
+                              <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50 h-7 sm:h-8 px-2 sm:px-3 text-xs" disabled={actionLoading[`reject_${card.id}`]} onClick={() => handleRejectRequest(card.id)}>
+                                <span className="hidden sm:inline">Reject</span>
+                                <X className="h-3 w-3 sm:hidden" />
+                              </Button>
                             </>
                           ) : (
                             <>
-                              <Button size="sm" variant="outline" onClick={() => viewCardDetails(card)}>
-                                <Eye className="h-4 w-4" />
+                              <Button size="sm" variant="outline" onClick={() => viewCardDetails(card)} className="h-7 w-7 sm:h-8 sm:w-8 p-0" title="View Details">
+                                <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                               </Button>
                               {card.status === 'ACTIVE' ? (
-                                <Button size="sm" variant="outline" onClick={() => handleCardAction(card.id, 'block')} disabled={actionLoading[card.id]}>
-                                  <Lock className="h-4 w-4" />
+                                <Button size="sm" variant="outline" onClick={() => handleCardAction(card.id, 'block')} disabled={actionLoading[card.id]} className="h-7 w-7 sm:h-8 sm:w-8 p-0" title="Block Card">
+                                  <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
                                 </Button>
                               ) : (
-                                <Button size="sm" variant="outline" onClick={() => handleCardAction(card.id, 'unblock')} disabled={actionLoading[card.id]}>
-                                  <Unlock className="h-4 w-4" />
+                                <Button size="sm" variant="outline" onClick={() => handleCardAction(card.id, 'unblock')} disabled={actionLoading[card.id]} className="h-7 w-7 sm:h-8 sm:w-8 p-0" title="Unblock Card">
+                                  <Unlock className="h-3 w-3 sm:h-4 sm:w-4" />
                                 </Button>
                               )}
-                              <Button size="sm" variant="outline" onClick={() => handleDeleteCard(card.id)} disabled={actionLoading[`delete_${card.id}`]}>
-                                <Trash2 className="h-4 w-4" />
+                              <Button size="sm" variant="outline" onClick={() => handleDeleteCard(card.id)} disabled={actionLoading[`delete_${card.id}`]} className="h-7 w-7 sm:h-8 sm:w-8 p-0 hidden sm:flex" title="Delete Card">
+                                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                               </Button>
                             </>
                           )}
@@ -637,7 +646,7 @@ const { settings } = useSettings();
           {tab === 'requests' && (
             (() => {
               // Show only pending requests by default; still respect search
-              const filtered = requests.filter((r:any) => {
+              const filtered = requests.filter((r: any) => {
                 const matchesSearch = searchTerm === '' || r.user?.email?.toLowerCase().includes(searchTerm.toLowerCase());
                 return matchesSearch && ((r.status || '').toUpperCase() === 'PENDING');
               });
@@ -656,29 +665,35 @@ const { settings } = useSettings();
                       <TableRow>
                         <TableHead>User</TableHead>
                         <TableHead>Type</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Requested</TableHead>
+                        <TableHead className="hidden sm:table-cell">Status</TableHead>
+                        <TableHead className="hidden md:table-cell">Requested</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filtered.map((r:any) => (
+                      {filtered.map((r: any) => (
                         <TableRow key={r.id}>
                           <TableCell>
                             <div>
-                              <p className="font-medium">{`${r.user?.firstName || ''} ${r.user?.lastName || ''}`.trim()}</p>
-                              <p className="text-sm text-gray-500">{r.user?.email}</p>
+                              <p className="font-medium text-sm">{`${r.user?.firstName || ''} ${r.user?.lastName || ''}`.trim()}</p>
+                              <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[150px]">{r.user?.email}</p>
                             </div>
                           </TableCell>
-                          <TableCell><span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge((r.cardType || 'VIRTUAL').toUpperCase())}`}>{r.cardType || 'VIRTUAL'}</span></TableCell>
-                          <TableCell><span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge((r.status || 'PENDING').toUpperCase())}`}>{r.status}</span></TableCell>
-                          <TableCell>{new Date(r.createdAt).toLocaleDateString()}</TableCell>
+                          <TableCell><span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getTypeBadge((r.cardType || 'VIRTUAL').toUpperCase())}`}>{r.cardType || 'VIRTUAL'}</span></TableCell>
+                          <TableCell className="hidden sm:table-cell"><span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getStatusBadge((r.status || 'PENDING').toUpperCase())}`}>{r.status}</span></TableCell>
+                          <TableCell className="hidden md:table-cell text-sm">{new Date(r.createdAt).toLocaleDateString()}</TableCell>
                           <TableCell>
-                            <div className="flex gap-2">
+                            <div className="flex flex-wrap gap-1 sm:gap-2">
                               {(r.status || '').toUpperCase() === 'PENDING' && (
                                 <>
-                                  <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={actionLoading[`approve_${r.id}`]} onClick={() => handleApproveRequest(r.id)}>Approve</Button>
-                                  <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50" disabled={actionLoading[`reject_${r.id}`]} onClick={() => handleRejectRequest(r.id)}>Reject</Button>
+                                  <Button size="sm" className="bg-green-600 hover:bg-green-700 h-7 sm:h-8 px-2 sm:px-3 text-xs" disabled={actionLoading[`approve_${r.id}`]} onClick={() => handleApproveRequest(r.id)}>
+                                    <span className="hidden sm:inline">Approve</span>
+                                    <Check className="h-3 w-3 sm:hidden" />
+                                  </Button>
+                                  <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50 h-7 sm:h-8 px-2 sm:px-3 text-xs" disabled={actionLoading[`reject_${r.id}`]} onClick={() => handleRejectRequest(r.id)}>
+                                    <span className="hidden sm:inline">Reject</span>
+                                    <X className="h-3 w-3 sm:hidden" />
+                                  </Button>
                                 </>
                               )}
                             </div>
@@ -704,13 +719,12 @@ const { settings } = useSettings();
           {selectedCard && (
             <div className="space-y-6 py-4">
               {/* Card Visual */}
-              <div className={`relative h-52 rounded-xl bg-gradient-to-br ${
-                selectedCard.cardBrand === 'VISA' ? 'from-blue-600 via-blue-700 to-indigo-800' :
+              <div className={`relative h-52 rounded-xl bg-gradient-to-br ${selectedCard.cardBrand === 'VISA' ? 'from-blue-600 via-blue-700 to-indigo-800' :
                 selectedCard.cardBrand === 'MASTERCARD' ? 'from-red-500 via-orange-600 to-amber-700' :
-                selectedCard.cardBrand === 'AMERICAN_EXPRESS' ? 'from-cyan-600 via-teal-700 to-emerald-800' :
-                selectedCard.cardBrand === 'DISCOVER' ? 'from-orange-500 via-orange-600 to-orange-700' :
-                'from-gray-600 via-gray-700 to-gray-800'
-              } p-6 text-white shadow-lg`}>
+                  selectedCard.cardBrand === 'AMERICAN_EXPRESS' ? 'from-cyan-600 via-teal-700 to-emerald-800' :
+                    selectedCard.cardBrand === 'DISCOVER' ? 'from-orange-500 via-orange-600 to-orange-700' :
+                      'from-gray-600 via-gray-700 to-gray-800'
+                } p-6 text-white shadow-lg`}>
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <p className="text-xs opacity-80">Card Type</p>

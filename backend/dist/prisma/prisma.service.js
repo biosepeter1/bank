@@ -21,12 +21,46 @@ function _ts_metadata(k, v) {
 }
 let PrismaService = class PrismaService extends _client.PrismaClient {
     async onModuleInit() {
-        await this.$connect();
-        console.log('✅ Database connected successfully');
+        await this.connectWithRetry();
+    }
+    async connectWithRetry(attempt = 1) {
+        try {
+            await this.$connect();
+            this.logger.log('✅ Database connected successfully');
+        } catch (error) {
+            this.logger.error(`❌ Database connection attempt ${attempt} failed: ${error.message}`);
+            if (attempt < this.maxRetries) {
+                const delay = this.retryDelay * attempt; // Exponential backoff
+                this.logger.log(`⏳ Retrying in ${delay / 1000} seconds...`);
+                await new Promise((resolve)=>setTimeout(resolve, delay));
+                return this.connectWithRetry(attempt + 1);
+            }
+            this.logger.error('❌ Max connection retries reached. Database connection failed.');
+            throw error;
+        }
     }
     async onModuleDestroy() {
         await this.$disconnect();
-        console.log('👋 Database disconnected');
+        this.logger.log('👋 Database disconnected');
+    }
+    // Health check for database connection
+    async isHealthy() {
+        try {
+            await this.$queryRaw`SELECT 1`;
+            return true;
+        } catch (error) {
+            this.logger.error(`Database health check failed: ${error.message}`);
+            return false;
+        }
+    }
+    // Reconnect if connection is lost
+    async ensureConnection() {
+        const healthy = await this.isHealthy();
+        if (!healthy) {
+            this.logger.warn('🔄 Database connection lost, attempting to reconnect...');
+            await this.$disconnect();
+            await this.connectWithRetry();
+        }
     }
     // Clean database (for testing)
     async cleanDatabase() {
@@ -49,8 +83,14 @@ let PrismaService = class PrismaService extends _client.PrismaClient {
                 'query',
                 'error',
                 'warn'
-            ]
-        });
+            ],
+            datasources: {
+                db: {
+                    url: process.env.DATABASE_URL
+                }
+            }
+        }), this.logger = new _common.Logger(PrismaService.name), this.maxRetries = 5, this.retryDelay = 3000 // 3 seconds
+        ;
     }
 };
 PrismaService = _ts_decorate([

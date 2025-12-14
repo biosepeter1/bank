@@ -46,6 +46,7 @@ import {
   Sparkles,
   Zap,
   BarChart3,
+  RefreshCw,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
@@ -75,14 +76,14 @@ type User = {
 };
 
 export default function EnhancedAdminUsersPage() {
-  
+
   const { branding } = useBranding();
-const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [kycFilter, setKycFilter] = useState('all');
-  
+
   // Dialog states
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
@@ -92,7 +93,7 @@ const [users, setUsers] = useState<User[]>([]);
   const [sendEmailOpen, setSendEmailOpen] = useState(false);
   const [createUserOpen, setCreateUserOpen] = useState(false);
   const [clearAccountOpen, setClearAccountOpen] = useState(false);
-  
+
   // Form states
   const [transactionAmount, setTransactionAmount] = useState('');
   const [transactionType, setTransactionType] = useState<'credit' | 'debit'>('credit');
@@ -102,11 +103,11 @@ const [users, setUsers] = useState<User[]>([]);
   const [emailMessage, setEmailMessage] = useState('');
   const [clearReason, setClearReason] = useState('');
   const [processing, setProcessing] = useState(false);
-  
+
   // Transfer codes dialog state
   const [codesOpen, setCodesOpen] = useState(false);
   const [codesLoading, setCodesLoading] = useState(false);
-  const [userCodes, setUserCodes] = useState<{ forced: boolean; codes: Array<{ type:'COT'|'IMF'|'TAX'; code: string; isActive: boolean; isVerified: boolean; activatedAt?: string; verifiedAt?: string }> } | null>(null);
+  const [userCodes, setUserCodes] = useState<{ forced: boolean; codes: Array<{ type: 'COT' | 'IMF' | 'TAX'; code: string; isActive: boolean; isVerified: boolean; activatedAt?: string; verifiedAt?: string }> } | null>(null);
 
   // Create user form states
   const [newUserFirstName, setNewUserFirstName] = useState('');
@@ -159,7 +160,7 @@ const [users, setUsers] = useState<User[]>([]);
         amount: parseFloat(transactionAmount),
         reason: transactionReason,
       });
-      
+
       toast.success(`Successfully ${transactionType}ed ${transactionAmount} to ${selectedUser.firstName}'s account`);
       setCreditDebitOpen(false);
       setTransactionAmount('');
@@ -176,14 +177,14 @@ const [users, setUsers] = useState<User[]>([]);
     if (!selectedUser) return;
 
     const isBlocking = selectedUser.accountStatus === 'ACTIVE';
-    
+
     try {
       setProcessing(true);
       await adminApi.updateUserStatus(selectedUser.id, {
         status: isBlocking ? 'SUSPENDED' : 'ACTIVE',
         reason: blockReason,
       });
-      
+
       toast.success(`User ${isBlocking ? 'blocked' : 'unblocked'} successfully`);
       setBlockUnblockOpen(false);
       setBlockReason('');
@@ -222,7 +223,7 @@ const [users, setUsers] = useState<User[]>([]);
         subject: emailSubject,
         message: emailMessage,
       });
-      
+
       toast.success('Email sent successfully');
       setSendEmailOpen(false);
       setEmailSubject('');
@@ -243,7 +244,7 @@ const [users, setUsers] = useState<User[]>([]);
     try {
       setProcessing(true);
       await adminApi.clearUserAccount(selectedUser.id, clearReason);
-      
+
       toast.success(`Account cleared for ${selectedUser.firstName} ${selectedUser.lastName}`);
       setClearAccountOpen(false);
       setClearReason('');
@@ -281,7 +282,7 @@ const [users, setUsers] = useState<User[]>([]);
         transactionPin: newUserTransactionPin || undefined,
         initialBalance: parseFloat(newUserInitialBalance) || 0,
       });
-      
+
       toast.success('User created successfully!');
       setCreateUserOpen(false);
       setNewUserFirstName('');
@@ -310,7 +311,7 @@ const [users, setUsers] = useState<User[]>([]);
     try {
       const data = await adminApi.getUserCodes(u.id);
       setUserCodes(data);
-    } catch (e:any) {
+    } catch (e: any) {
       toast.error(e?.response?.data?.message || 'Failed to load codes');
     } finally {
       setCodesLoading(false);
@@ -325,7 +326,7 @@ const [users, setUsers] = useState<User[]>([]);
       await adminApi.setUserCodesForce(selectedUser.id, next);
       setUserCodes({ ...userCodes, forced: next });
       toast.success(`Per-user verification ${next ? 'enabled' : 'disabled'}`);
-    } catch (e:any) {
+    } catch (e: any) {
       toast.error(e?.response?.data?.message || 'Failed to update');
     } finally {
       setCodesLoading(false);
@@ -408,22 +409,22 @@ const [users, setUsers] = useState<User[]>([]);
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6">
       {/* Modern Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-4 sm:mb-6 md:mb-8"
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-lg">
-                <UsersIcon className="h-8 w-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl sm:rounded-2xl shadow-lg">
+                <UsersIcon className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
               User Management
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">View and manage all user accounts</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">View and manage all user accounts</p>
           </div>
           <div className="hidden md:flex gap-4">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -444,8 +445,8 @@ const [users, setUsers] = useState<User[]>([]);
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="mb-6 border-none shadow-xl bg-white/90 backdrop-blur-sm">
-          <CardContent className="pt-6">
+        <Card className="mb-4 sm:mb-6 border-none shadow-xl bg-white/90 backdrop-blur-sm">
+          <CardContent className="p-4 sm:pt-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -480,52 +481,52 @@ const [users, setUsers] = useState<User[]>([]);
               </Select>
               <Button className="h-12" onClick={() => setCreateUserOpen(true)}><Plus className="h-4 w-4 mr-2" />Create User</Button>
             </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
-        {/* Transfer Codes Dialog */}
-        <Dialog open={codesOpen} onOpenChange={setCodesOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Transfer Codes & Security</DialogTitle>
-              <DialogDescription>
-                View issued codes and force verification for this user.
-              </DialogDescription>
-            </DialogHeader>
-            {codesLoading || !userCodes ? (
-              <div className="py-6 text-center">
-                Loading...
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-semibold">Require verification on next international transfer</p>
-                    <p className="text-xs text-gray-600">Forces the user to enter COT → IMF → TAX again</p>
-                  </div>
-                  <Button onClick={toggleForce} disabled={codesLoading}>
-                    {userCodes.forced ? 'Disable' : 'Enable'}
-                  </Button>
+      {/* Transfer Codes Dialog */}
+      <Dialog open={codesOpen} onOpenChange={setCodesOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Transfer Codes & Security</DialogTitle>
+            <DialogDescription>
+              View issued codes and force verification for this user.
+            </DialogDescription>
+          </DialogHeader>
+          {codesLoading || !userCodes ? (
+            <div className="py-6 text-center">
+              Loading...
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-semibold">Require verification on next international transfer</p>
+                  <p className="text-xs text-gray-600">Forces the user to enter COT → IMF → TAX again</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {['COT','IMF','TAX'].map((t) => {
-                    const code = userCodes.codes.find(c => c.type === t);
-                    return (
-                      <div key={t} className="border rounded-lg p-3">
-                        <p className="text-sm text-gray-500">{t} Code</p>
-                        <p className="font-mono text-lg mt-1">{code?.code || '—'}</p>
-                        <p className="text-xs mt-1">
-                          {code ? (code.isVerified ? 'Verified' : 'Not verified') : 'Not issued'}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
+                <Button onClick={toggleForce} disabled={codesLoading}>
+                  {userCodes.forced ? 'Disable' : 'Enable'}
+                </Button>
               </div>
-            )}
-          </DialogContent>
-        </Dialog>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {['COT', 'IMF', 'TAX'].map((t) => {
+                  const code = userCodes.codes.find(c => c.type === t);
+                  return (
+                    <div key={t} className="border rounded-lg p-3">
+                      <p className="text-sm text-gray-500">{t} Code</p>
+                      <p className="font-mono text-lg mt-1">{code?.code || '—'}</p>
+                      <p className="text-xs mt-1">
+                        {code ? (code.isVerified ? 'Verified' : 'Not verified') : 'Not issued'}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Users Table */}
       <motion.div
@@ -546,11 +547,11 @@ const [users, setUsers] = useState<User[]>([]);
                 <TableHeader>
                   <TableRow className="bg-gray-50">
                     <TableHead className="font-bold">User</TableHead>
-                    <TableHead className="font-bold">Email</TableHead>
-                    <TableHead className="font-bold">Phone</TableHead>
+                    <TableHead className="font-bold hidden sm:table-cell">Email</TableHead>
+                    <TableHead className="font-bold hidden md:table-cell">Phone</TableHead>
                     <TableHead className="font-bold">Balance</TableHead>
-                    <TableHead className="font-bold">Status</TableHead>
-                    <TableHead className="font-bold">KYC</TableHead>
+                    <TableHead className="font-bold hidden sm:table-cell">Status</TableHead>
+                    <TableHead className="font-bold hidden lg:table-cell">KYC</TableHead>
                     <TableHead className="font-bold text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -558,32 +559,38 @@ const [users, setUsers] = useState<User[]>([]);
                   {filteredUsers.map((user) => (
                     <TableRow key={user.id} className="hover:bg-blue-50/50 transition-colors">
                       <TableCell className="font-medium">
-                        {user.firstName} {user.lastName}
+                        <div>
+                          <p>{user.firstName} {user.lastName}</p>
+                          <p className="text-xs text-gray-500 sm:hidden truncate max-w-[120px]">{user.email}</p>
+                        </div>
                       </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.phone}</TableCell>
-                      <TableCell className="font-bold text-blue-600">
+                      <TableCell className="hidden sm:table-cell">
+                        <span className="truncate max-w-[150px] block">{user.email}</span>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">{user.phone}</TableCell>
+                      <TableCell className="font-bold text-blue-600 text-sm">
                         {formatCurrency(user.balance || 0, user.currency)}
                       </TableCell>
-                      <TableCell>
-                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadge(user.accountStatus)}`}>
+                      <TableCell className="hidden sm:table-cell">
+                        <span className={`inline-block px-2 sm:px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadge(user.accountStatus)}`}>
                           {user.accountStatus}
                         </span>
                       </TableCell>
-                          <TableCell>
-                            <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${getKYCBadge(user.kycStatus || 'NOT_SUBMITTED')}`}>
-                              {user.kycStatus || 'NOT_SUBMITTED'}
-                            </span>
-                          </TableCell>
+                      <TableCell className="hidden lg:table-cell">
+                        <span className={`inline-block px-2 sm:px-3 py-1 text-xs font-semibold rounded-full ${getKYCBadge(user.kycStatus || 'NOT_SUBMITTED')}`}>
+                          {user.kycStatus || 'NOT_SUBMITTED'}
+                        </span>
+                      </TableCell>
                       <TableCell>
-                        <div className="flex justify-end gap-2">
+                        <div className="flex flex-wrap justify-end gap-1 sm:gap-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => openCodes(user)}
-                            className="hover:bg-emerald-50"
+                            className="hover:bg-emerald-50 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                            title="Transfer Codes"
                           >
-                            <Key className="h-4 w-4" />
+                            <Key className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                           <Button
                             size="sm"
@@ -592,9 +599,10 @@ const [users, setUsers] = useState<User[]>([]);
                               setSelectedUser(user);
                               setUserDetailsOpen(true);
                             }}
-                            className="hover:bg-blue-50"
+                            className="hover:bg-blue-50 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                            title="View Details"
                           >
-                            <Eye className="h-4 w-4" />
+                            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                           <Button
                             size="sm"
@@ -603,9 +611,10 @@ const [users, setUsers] = useState<User[]>([]);
                               setSelectedUser(user);
                               setCreditDebitOpen(true);
                             }}
-                            className="hover:bg-green-50"
+                            className="hover:bg-green-50 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                            title="Credit/Debit"
                           >
-                            <DollarSign className="h-4 w-4" />
+                            <DollarSign className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                           <Button
                             size="sm"
@@ -614,9 +623,10 @@ const [users, setUsers] = useState<User[]>([]);
                               setSelectedUser(user);
                               setClearAccountOpen(true);
                             }}
-                            className="hover:bg-orange-50"
+                            className="hover:bg-orange-50 h-7 w-7 sm:h-8 sm:w-8 p-0 hidden sm:flex"
+                            title="Reset Account"
                           >
-                            Reset
+                            <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                           <Button
                             size="sm"
@@ -625,12 +635,13 @@ const [users, setUsers] = useState<User[]>([]);
                               setSelectedUser(user);
                               setBlockUnblockOpen(true);
                             }}
-                            className={user.accountStatus === 'ACTIVE' ? 'hover:bg-red-50' : 'hover:bg-green-50'}
+                            className={`h-7 w-7 sm:h-8 sm:w-8 p-0 ${user.accountStatus === 'ACTIVE' ? 'hover:bg-red-50' : 'hover:bg-green-50'}`}
+                            title={user.accountStatus === 'ACTIVE' ? 'Block User' : 'Unblock User'}
                           >
                             {user.accountStatus === 'ACTIVE' ? (
-                              <Ban className="h-4 w-4 text-red-600" />
+                              <Ban className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
                             ) : (
-                              <CheckCircle className="h-4 w-4 text-green-600" />
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
                             )}
                           </Button>
                           <Button
@@ -640,9 +651,10 @@ const [users, setUsers] = useState<User[]>([]);
                               setSelectedUser(user);
                               setSendEmailOpen(true);
                             }}
-                            className="hover:bg-purple-50"
+                            className="hover:bg-purple-50 h-7 w-7 sm:h-8 sm:w-8 p-0 hidden sm:flex"
+                            title="Send Email"
                           >
-                            <Mail className="h-4 w-4" />
+                            <Mail className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                         </div>
                       </TableCell>
@@ -667,8 +679,8 @@ const [users, setUsers] = useState<User[]>([]);
               Adjust {selectedUser?.firstName}'s account balance ({selectedUser?.currency || 'NGN'})
             </DialogDescription>
           </DialogHeader>
-            <div className="space-y-1">
-              {/* Inject Codes dialog trigger as a link in header actions? handled per-row */}
+          <div className="space-y-1">
+            {/* Inject Codes dialog trigger as a link in header actions? handled per-row */}
             <div>
               <Label>Transaction Type</Label>
               <Select value={transactionType} onValueChange={(value: 'credit' | 'debit') => setTransactionType(value)}>
@@ -1155,7 +1167,7 @@ const [users, setUsers] = useState<User[]>([]);
           </DialogHeader>
           <div className="py-4">
             <p className="text-sm text-gray-600">
-              This will send a password reset link to <strong>{selectedUser?.email}</strong>. 
+              This will send a password reset link to <strong>{selectedUser?.email}</strong>.
               The user will be able to create a new password using this link.
             </p>
           </div>

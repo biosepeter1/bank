@@ -68,10 +68,9 @@ export default function Footer() {
   ];
 
   const services = [
-    { name: 'Digital Services', href: '/digital-services' },
     { name: 'Contact Us', href: '/contact' },
     { name: 'FAQ', href: '/faq' },
-    { name: 'Careers', href: '#' },
+    { name: 'Careers', href: '/careers' },
   ];
 
   const legal = [
@@ -91,8 +90,8 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gradient-to-br from-brand-primary via-brand-secondary to-brand-primary text-white overflow-hidden">
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated Background Particles - Hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
         {particles.map((particle, i) => (
           <motion.div
             key={i}
@@ -114,39 +113,39 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-16">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10 lg:gap-12 mb-8 sm:mb-10 md:mb-12">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center overflow-hidden">
+          <div className="col-span-2 lg:col-span-2">
+            <Link href="/" className="flex items-center space-x-2 mb-4 sm:mb-6">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center overflow-hidden">
                 {settings?.general?.logo ? (
                   <img src={settings.general.logo} alt={siteName} className="w-full h-full object-cover" />
                 ) : (
-                  <Zap className="w-6 h-6 text-white" />
+                  <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 )}
               </div>
-              <span className="text-2xl font-bold" suppressHydrationWarning>{siteName}</span>
+              <span className="text-xl sm:text-2xl font-bold" suppressHydrationWarning>{siteName}</span>
             </Link>
-            <p className="text-gray-300 mb-6 leading-relaxed">
+            <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
               Modern digital banking — secure, fast, and borderless. Experience the future of finance.
             </p>
 
             {/* Contact Info */}
-            <div className="space-y-3 text-gray-300">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-brand-secondary" />
-                <span className="text-sm">Egbeda, Lagos, Nigeria</span>
+            <div className="space-y-2 sm:space-y-3 text-gray-300">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-brand-secondary flex-shrink-0" />
+                <span className="text-xs sm:text-sm">Egbeda, Lagos, Nigeria</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-brand-secondary" />
-                <a href={`tel:${supportPhone}`} className="text-sm hover:text-white transition-colors">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-brand-secondary flex-shrink-0" />
+                <a href={`tel:${supportPhone}`} className="text-xs sm:text-sm hover:text-white transition-colors">
                   {supportPhone}
                 </a>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-brand-secondary" />
-                <a href={`mailto:${supportEmail}`} className="text-sm hover:text-white transition-colors">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-brand-secondary flex-shrink-0" />
+                <a href={`mailto:${supportEmail}`} className="text-xs sm:text-sm hover:text-white transition-colors">
                   {supportEmail}
                 </a>
               </div>
@@ -155,13 +154,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm sm:text-base md:text-lg font-bold mb-3 sm:mb-4">Quick Links</h3>
+            <ul className="space-y-2 sm:space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-300 hover:text-white transition-colors text-sm"
+                    className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -172,13 +171,13 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Services</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm sm:text-base md:text-lg font-bold mb-3 sm:mb-4">Services</h3>
+            <ul className="space-y-2 sm:space-y-3">
               {services.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-300 hover:text-white transition-colors text-sm"
+                    className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -188,9 +187,9 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Newsletter</h3>
-            <p className="text-gray-300 text-sm mb-4">
+          <div className="col-span-2 sm:col-span-2 md:col-span-1">
+            <h3 className="text-sm sm:text-base md:text-lg font-bold mb-3 sm:mb-4">Newsletter</h3>
+            <p className="text-gray-300 text-xs sm:text-sm mb-3 sm:mb-4">
               Subscribe for updates, tips, and exclusive offers
             </p>
             <form onSubmit={handleNewsletter} className="space-y-3">
@@ -200,7 +199,7 @@ export default function Footer() {
                   placeholder="Your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 pr-12"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 pr-12 text-sm h-10 sm:h-auto"
                   required
                 />
                 <Button
@@ -223,19 +222,19 @@ export default function Footer() {
             </form>
 
             {/* Social Links */}
-            <div className="mt-6">
-              <h4 className="text-sm font-semibold mb-3">Follow Us</h4>
-              <div className="flex gap-3">
+            <div className="mt-4 sm:mt-6">
+              <h4 className="text-xs sm:text-sm font-semibold mb-2 sm:mb-3">Follow Us</h4>
+              <div className="flex gap-2 sm:gap-3">
                 {socialLinks.map((social) => (
                   <motion.a
                     key={social.label}
                     href={social.href}
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center transition-colors ${social.color}`}
+                    className={`w-8 h-8 sm:w-10 sm:h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center transition-colors ${social.color}`}
                     aria-label={social.label}
                   >
-                    {social.icon}
+                    <span className="[&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-5 sm:[&>svg]:h-5">{social.icon}</span>
                   </motion.a>
                 ))}
               </div>
@@ -244,16 +243,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left">
+        <div className="border-t border-white/10 pt-6 sm:pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
+            <p className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
               © {new Date().getFullYear()} {siteName}. All Rights Reserved.
-            </p>            <div className="flex flex-wrap justify-center gap-6">
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6">
               {legal.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-gray-400 hover:text-white text-sm transition-colors"
+                  className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors"
                 >
                   {link.name}
                 </Link>

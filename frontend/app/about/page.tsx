@@ -111,7 +111,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Hero Section - Enhanced with Animated Gradient */}
-      <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
+      <section className="relative pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
         {/* Animated Gradient Background */}
         <motion.div
           className="absolute inset-0"
@@ -155,39 +155,40 @@ export default function AboutPage() {
         />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left - Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
+              className="text-center lg:text-left"
             >
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-5 py-2 mb-8 border border-white/30"
+                className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-5 py-2 mb-6 sm:mb-8 border border-white/30"
               >
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 <span className="text-white text-sm font-medium">About {siteName}</span>
               </motion.div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
                 Your Trusted
                 <br />
                 <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                   Banking Partner
                 </span>
               </h1>
-              <p className="text-xl text-white/90 leading-relaxed max-w-xl mb-10">
+              <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10">
                 {siteName} operates with a commitment to excellence, serving individuals,
                 businesses, and organizations. We bring world-class banking to you,
                 supporting trade, business growth, and financial sustainability.
               </p>
 
-              {/* Clear, Solid CTA Buttons */}
-              <div className="flex flex-wrap gap-4">
+              {/* CTA Buttons - Hidden on mobile, shown on desktop */}
+              <div className="hidden lg:flex flex-wrap gap-4 justify-start">
                 <Link href="/register">
                   <Button
                     size="lg"
@@ -213,10 +214,10 @@ export default function AboutPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative h-[400px] lg:h-[500px]"
+              className="relative h-[220px] sm:h-[280px] md:h-[350px] lg:h-[500px]"
             >
               {/* Slideshow Container */}
-              <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
+              <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentSlide}
@@ -239,25 +240,25 @@ export default function AboutPage() {
                 {/* Navigation Arrows */}
                 <button
                   onClick={prevSlide}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-brand-primary hover:bg-white transition-colors z-10"
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-brand-primary hover:bg-white transition-colors z-10"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-brand-primary hover:bg-white transition-colors z-10"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-brand-primary hover:bg-white transition-colors z-10"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
                 </button>
 
                 {/* Slide Indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2 z-10">
                   {heroSlides.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
-                      className={`h-3 rounded-full transition-all duration-300 ${currentSlide === index
-                        ? 'bg-white w-10'
+                      className={`h-2 sm:h-3 rounded-full transition-all duration-300 ${currentSlide === index
+                        ? 'bg-white w-6 sm:w-10'
                         : 'bg-white/50 hover:bg-white/70 w-3'
                         }`}
                     />
@@ -270,20 +271,43 @@ export default function AboutPage() {
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
             </motion.div>
           </div>
+
+          {/* Mobile CTA Buttons - Below slideshow */}
+          <div className="lg:hidden mt-6">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/register">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto h-12 px-6 bg-white text-brand-primary hover:bg-white/90 text-sm font-bold rounded-xl shadow-xl"
+                >
+                  Open an Account
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto h-12 px-6 bg-slate-900/90 text-white hover:bg-slate-800 text-sm font-bold rounded-xl shadow-lg"
+                >
+                  Contact Us
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Banking Excellence Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
             {/* Left - Title */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                 Decades of Banking
                 <br />
                 <span className="text-brand-primary">Excellence</span>
@@ -295,7 +319,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-lg text-gray-600 leading-relaxed space-y-4"
+              className="text-base sm:text-lg text-gray-600 leading-relaxed space-y-4"
             >
               <p>
                 For years, we have delivered superior financial services to individuals,
@@ -315,7 +339,7 @@ export default function AboutPage() {
       </section>
 
       {/* Vision, Mission, Strategy Cards */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-24 bg-slate-50 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-primary/30 to-transparent" />
         <div className="absolute top-40 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-3xl" />
 
@@ -324,20 +348,20 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 sm:mb-12 md:mb-16"
           >
             <span className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-sm font-bold text-brand-primary mb-6">
               🎯 Our Purpose
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 mb-4">
               What Drives <span className="text-brand-primary">Us</span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
               Our vision, mission, and strategy guide everything we do
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {visionCards.map((card, index) => (
               <motion.div
                 key={index}
@@ -345,15 +369,15 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group bg-white rounded-3xl p-8 shadow-lg border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+                className="group bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-lg border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
               >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${index === 0 ? 'from-blue-600 to-cyan-500' :
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${index === 0 ? 'from-blue-600 to-cyan-500' :
                   index === 1 ? 'from-brand-primary to-brand-secondary' :
                     'from-purple-600 to-pink-500'
-                  } flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                  } flex items-center justify-center text-white mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                   {card.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">{card.title}</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-2 sm:mb-3">{card.title}</h3>
                 <p className="text-slate-600 leading-relaxed">{card.description}</p>
               </motion.div>
             ))}
@@ -362,9 +386,9 @@ export default function AboutPage() {
       </section>
 
       {/* Feature Cards Grid - Improved sizing */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 max-w-6xl mx-auto">
             {featureCards.map((card, index) => (
               <motion.div
                 key={index}
@@ -375,13 +399,13 @@ export default function AboutPage() {
                 className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300"
               >
                 {/* Text Content */}
-                <div className="p-6 lg:p-8">
-                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">{card.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm lg:text-base">{card.description}</p>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">{card.title}</h3>
+                  <p className="text-gray-600 leading-relaxed text-xs sm:text-sm lg:text-base">{card.description}</p>
                 </div>
 
                 {/* Image Container - Full width and height like UBA reference */}
-                <div className="relative w-full h-[450px] lg:h-[500px] bg-gradient-to-br from-gray-50 via-gray-100/30 to-white">
+                <div className="relative w-full h-[250px] sm:h-[350px] lg:h-[500px] bg-gradient-to-br from-gray-50 via-gray-100/30 to-white">
                   <Image
                     src={card.image}
                     alt={card.title}
@@ -397,21 +421,21 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-br from-brand-primary to-brand-secondary text-white">
-        <div className="container mx-auto px-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-brand-primary to-brand-secondary text-white">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Impact in Numbers</h2>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Our Impact in Numbers</h2>
+            <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
               A testament to our commitment to excellence and customer satisfaction
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {[
               { value: '10+', label: 'Years of Excellence' },
               { value: '50K+', label: 'Happy Customers' },
@@ -426,8 +450,8 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</div>
-                <div className="text-white/70 font-medium">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">{stat.value}</div>
+                <div className="text-white/70 font-medium text-xs sm:text-sm md:text-base">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -435,18 +459,18 @@ export default function AboutPage() {
       </section >
 
       {/* CTA Section */}
-      < section className="py-20 bg-white" >
-        <div className="container mx-auto px-6">
+      < section className="py-12 sm:py-16 md:py-20 bg-white" >
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Ready to Bank with Us?
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
               Join thousands of satisfied customers who trust us with their financial future.
               Experience banking excellence today.
             </p>

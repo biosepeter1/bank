@@ -169,7 +169,7 @@ export default function MerchantServicesPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
+      <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-32 lg:pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
         <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
 
         <div className="container mx-auto px-4 md:px-6">
@@ -179,24 +179,24 @@ export default function MerchantServicesPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full mb-6">
-                <span className="text-brand-primary font-semibold text-sm">Payment Solutions for Modern Businesses</span>
+              <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-brand-primary/10 rounded-full mb-4 sm:mb-6">
+                <span className="text-brand-primary font-semibold text-xs sm:text-sm">Payment Solutions for Modern Businesses</span>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
                 Accept Payments
                 <span className="text-brand-primary"> Anywhere, Anytime</span>
               </h1>
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto">
                 Comprehensive merchant services with competitive rates, instant settlement, and seamless integration. Grow your business with our payment solutions.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link href="/register">
-                  <Button size="lg" className="bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-14 px-8 text-base rounded-xl">
+                  <Button size="lg" className="w-full sm:w-auto bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl">
                     Get Started
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                    <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl border-2">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl border-2">
                   View Pricing
                 </Button>
               </div>
@@ -206,7 +206,7 @@ export default function MerchantServicesPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
+              className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
             >
               {[
                 { label: 'Active Merchants', value: '22,000+' },
@@ -215,8 +215,8 @@ export default function MerchantServicesPage() {
                 { label: 'Countries', value: '15+' }
               ].map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-brand-primary mb-1">{stat.value}</div>
-                  <div className="text-sm text-slate-600">{stat.label}</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-brand-primary mb-0.5 sm:mb-1">{stat.value}</div>
+                  <div className="text-[10px] sm:text-xs md:text-sm text-slate-600">{stat.label}</div>
                 </div>
               ))}
             </motion.div>

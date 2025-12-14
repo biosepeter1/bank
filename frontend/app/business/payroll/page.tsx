@@ -218,31 +218,32 @@ export default function PayrollSolutionsPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
+            <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-32 lg:pb-20 overflow-hidden bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
                 <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
 
                 <div className="container mx-auto px-4 md:px-6">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
+                            className="text-center lg:text-left"
                         >
-                            <div className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full mb-6">
-                                <span className="text-brand-primary font-semibold text-sm">Payroll Made Simple</span>
+                            <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-brand-primary/10 rounded-full mb-4 sm:mb-6">
+                                <span className="text-brand-primary font-semibold text-xs sm:text-sm">Payroll Made Simple</span>
                             </div>
-                            <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
                                 Automate Your Payroll in
                                 <span className="text-brand-primary"> Minutes, Not Days</span>
                             </h1>
-                            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
                                 Complete payroll solution with automated tax compliance, employee self-service, and seamless integration with your accounting software.
                             </p>
-                            <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                                 <Link href="/register">
-                                    <Button size="lg" className="bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-14 px-8 text-base rounded-xl">
+                                    <Button size="lg" className="w-full sm:w-auto bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl">
                                         Start Free Trial
-                                        <ArrowRight className="ml-2 w-5 h-5" />
+                                        <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                                     </Button>
                                 </Link>
 
@@ -542,11 +543,6 @@ export default function PayrollSolutionsPage() {
                                 <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 shadow-xl h-14 px-10 text-base rounded-xl font-semibold">
                                     Start Free 30-Day Trial
                                     <ArrowRight className="ml-2 w-5 h-5" />
-                                </Button>
-                            </Link>
-                            <Link href="/contact">
-                                <Button size="lg" variant="outline" className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:text-white h-14 px-10 text-base rounded-xl">
-                                    Schedule a Demo
                                 </Button>
                             </Link>
                         </div>

@@ -170,7 +170,7 @@ export default function LoginPage() {
         <div className="min-h-full flex items-center justify-center p-4 md:p-6">
           <div className="w-full max-w-sm">
             {/* Mobile Logo */}
-            <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
+            <Link href="/" className="lg:hidden flex items-center justify-center gap-2 mb-6">
               {logo ? (
                 <img src={logo} alt={siteName} className="h-8 object-contain" />
               ) : (
@@ -179,7 +179,7 @@ export default function LoginPage() {
                 </div>
               )}
               <span className="text-lg font-bold text-slate-900">{siteName}</span>
-            </div>
+            </Link>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="text-center mb-6">

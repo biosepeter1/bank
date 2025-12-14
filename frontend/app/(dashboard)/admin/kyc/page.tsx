@@ -35,9 +35,9 @@ type KYCDocument = {
 };
 
 export default function AdminKYCPage() {
-  
+
   const { branding } = useBranding();
-const [documents, setDocuments] = useState<KYCDocument[]>([]);
+  const [documents, setDocuments] = useState<KYCDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'PENDING' | 'APPROVED' | 'REJECTED' | 'ALL'>('PENDING');
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
@@ -60,14 +60,14 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
 
   const fetchDocuments = async () => {
     setLoading(true);
-    
+
     try {
       console.log('🔄 Fetching KYC documents from API');
-      
+
       const data = await adminApi.getAllKYC();
-      
+
       console.log('✅ API Response:', data);
-      
+
       if (data && Array.isArray(data)) {
         // Map API data to component format
         const mappedDocs: KYCDocument[] = data.map((doc: any) => ({
@@ -92,9 +92,9 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
           proofOfAddressUrl: doc.proofOfAddressUrl,
           selfieUrl: doc.selfieUrl,
         }));
-      
+
         setDocuments(mappedDocs);
-        
+
         if (mappedDocs.length === 0) {
           toast('No KYC documents found in database', { icon: 'ℹ️' });
         } else {
@@ -166,23 +166,23 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
   const filteredDocs = filter === 'ALL' ? documents : documents.filter(d => d.status === filter);
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">KYC Document Review</h1>
-        <p className="text-gray-600 mt-2">Review and approve customer identification documents</p>
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="mb-4 sm:mb-6 md:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold">KYC Document Review</h1>
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">Review and approve customer identification documents</p>
       </div>
 
       {/* Stats */}
-      <div className="grid gap-6 md:grid-cols-4 mb-6">
+      <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 md:grid-cols-4 mb-4 sm:mb-6">
         <Card
           className={`cursor-pointer ${filter === 'ALL' ? 'ring-2 ring-blue-500' : ''}`}
           onClick={() => setFilter('ALL')}
         >
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="text-center">
-              <FileText className="h-8 w-8 mx-auto mb-2 text-gray-600" />
-              <p className="text-2xl font-bold">{documents.length}</p>
-              <p className="text-sm text-gray-600">Total Documents</p>
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-1 sm:mb-2 text-gray-600" />
+              <p className="text-lg sm:text-xl md:text-2xl font-bold">{documents.length}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Total Documents</p>
             </div>
           </CardContent>
         </Card>
@@ -191,13 +191,13 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
           className={`cursor-pointer ${filter === 'PENDING' ? 'ring-2 ring-yellow-500' : ''}`}
           onClick={() => setFilter('PENDING')}
         >
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="text-center">
-              <FileText className="h-8 w-8 mx-auto mb-2 text-yellow-600" />
-              <p className="text-2xl font-bold">
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-1 sm:mb-2 text-yellow-600" />
+              <p className="text-lg sm:text-xl md:text-2xl font-bold">
                 {documents.filter(d => d.status === 'PENDING').length}
               </p>
-              <p className="text-sm text-gray-600">Pending Review</p>
+              <p className="text-xs sm:text-sm text-gray-600">Pending Review</p>
             </div>
           </CardContent>
         </Card>
@@ -206,13 +206,13 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
           className={`cursor-pointer ${filter === 'APPROVED' ? 'ring-2 ring-green-500' : ''}`}
           onClick={() => setFilter('APPROVED')}
         >
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="text-center">
-              <CheckCircle className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              <p className="text-2xl font-bold">
+              <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-1 sm:mb-2 text-green-600" />
+              <p className="text-lg sm:text-xl md:text-2xl font-bold">
                 {documents.filter(d => d.status === 'APPROVED').length}
               </p>
-              <p className="text-sm text-gray-600">Approved</p>
+              <p className="text-xs sm:text-sm text-gray-600">Approved</p>
             </div>
           </CardContent>
         </Card>
@@ -221,13 +221,13 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
           className={`cursor-pointer ${filter === 'REJECTED' ? 'ring-2 ring-red-500' : ''}`}
           onClick={() => setFilter('REJECTED')}
         >
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="text-center">
-              <XCircle className="h-8 w-8 mx-auto mb-2 text-red-600" />
-              <p className="text-2xl font-bold">
+              <XCircle className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-1 sm:mb-2 text-red-600" />
+              <p className="text-lg sm:text-xl md:text-2xl font-bold">
                 {documents.filter(d => d.status === 'REJECTED').length}
               </p>
-              <p className="text-sm text-gray-600">Rejected</p>
+              <p className="text-xs sm:text-sm text-gray-600">Rejected</p>
             </div>
           </CardContent>
         </Card>
@@ -273,7 +273,7 @@ const [documents, setDocuments] = useState<KYCDocument[]>([]);
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Status Badge */}
                     <span className={`px-4 py-1.5 text-sm font-semibold rounded-full ${getStatusBadge(doc.status)}`}>
                       {doc.status}

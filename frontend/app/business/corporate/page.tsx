@@ -134,7 +134,7 @@ export default function CorporateAccountsPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
+            <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
                 {/* Animated Gradient Background */}
                 <motion.div
                     className="absolute inset-0"
@@ -157,9 +157,9 @@ export default function CorporateAccountsPage() {
                 <div className="absolute inset-0 bg-black/10" />
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
-                {/* Animated orbs */}
+                {/* Animated orbs - hidden on mobile */}
                 <motion.div
-                    className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/10 rounded-full blur-[120px]"
+                    className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/10 rounded-full blur-[120px] hidden md:block"
                     animate={{
                         x: [0, 50, 0],
                         y: [0, 30, 0],
@@ -168,7 +168,7 @@ export default function CorporateAccountsPage() {
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.div
-                    className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px]"
+                    className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px] hidden md:block"
                     animate={{
                         x: [0, -30, 0],
                         y: [0, -20, 0],
@@ -189,58 +189,59 @@ export default function CorporateAccountsPage() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-5 py-2 mb-8 border border-white/30"
+                            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 sm:px-5 sm:py-2 mb-4 sm:mb-6 md:mb-8 border border-white/30"
                         >
-                            <Sparkles className="w-4 h-4 text-white" />
-                            <span className="text-white text-sm font-medium">Corporate Solutions</span>
+                            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                            <span className="text-white text-xs sm:text-sm font-medium">Corporate Solutions</span>
                         </motion.div>
 
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+                        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-3 sm:mb-4 md:mb-6 leading-tight drop-shadow-lg">
                             Corporate{' '}
                             <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                                 Accounts
                             </span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-relaxed">
+                        <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-white/90 mb-2 sm:mb-4 max-w-3xl mx-auto leading-relaxed px-2">
                             Build Bigger. Move Faster. Bank Smarter.
                         </p>
-                        <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
+                        <p className="text-xs sm:text-sm md:text-lg text-white/70 mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto px-2">
                             Enterprise-grade banking designed to power your business at every stage of growth
                         </p>
-
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/register">
-                                <Button size="lg" className="h-14 px-8 bg-white text-brand-primary hover:bg-white/90 text-lg font-bold shadow-xl">
-                                    Open Corporate Account
-                                    <ArrowRight className="ml-2 w-5 h-5" />
-                                </Button>
-                            </Link>
-                            <Link href="/contact">
-                                <Button size="lg" className="h-14 px-8 bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white/30 text-lg font-bold">
-                                    <Phone className="mr-2 w-5 h-5" />
-                                    Talk to Sales
-                                </Button>
-                            </Link>
-                        </div>
                     </motion.div>
 
-                    {/* Stats Bar */}
+                    {/* Stats Bar - Compact on mobile */}
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 0.8 }}
-                        className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
+                        className="mt-6 sm:mt-10 md:mt-16 lg:mt-20 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:gap-6"
                     >
                         {stats.map((stat, index) => (
-                            <div key={index} className="text-center p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-                                <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-white/20 flex items-center justify-center text-white">
-                                    {stat.icon}
+                            <div key={index} className="text-center p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2 sm:mb-3 md:mb-4 rounded-lg sm:rounded-xl bg-white/20 flex items-center justify-center text-white">
+                                    <span className="[&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-5 sm:[&>svg]:h-5 md:[&>svg]:w-6 md:[&>svg]:h-6">{stat.icon}</span>
                                 </div>
-                                <div className="text-3xl md:text-4xl font-black text-white mb-1">{stat.value}</div>
-                                <div className="text-white/80 text-sm">{stat.label}</div>
+                                <div className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-black text-white mb-0.5 sm:mb-1">{stat.value}</div>
+                                <div className="text-white/80 text-[10px] sm:text-xs md:text-sm">{stat.label}</div>
                             </div>
                         ))}
                     </motion.div>
+
+                    {/* Buttons - Below stats */}
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-6 sm:mt-8 md:mt-10">
+                        <Link href="/register">
+                            <Button size="lg" className="w-full sm:w-auto h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 bg-white text-brand-primary hover:bg-white/90 text-sm sm:text-base md:text-lg font-bold shadow-xl">
+                                Open Corporate Account
+                                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                            </Button>
+                        </Link>
+                        <Link href="/contact">
+                            <Button size="lg" className="w-full sm:w-auto h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white/30 text-sm sm:text-base md:text-lg font-bold">
+                                <Phone className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+                                Talk to Sales
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </section>
 

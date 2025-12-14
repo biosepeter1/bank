@@ -152,66 +152,67 @@ export default function CardsPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+            <section className="relative pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-44 lg:pb-32 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
                 {/* Background Effects */}
                 <div className="absolute inset-0">
                     <motion.div
-                        className="absolute top-20 right-20 w-96 h-96 bg-brand-primary/20 rounded-full blur-3xl"
+                        className="absolute top-20 right-20 w-96 h-96 bg-brand-primary/20 rounded-full blur-3xl hidden md:block"
                         animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
                         transition={{ duration: 10, repeat: Infinity }}
                     />
                     <motion.div
-                        className="absolute bottom-20 left-10 w-72 h-72 bg-brand-secondary/20 rounded-full blur-3xl"
+                        className="absolute bottom-20 left-10 w-72 h-72 bg-brand-secondary/20 rounded-full blur-3xl hidden md:block"
                         animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
                         transition={{ duration: 8, repeat: Infinity }}
                     />
                 </div>
 
                 <div className="container mx-auto px-4 md:px-6 relative">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6 }}
+                            className="text-center lg:text-left"
                         >
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-sm font-semibold mb-6 border border-white/20">
-                                <CreditCard className="w-4 h-4" />
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 text-white text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-white/20">
+                                <CreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 Premium Cards
                             </div>
-                            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-6">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-4 sm:mb-6">
                                 Cards That
                                 <span className="block bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                                     Reward You
                                 </span>
                             </h1>
-                            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-6 sm:mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
                                 From everyday spending to premium travel, find the perfect card for your lifestyle. Earn rewards on everything.
                             </p>
 
-                            {/* Rewards Preview */}
-                            <div className="grid grid-cols-4 gap-3 mb-8">
+                            {/* Rewards Preview - Compact on mobile */}
+                            <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8">
                                 {rewardCategories.map((cat, i) => (
                                     <motion.div
                                         key={i}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.1 }}
-                                        className="bg-white/10 backdrop-blur rounded-xl p-3 text-center"
+                                        className="bg-white/10 backdrop-blur rounded-lg sm:rounded-xl p-2 sm:p-3 text-center"
                                     >
-                                        <div className={`w-10 h-10 ${cat.color} rounded-lg flex items-center justify-center mx-auto mb-2`}>
-                                            <cat.icon className="w-5 h-5 text-white" />
+                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 ${cat.color} rounded-md sm:rounded-lg flex items-center justify-center mx-auto mb-1 sm:mb-2`}>
+                                            <cat.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                                         </div>
-                                        <div className="text-white font-bold">{cat.rate}</div>
-                                        <div className="text-slate-400 text-xs">{cat.label}</div>
+                                        <div className="text-white font-bold text-sm sm:text-base">{cat.rate}</div>
+                                        <div className="text-slate-400 text-[10px] sm:text-xs">{cat.label}</div>
                                     </motion.div>
                                 ))}
                             </div>
 
-                            <div>
+                            <div className="flex justify-center lg:justify-start">
                                 <Link href="/register">
-                                    <Button size="lg" className="bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-14 px-8 text-base rounded-xl">
+                                    <Button size="lg" className="w-full sm:w-auto bg-brand-gradient hover:opacity-90 text-white shadow-xl shadow-brand-primary/25 h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 text-sm sm:text-base rounded-xl">
                                         Apply Now
-                                        <ArrowRight className="ml-2 w-5 h-5" />
+                                        <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                                     </Button>
                                 </Link>
                             </div>

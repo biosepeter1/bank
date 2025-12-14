@@ -140,32 +140,32 @@ export default function EnhancedAdminTransactionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50 p-4 sm:p-6">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-4 sm:mb-6 md:mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl shadow-lg">
-                <Activity className="h-8 w-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl sm:rounded-2xl shadow-lg">
+                <Activity className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
               Transaction Management
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">Review and approve all platform transactions</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">Review and approve all platform transactions</p>
           </div>
         </div>
       </motion.div>
 
       {/* Stats */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid md:grid-cols-3 gap-4 mb-6">
-        <Card className="border-none shadow-lg bg-white/90"><CardContent className="pt-6"><p className="text-sm text-gray-500">Total Volume</p><p className="text-2xl font-bold">{stats.totalVolume.toLocaleString()}</p></CardContent></Card>
-        <Card className="border-none shadow-lg bg-white/90"><CardContent className="pt-6"><p className="text-sm text-gray-500">Total Transactions</p><p className="text-2xl font-bold">{stats.totalTransactions}</p></CardContent></Card>
-        <Card className="border-none shadow-lg bg-white/90"><CardContent className="pt-6"><p className="text-sm text-gray-500">Pending (UI)</p><p className="text-2xl font-bold">{stats.pending}</p></CardContent></Card>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <Card className="border-none shadow-lg bg-white/90"><CardContent className="p-3 sm:pt-6"><p className="text-xs sm:text-sm text-gray-500">Total Volume</p><p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.totalVolume.toLocaleString()}</p></CardContent></Card>
+        <Card className="border-none shadow-lg bg-white/90"><CardContent className="p-3 sm:pt-6"><p className="text-xs sm:text-sm text-gray-500">Total Transactions</p><p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.totalTransactions}</p></CardContent></Card>
+        <Card className="border-none shadow-lg bg-white/90 col-span-2 md:col-span-1"><CardContent className="p-3 sm:pt-6"><p className="text-xs sm:text-sm text-gray-500">Pending (UI)</p><p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.pending}</p></CardContent></Card>
       </motion.div>
 
       {/* Filters */}
       <Card className="border-none shadow-lg bg-white/90 mb-4">
-        <CardContent className="pt-6">
+        <CardContent className="p-3 sm:pt-6">
           <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
               <Input placeholder="Search name, email, reference..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
@@ -200,9 +200,9 @@ export default function EnhancedAdminTransactionsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>When</TableHead>
+                  <TableHead className="hidden sm:table-cell">When</TableHead>
                   <TableHead>User</TableHead>
-                  <TableHead>Type</TableHead>
+                  <TableHead className="hidden md:table-cell">Type</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
@@ -210,11 +210,19 @@ export default function EnhancedAdminTransactionsPage() {
               <TableBody>
                 {filteredTransactions.map((t) => (
                   <TableRow key={t.id} className="hover:bg-emerald-50/40">
-                    <TableCell>{new Date(t.createdAt).toLocaleString()}</TableCell>
-                    <TableCell>{t.user?.firstName} {t.user?.lastName}<div className="text-xs text-gray-500">{t.user?.email}</div></TableCell>
-                    <TableCell className="flex items-center gap-2">{getTypeIcon(t.type)}{t.type}</TableCell>
-                    <TableCell className="text-right font-medium">{t.currency} {Math.abs(Number(t.amount)).toLocaleString()}</TableCell>
-                    <TableCell><span className={`inline-block px-2 py-1 rounded-full text-xs ${getStatusBadge(t.status)}`}>{t.status}</span></TableCell>
+                    <TableCell className="hidden sm:table-cell text-sm">{new Date(t.createdAt).toLocaleString()}</TableCell>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium text-sm">{t.user?.firstName} {t.user?.lastName}</p>
+                        <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[150px]">{t.user?.email}</p>
+                        <p className="text-xs text-gray-400 sm:hidden">{new Date(t.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-1">{getTypeIcon(t.type)}<span className="text-sm">{t.type}</span></div>
+                    </TableCell>
+                    <TableCell className="text-right font-medium text-sm">{t.currency} {Math.abs(Number(t.amount)).toLocaleString()}</TableCell>
+                    <TableCell><span className={`inline-block px-2 py-0.5 rounded-full text-xs ${getStatusBadge(t.status)}`}>{t.status}</span></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -41,9 +41,9 @@ type Deposit = {
 };
 
 export default function AdminDepositsPage() {
-  
+
   const { branding } = useBranding();
-const [deposits, setDeposits] = useState<Deposit[]>([]);
+  const [deposits, setDeposits] = useState<Deposit[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<{ [key: string]: boolean }>({});
   const [selectedDeposit, setSelectedDeposit] = useState<Deposit | null>(null);
@@ -189,60 +189,60 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
 
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Deposit Management</h1>
-        <p className="text-gray-600 mt-1">Review and approve user deposits</p>
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Deposit Management</h1>
+        <p className="text-gray-600 mt-1 text-sm sm:text-base">Review and approve user deposits</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Deposits</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Deposits</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.total}</p>
               </div>
-              <DollarSign className="h-8 w-8 text-blue-600" />
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending</p>
-                <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Pending</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{stats.pending}</p>
               </div>
-              <Loader2 className="h-8 w-8 text-yellow-600" />
+              <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Completed</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{stats.completed}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
+              <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Amount</p>
-                <p className="text-2xl font-bold">{stats.totalAmount.toLocaleString()}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Amount</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.totalAmount.toLocaleString()}</p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-600" />
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
             </div>
           </CardContent>
         </Card>
@@ -266,9 +266,9 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                 <TableRow>
                   <TableHead>User</TableHead>
                   <TableHead>Amount</TableHead>
-                  <TableHead>Method</TableHead>
+                  <TableHead className="hidden sm:table-cell">Method</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="hidden md:table-cell">Date</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -277,18 +277,19 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                   <TableRow key={deposit.id}>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{deposit.userName}</p>
-                        <p className="text-sm text-gray-500">{deposit.userEmail}</p>
+                        <p className="font-medium text-sm">{deposit.userName}</p>
+                        <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[150px]">{deposit.userEmail}</p>
+                        <p className="text-xs text-gray-400 sm:hidden">{deposit.method}</p>
                       </div>
                     </TableCell>
-                    <TableCell className="font-semibold">
+                    <TableCell className="font-semibold text-sm">
                       {deposit.amount.toLocaleString()} {deposit.currency}
                     </TableCell>
-                    <TableCell>{deposit.method}</TableCell>
+                    <TableCell className="hidden sm:table-cell text-sm">{deposit.method}</TableCell>
                     <TableCell>{getStatusBadge(deposit.status)}</TableCell>
-                    <TableCell>{new Date(deposit.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell className="hidden md:table-cell text-sm">{new Date(deposit.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         <Button
                           size="sm"
                           variant="outline"
@@ -296,8 +297,10 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                             setSelectedDeposit(deposit);
                             setShowDetailsModal(true);
                           }}
+                          className="h-7 w-7 sm:h-8 sm:w-8 p-0"
+                          title="View Details"
                         >
-                          <Eye className="h-4 w-4" />
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                         {(deposit.status === 'PENDING' || deposit.status === 'PROCESSING') && (
                           <>
@@ -305,12 +308,13 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                               size="sm"
                               onClick={() => handleApprove(deposit.id)}
                               disabled={actionLoading[deposit.id]}
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-green-600 hover:bg-green-700 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                              title="Approve"
                             >
                               {actionLoading[deposit.id] ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
                               ) : (
-                                <CheckCircle className="h-4 w-4" />
+                                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                               )}
                             </Button>
                             <Button
@@ -321,8 +325,10 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                                 setShowRejectModal(true);
                               }}
                               disabled={actionLoading[deposit.id]}
+                              className="h-7 w-7 sm:h-8 sm:w-8 p-0"
+                              title="Reject"
                             >
-                              <XCircle className="h-4 w-4" />
+                              <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                           </>
                         )}
@@ -331,13 +337,13 @@ const [deposits, setDeposits] = useState<Deposit[]>([]);
                           variant="outline"
                           onClick={() => handleDelete(deposit.id)}
                           disabled={actionLoading[`delete_${deposit.id}`]}
-                          className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-600"
+                          className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-600 h-7 w-7 sm:h-8 sm:w-8 p-0 hidden sm:flex"
                           title="Delete Deposit"
                         >
                           {actionLoading[`delete_${deposit.id}`] ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
                           ) : (
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                           )}
                         </Button>
                       </div>

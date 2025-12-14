@@ -183,12 +183,6 @@
       "namedRegex": "^/debug(?:/)?$"
     },
     {
-      "page": "/digital-services",
-      "regex": "^/digital\\-services(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/digital\\-services(?:/)?$"
-    },
-    {
       "page": "/faq",
       "regex": "^/faq(?:/)?$",
       "routeKeys": {},

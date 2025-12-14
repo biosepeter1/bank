@@ -2,10 +2,10 @@
   "..\\components\\chat\\ChatbotLoader.tsx -> @/components/chat/ChatbotWidget": {
     "id": 93360,
     "files": [
-      "static/chunks/3358-f155fa6afc87c80d.js",
+      "static/chunks/6559-07b59e36bc903414.js",
       "static/chunks/9829-1d93d6e89556abfa.js",
       "static/chunks/7520.21a61c5c7a56a4d9.js",
-      "static/chunks/3360.9785f779ed72a7cf.js"
+      "static/chunks/3360.0568acf3df0bcfe6.js"
     ]
   },
   "..\\components\\wallet\\LazyModals.tsx -> @/components/wallet/DepositModal": {

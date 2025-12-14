@@ -146,7 +146,7 @@ export default function CareersPage() {
             <Navbar />
 
             {/* Hero Section - Enhanced */}
-            <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white overflow-hidden">
+            <section className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-[90vh] flex items-center bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white overflow-hidden">
                 {/* Animated background elements */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse" />
@@ -154,7 +154,7 @@ export default function CareersPage() {
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-white/5 to-transparent rounded-full" />
                 </div>
 
-                <div className="container mx-auto px-6 relative z-10 py-20">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10 py-12 sm:py-16 md:py-20">
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -172,7 +172,7 @@ export default function CareersPage() {
                             <span className="text-sm font-medium">Join Our Award-Winning Team</span>
                         </motion.div>
 
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+                        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight">
                             Shape the Future of
                             <br />
                             <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
@@ -180,28 +180,28 @@ export default function CareersPage() {
                             </span>
                         </h1>
 
-                        <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-3xl mx-auto mb-12">
+                        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/85 leading-relaxed max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2">
                             At {siteName}, we are redefining finance through innovation, security, and human-centered
                             digital experiences. We're always looking for passionate, talented individuals who want to
                             build meaningful careers in a world where technology meets financial excellence.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-5 justify-center">
-                            <Link href="/contact">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center px-4 sm:px-0">
+                            <Link href="/contact" className="w-full sm:w-auto">
                                 <Button
                                     size="lg"
-                                    className="bg-white text-brand-primary hover:bg-white/95 text-lg px-10 py-7 rounded-2xl shadow-xl shadow-black/20 font-semibold transition-all hover:scale-105"
+                                    className="w-full bg-white text-brand-primary hover:bg-white/95 text-sm sm:text-base md:text-lg h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 rounded-xl sm:rounded-2xl shadow-xl shadow-black/20 font-semibold transition-all hover:scale-105"
                                 >
-                                    <Send className="w-5 h-5 mr-3" />
+                                    <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
                                     Submit Your CV
                                 </Button>
                             </Link>
-                            <Link href="/contact">
+                            <Link href="/contact" className="w-full sm:w-auto">
                                 <Button
                                     size="lg"
-                                    className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-lg px-10 py-7 rounded-2xl font-semibold transition-all hover:scale-105"
+                                    className="w-full bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-sm sm:text-base md:text-lg h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 rounded-xl sm:rounded-2xl font-semibold transition-all hover:scale-105"
                                 >
-                                    <Users className="w-5 h-5 mr-3" />
+                                    <Users className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
                                     Join Talent Network
                                 </Button>
                             </Link>
@@ -211,8 +211,8 @@ export default function CareersPage() {
             </section>
 
             {/* Who We Are - Enhanced */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-white">
+                <div className="container mx-auto px-4 sm:px-6">
                     <div className="max-w-4xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -221,10 +221,10 @@ export default function CareersPage() {
                             className="text-center"
                         >
                             <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4">About Us</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">
                                 Who We Are
                             </h2>
-                            <p className="text-xl text-gray-600 leading-relaxed">
+                            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
                                 {siteName} is a next-generation financial institution powered by innovation, integrity,
                                 and a commitment to helping individuals and businesses thrive. Our people make this
                                 possible—and we're committed to building a workplace where they can grow, lead, and excel.
@@ -235,21 +235,21 @@ export default function CareersPage() {
             </section>
 
             {/* Why Work With Us - Enhanced with colored gradients */}
-            <section className="py-24 bg-gray-50">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-gray-50">
+                <div className="container mx-auto px-4 sm:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-12 md:mb-16"
                     >
                         <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4">Benefits</span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
                             Why Work With Us?
                         </h2>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
                         {whyWorkWithUs.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -257,12 +257,12 @@ export default function CareersPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.15 }}
-                                className="group bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                                className="group bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                             >
-                                <div className={`w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform`}>
+                                <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br ${item.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-4 sm:mb-6 group-hover:scale-110 transition-transform`}>
                                     {item.icon}
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">
                                     {item.title}
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed">
@@ -275,21 +275,21 @@ export default function CareersPage() {
             </section>
 
             {/* Life at Bank - Enhanced */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-white">
+                <div className="container mx-auto px-4 sm:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-12 md:mb-16"
                     >
                         <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4">Culture</span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
                             Life at {siteName}
                         </h2>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-6xl mx-auto">
                         {lifeAtBank.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -299,10 +299,10 @@ export default function CareersPage() {
                                 transition={{ delay: index * 0.1 }}
                                 className="text-center group"
                             >
-                                <div className="w-24 h-24 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/10 rounded-full flex items-center justify-center text-brand-primary mx-auto mb-6 group-hover:scale-110 transition-transform border-2 border-brand-primary/10">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/10 rounded-full flex items-center justify-center text-brand-primary mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform border-2 border-brand-primary/10">
                                     {item.icon}
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">
                                     {item.title}
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed">
@@ -315,30 +315,30 @@ export default function CareersPage() {
             </section>
 
             {/* Employee Benefits - Enhanced */}
-            <section className="py-24 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white relative overflow-hidden">
+            <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white relative overflow-hidden">
                 {/* Background decoration */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
                     <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
                 </div>
 
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-12 md:mb-16"
                     >
                         <span className="inline-block text-white/70 font-semibold text-sm uppercase tracking-wider mb-4">Perks</span>
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                             Our Commitment to You
                         </h2>
-                        <p className="text-xl text-white/80">
+                        <p className="text-base sm:text-lg md:text-xl text-white/80">
                             Employee Benefits
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 max-w-5xl mx-auto">
                         {benefits.map((benefit, index) => (
                             <motion.div
                                 key={index}
@@ -346,12 +346,12 @@ export default function CareersPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.05 }}
-                                className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-5 border border-white/10 hover:bg-white/15 transition-colors"
+                                className="flex items-center gap-3 sm:gap-4 bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-5 border border-white/10 hover:bg-white/15 transition-colors"
                             >
-                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
                                     {benefit.icon}
                                 </div>
-                                <span className="text-white font-medium">{benefit.text}</span>
+                                <span className="text-white font-medium text-sm sm:text-base">{benefit.text}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -359,19 +359,19 @@ export default function CareersPage() {
             </section>
 
             {/* Our Hiring Process - Enhanced */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-white">
+                <div className="container mx-auto px-4 sm:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-12 md:mb-16"
                     >
                         <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4">Process</span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                             Our Hiring Process
                         </h2>
-                        <p className="text-xl text-gray-600">
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600">
                             We maintain a transparent, professional, and fair recruitment process
                         </p>
                     </motion.div>
@@ -384,11 +384,11 @@ export default function CareersPage() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className="flex gap-6 mb-6 last:mb-0"
+                                className="flex gap-4 sm:gap-6 mb-6 last:mb-0"
                             >
                                 {/* Step Number */}
                                 <div className="flex-shrink-0">
-                                    <div className="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-xl sm:rounded-2xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg">
                                         {step.step}
                                     </div>
                                     {index < hiringProcess.length - 1 && (
@@ -396,12 +396,12 @@ export default function CareersPage() {
                                     )}
                                 </div>
                                 {/* Content */}
-                                <div className="bg-gray-50 rounded-2xl p-6 flex-grow hover:shadow-lg transition-shadow border border-gray-100">
+                                <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 flex-grow hover:shadow-lg transition-shadow border border-gray-100">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="text-brand-primary">{step.icon}</div>
-                                        <h3 className="text-xl font-bold text-gray-900">{step.title}</h3>
+                                        <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">{step.title}</h3>
                                     </div>
-                                    <p className="text-gray-600">{step.description}</p>
+                                    <p className="text-gray-600 text-sm sm:text-base">{step.description}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -410,27 +410,27 @@ export default function CareersPage() {
             </section>
 
             {/* Internship & Graduate Programs - Enhanced */}
-            <section className="py-24 bg-gray-50">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-gray-50">
+                <div className="container mx-auto px-4 sm:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="bg-white rounded-[2rem] p-10 lg:p-16 shadow-2xl border border-gray-100 max-w-5xl mx-auto"
+                        className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 lg:p-16 shadow-2xl border border-gray-100 max-w-5xl mx-auto"
                     >
-                        <div className="text-center mb-12">
-                            <div className="w-20 h-20 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <div className="text-center mb-8 sm:mb-12">
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
                                 <GraduationCap className="w-10 h-10 text-white" />
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                                 Internship & Graduate Programs
                             </h2>
-                            <p className="text-xl text-gray-600">
+                            <p className="text-base sm:text-lg md:text-xl text-gray-600">
                                 We nurture future leaders through:
                             </p>
                         </div>
 
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-12">
                             {[
                                 'Graduate Trainee Programs',
                                 'Internship Opportunities',
@@ -456,7 +456,7 @@ export default function CareersPage() {
                             <Link href="/contact">
                                 <Button
                                     size="lg"
-                                    className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-lg px-10 py-7 rounded-2xl shadow-xl font-semibold transition-all hover:scale-105"
+                                    className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-7 rounded-xl sm:rounded-2xl shadow-xl font-semibold transition-all hover:scale-105"
                                 >
                                     <GraduationCap className="w-5 h-5 mr-3" />
                                     Apply for Internship
@@ -468,20 +468,20 @@ export default function CareersPage() {
             </section>
 
             {/* Join Our Talent Network - Enhanced */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+            <section className="py-12 sm:py-16 md:py-24 bg-white">
+                <div className="container mx-auto px-4 sm:px-6">
                     <div className="max-w-5xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-center mb-14"
+                            className="text-center mb-8 sm:mb-10 md:mb-14"
                         >
                             <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-4">Opportunities</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                                 Join Our Talent Network
                             </h2>
-                            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                                 Even if you don't see an available role today, you can still be part of our talent pipeline.
                             </p>
                         </motion.div>
@@ -490,12 +490,12 @@ export default function CareersPage() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="bg-gray-50 rounded-[2rem] p-8 lg:p-12 border border-gray-100"
+                            className="bg-gray-50 rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 lg:p-12 border border-gray-100"
                         >
                             <h3 className="text-xl font-bold text-gray-900 mb-8 text-center">
                                 We welcome professionals in:
                             </h3>
-                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
                                 {talentCategories.map((category, index) => (
                                     <motion.div
                                         key={index}
@@ -517,7 +517,7 @@ export default function CareersPage() {
                                 <Link href="/contact">
                                     <Button
                                         size="lg"
-                                        className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-lg px-10 py-7 rounded-2xl shadow-xl font-semibold transition-all hover:scale-105"
+                                        className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-7 rounded-xl sm:rounded-2xl shadow-xl font-semibold transition-all hover:scale-105"
                                     >
                                         <Users className="w-5 h-5 mr-3" />
                                         Join Talent Network
@@ -530,30 +530,30 @@ export default function CareersPage() {
             </section>
 
             {/* Final CTA - Enhanced */}
-            <section className="py-24 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white relative overflow-hidden">
+            <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white relative overflow-hidden">
                 {/* Background decoration */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl" />
                 </div>
 
-                <div className="container mx-auto px-6 text-center relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="max-w-3xl mx-auto"
                     >
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">
+                        <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 md:mb-8">
                             Your Future in Modern Banking Starts Here
                         </h2>
-                        <p className="text-xl text-white/85 mb-12 leading-relaxed">
+                        <p className="text-base sm:text-lg md:text-xl text-white/85 mb-8 sm:mb-10 md:mb-12 leading-relaxed">
                             Be part of a team committed to excellence, innovation, and financial empowerment.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-5 justify-center">
                             <Link href="/contact">
                                 <Button
                                     size="lg"
-                                    className="bg-white text-brand-primary hover:bg-white/95 text-lg px-10 py-7 rounded-2xl shadow-xl shadow-black/20 font-semibold transition-all hover:scale-105"
+                                    className="bg-white text-brand-primary hover:bg-white/95 text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-7 rounded-xl sm:rounded-2xl shadow-xl shadow-black/20 font-semibold transition-all hover:scale-105"
                                 >
                                     <Send className="w-5 h-5 mr-3" />
                                     Submit Your CV
@@ -562,7 +562,7 @@ export default function CareersPage() {
                             <Link href="/contact">
                                 <Button
                                     size="lg"
-                                    className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-lg px-10 py-7 rounded-2xl font-semibold transition-all hover:scale-105"
+                                    className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-7 rounded-xl sm:rounded-2xl font-semibold transition-all hover:scale-105"
                                 >
                                     <Users className="w-5 h-5 mr-3" />
                                     Join Talent Network

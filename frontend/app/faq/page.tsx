@@ -196,7 +196,7 @@ export default function FAQPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+      <section className="relative pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
         {/* Animated Gradient Background */}
         <motion.div
           className="absolute inset-0"
@@ -257,13 +257,13 @@ export default function FAQPage() {
               <span className="text-white text-sm font-medium">Help Center</span>
             </motion.div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg px-2">
               Frequently Asked{' '}
               <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                 Questions
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
               Find quick answers to common questions about our banking services
             </p>
 
@@ -285,15 +285,15 @@ export default function FAQPage() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="mt-8 sm:mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4"
           >
             {stats.map((stat, index) => (
-              <div key={index} className="text-center p-5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+              <div key={index} className="text-center p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
                 <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-white/20 flex items-center justify-center text-white">
                   {stat.icon}
                 </div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1">{stat.value}</div>
-                <div className="text-white/80 text-sm">{stat.label}</div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-1">{stat.value}</div>
+                <div className="text-white/80 text-xs sm:text-sm">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -304,7 +304,7 @@ export default function FAQPage() {
       {!searchTerm && (
         <section className="py-8 bg-slate-50 border-b border-slate-200 sticky top-0 z-40">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide snap-x snap-mandatory">
               {categories.map((cat, index) => (
                 <button
                   key={index}
@@ -312,13 +312,14 @@ export default function FAQPage() {
                     setActiveCategory(index);
                     setOpenIndex(null);
                   }}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${activeCategory === index
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm whitespace-nowrap transition-all snap-start flex-shrink-0 ${activeCategory === index
                     ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/30'
                     : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                     }`}
                 >
-                  <span>{cat.emoji}</span>
-                  {cat.name}
+                  <span className="text-base sm:text-lg">{cat.emoji}</span>
+                  <span className="hidden sm:inline">{cat.name}</span>
+                  <span className="sm:hidden">{cat.name.split(' ')[0]}</span>
                 </button>
               ))}
             </div>
@@ -327,7 +328,7 @@ export default function FAQPage() {
       )}
 
       {/* FAQ Section */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-8 sm:py-12 md:py-16 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           {filteredFaqs.length === 0 ? (
             <motion.div
@@ -389,7 +390,7 @@ export default function FAQPage() {
                               }`}>
                               <HelpCircle className="w-5 h-5" />
                             </div>
-                            <span className={`font-semibold text-lg ${isOpen ? 'text-brand-primary' : 'text-slate-900'}`}>
+                            <span className={`font-semibold text-base sm:text-lg ${isOpen ? 'text-brand-primary' : 'text-slate-900'}`}>
                               {faq.question}
                             </span>
                           </div>
@@ -412,8 +413,8 @@ export default function FAQPage() {
                               transition={{ duration: 0.3 }}
                               className="overflow-hidden"
                             >
-                              <div className="px-6 py-6 border-t border-slate-100 bg-slate-50/50">
-                                <div className="text-slate-700 leading-relaxed pl-14 whitespace-pre-line">
+                              <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-slate-100 bg-slate-50/50">
+                                <div className="text-slate-700 leading-relaxed text-sm sm:text-base pl-0 sm:pl-14 whitespace-pre-line">
                                   {faq.answer}
                                 </div>
                               </div>
@@ -431,7 +432,7 @@ export default function FAQPage() {
       </section>
 
       {/* Contact Support Section */}
-      <section className="py-24 bg-white">
+      <section className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -442,15 +443,15 @@ export default function FAQPage() {
             <span className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-sm font-bold text-brand-primary mb-6">
               💬 Need More Help?
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 mb-4">
               Still Have <span className="text-brand-primary">Questions?</span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
               Our dedicated support team is available around the clock to assist you
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
             {[
               { icon: <MessageCircle className="w-7 h-7" />, title: 'Live Chat', description: 'Get instant help from our support team', action: 'Start Chat', link: '/contact' },
               { icon: <Mail className="w-7 h-7" />, title: 'Email Support', description: 'Send us a detailed message', action: 'Send Email', link: '/contact' },
@@ -462,13 +463,13 @@ export default function FAQPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group bg-slate-50 rounded-3xl p-8 text-center hover:bg-white hover:shadow-2xl transition-all duration-500 border border-slate-100"
+                className="group bg-slate-50 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 text-center hover:bg-white hover:shadow-2xl transition-all duration-500 border border-slate-100"
               >
-                <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-brand-gradient flex items-center justify-center text-white shadow-lg shadow-brand-primary/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-4 sm:mb-6 rounded-xl sm:rounded-2xl bg-brand-gradient flex items-center justify-center text-white shadow-lg shadow-brand-primary/30 group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600 mb-6">{item.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-600 mb-4 sm:mb-6 text-sm sm:text-base">{item.description}</p>
                 <Link href={item.link}>
                   <Button className="bg-brand-gradient text-white hover:opacity-90 shadow-lg">
                     {item.action}
@@ -482,7 +483,7 @@ export default function FAQPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-secondary to-brand-primary" />
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-[120px]" />
@@ -494,21 +495,21 @@ export default function FAQPage() {
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 sm:mb-6">
               Ready to Get Started?
             </h2>
-            <p className="text-xl text-white/90 mb-10 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-10 leading-relaxed px-4">
               Join thousands of satisfied customers enjoying seamless banking with {siteName}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" className="h-16 px-10 bg-white text-brand-primary hover:bg-white/90 text-lg font-bold shadow-2xl">
+                <Button size="lg" className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 bg-white text-brand-primary hover:bg-white/90 text-sm sm:text-base md:text-lg font-bold shadow-2xl">
                   Create Free Account
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button size="lg" className="h-16 px-10 bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white/30 text-lg font-bold">
+                <Button size="lg" className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white/30 text-sm sm:text-base md:text-lg font-bold">
                   Contact Support
                 </Button>
               </Link>

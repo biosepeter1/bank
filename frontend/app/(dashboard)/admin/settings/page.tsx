@@ -146,9 +146,9 @@ export default function SiteSettingsPage() {
       // Refresh global settings context to update sidebar
       await refreshSettings();
       console.log('🔄 Global settings refreshed');
-      
+
       toast.success('Settings saved! Refreshing page...');
-      
+
       // Force page reload to ensure all components get updated settings
       setTimeout(() => {
         window.location.reload();
@@ -156,10 +156,10 @@ export default function SiteSettingsPage() {
     } catch (error: any) {
       console.error('❌ Save error:', error);
       console.error('Error details:', error?.response?.data);
-      
+
       // Handle validation errors (array of errors)
       if (Array.isArray(error?.response?.data)) {
-        const validationErrors = error.response.data.map((err: any) => 
+        const validationErrors = error.response.data.map((err: any) =>
           err.message || err.msg || JSON.stringify(err)
         ).join(', ');
         toast.error(`Validation error: ${validationErrors}`);
@@ -219,28 +219,28 @@ export default function SiteSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-6">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-4 sm:p-6">
+
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex items-center justify-between">
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-4 sm:mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-orange-600 to-amber-600 rounded-2xl shadow-lg">
-                <Settings className="h-8 w-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-orange-600 to-amber-600 rounded-xl sm:rounded-2xl shadow-lg">
+                <Settings className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
               Site Settings
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">Configure your banking platform</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">Configure your banking platform</p>
           </div>
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={fetchSettings} disabled={saving}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Reset
+          <div className="flex gap-2 sm:gap-3">
+            <Button variant="outline" onClick={fetchSettings} disabled={saving} className="h-9 px-2 sm:px-3 text-xs sm:text-sm">
+              <RefreshCw className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Reset</span>
             </Button>
-            <Button onClick={handleSave} disabled={saving} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
-              <Save className="mr-2 h-4 w-4" />
-              {saving ? 'Saving...' : 'Save Changes'}
+            <Button onClick={handleSave} disabled={saving} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 h-9 px-2 sm:px-3 text-xs sm:text-sm">
+              <Save className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              {saving ? 'Saving...' : <><span className="hidden sm:inline">Save Changes</span><span className="sm:hidden">Save</span></>}
             </Button>
           </div>
         </div>
@@ -251,33 +251,33 @@ export default function SiteSettingsPage() {
         <Card className="border-none shadow-xl bg-white/90 backdrop-blur-sm">
           <Tabs defaultValue="general" className="w-full">
             <CardHeader className="border-b bg-gradient-to-r from-orange-50 to-amber-50">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="general">
-                  <Globe className="mr-2 h-4 w-4" />
-                  General
+              <TabsList className="grid w-full grid-cols-5 h-auto">
+                <TabsTrigger value="general" className="text-xs sm:text-sm py-2 sm:py-3 px-1 sm:px-3">
+                  <Globe className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden xs:inline">General</span>
                 </TabsTrigger>
-                <TabsTrigger value="payment">
-                  <DollarSign className="mr-2 h-4 w-4" />
-                  Payment
+                <TabsTrigger value="payment" className="text-xs sm:text-sm py-2 sm:py-3 px-1 sm:px-3">
+                  <DollarSign className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden xs:inline">Payment</span>
                 </TabsTrigger>
-                <TabsTrigger value="security">
-                  <Shield className="mr-2 h-4 w-4" />
-                  Security
+                <TabsTrigger value="security" className="text-xs sm:text-sm py-2 sm:py-3 px-1 sm:px-3">
+                  <Shield className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden xs:inline">Security</span>
                 </TabsTrigger>
-                <TabsTrigger value="notifications">
-                  <Bell className="mr-2 h-4 w-4" />
-                  Notifications
+                <TabsTrigger value="notifications" className="text-xs sm:text-sm py-2 sm:py-3 px-1 sm:px-3">
+                  <Bell className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden xs:inline">Alerts</span>
                 </TabsTrigger>
-                <TabsTrigger value="limits">
-                  <Zap className="mr-2 h-4 w-4" />
-                  Limits
+                <TabsTrigger value="limits" className="text-xs sm:text-sm py-2 sm:py-3 px-1 sm:px-3">
+                  <Zap className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden xs:inline">Limits</span>
                 </TabsTrigger>
               </TabsList>
             </CardHeader>
 
             {/* General Settings */}
-            <TabsContent value="general" className="p-6">
-              <div className="space-y-6">
+            <TabsContent value="general" className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Globe className="h-5 w-5 text-orange-600" />
@@ -303,7 +303,7 @@ export default function SiteSettingsPage() {
                         rows={3}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="logo">Logo URL</Label>
                         <Input
@@ -315,9 +315,9 @@ export default function SiteSettingsPage() {
                         {settings.general.logo && settings.general.logo !== '/logo.png' && (
                           <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-2">Logo Preview:</p>
-                            <img 
-                              src={settings.general.logo} 
-                              alt="Logo Preview" 
+                            <img
+                              src={settings.general.logo}
+                              alt="Logo Preview"
                               className="h-12 w-12 object-contain bg-white rounded border"
                               onError={(e) => {
                                 e.currentTarget.src = '';
@@ -339,9 +339,9 @@ export default function SiteSettingsPage() {
                         {settings.general.favicon && settings.general.favicon !== '/favicon.ico' && (
                           <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-2">Favicon Preview:</p>
-                            <img 
-                              src={settings.general.favicon} 
-                              alt="Favicon Preview" 
+                            <img
+                              src={settings.general.favicon}
+                              alt="Favicon Preview"
                               className="h-8 w-8 object-contain bg-white rounded border"
                               onError={(e) => {
                                 e.currentTarget.src = '';
@@ -353,7 +353,7 @@ export default function SiteSettingsPage() {
                         )}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="supportEmail">Support Email *</Label>
                         <Input
@@ -374,7 +374,7 @@ export default function SiteSettingsPage() {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="border-t pt-4 mt-4">
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
                         <ImageIcon className="h-4 w-4 text-orange-600" />
@@ -382,8 +382,8 @@ export default function SiteSettingsPage() {
                       </h4>
                       <div>
                         <Label htmlFor="bankSelect">Select Bank *</Label>
-                        <Select 
-                          value={settings.general.bankCode || '011'} 
+                        <Select
+                          value={settings.general.bankCode || '011'}
                           onValueChange={(value) => {
                             const selectedBank = BANK_BRANDING[value];
                             if (selectedBank) {
@@ -412,7 +412,7 @@ export default function SiteSettingsPage() {
                           <div className="mt-3 p-3 bg-gray-50 rounded-lg border">
                             <p className="text-xs font-semibold text-gray-700 mb-2">Selected Bank Preview:</p>
                             <div className="flex items-center gap-3">
-                              <div 
+                              <div
                                 className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-xs"
                                 style={{ backgroundColor: BANK_BRANDING[settings.general.bankCode].colors.primary }}
                               >
@@ -434,8 +434,8 @@ export default function SiteSettingsPage() {
             </TabsContent>
 
             {/* Payment Settings */}
-            <TabsContent value="payment" className="p-6">
-              <div className="space-y-6">
+            <TabsContent value="payment" className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <DollarSign className="h-5 w-5 text-orange-600" />
@@ -476,7 +476,7 @@ export default function SiteSettingsPage() {
                             placeholder="Your Bank Name"
                           />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="accountNumber">Account Number *</Label>
                             <Input
@@ -504,55 +504,59 @@ export default function SiteSettingsPage() {
             </TabsContent>
 
             {/* Security Settings */}
-            <TabsContent value="security" className="p-6">
-              <div className="space-y-6">
+            <TabsContent value="security" className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Shield className="h-5 w-5 text-orange-600" />
                     Security Configuration
                   </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Enable Transfer Codes (COT/IMF/TAX)</Label>
-                        <p className="text-sm text-gray-500">Require verification codes for international transfers</p>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Enable Transfer Codes (COT/IMF/TAX)</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Require codes for international transfers</p>
                       </div>
                       <Switch
                         checked={settings.security.enableTransferCodes}
                         onCheckedChange={(checked) => updateSecuritySetting('enableTransferCodes', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Enable Two-Factor Authentication</Label>
-                        <p className="text-sm text-gray-500">Require 2FA for all users</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Enable Two-Factor Authentication</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Require 2FA for all users</p>
                       </div>
                       <Switch
                         checked={settings.security.enableTwoFactor}
                         onCheckedChange={(checked) => updateSecuritySetting('enableTwoFactor', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Require KYC for Transactions</Label>
-                        <p className="text-sm text-gray-500">Users must complete KYC before making transactions</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Require KYC for Transactions</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Must complete KYC before transactions</p>
                       </div>
                       <Switch
                         checked={settings.security.requireKycForTransactions}
                         onCheckedChange={(checked) => updateSecuritySetting('requireKycForTransactions', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Require KYC for Card Requests</Label>
-                        <p className="text-sm text-gray-500">Users must complete KYC before requesting cards</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Require KYC for Card Requests</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Must complete KYC before requesting cards</p>
                       </div>
                       <Switch
                         checked={settings.security.requireKycForCards}
                         onCheckedChange={(checked) => updateSecuritySetting('requireKycForCards', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4 pt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                       <div>
                         <Label htmlFor="maxLoginAttempts">Max Login Attempts</Label>
                         <Input
@@ -584,62 +588,67 @@ export default function SiteSettingsPage() {
             </TabsContent>
 
             {/* Notification Settings */}
-            <TabsContent value="notifications" className="p-6">
-              <div className="space-y-6">
+            <TabsContent value="notifications" className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Bell className="h-5 w-5 text-orange-600" />
                     Notification Preferences
                   </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Email Notifications</Label>
-                        <p className="text-sm text-gray-500">Send notifications via email</p>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Email Notifications</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Send notifications via email</p>
                       </div>
                       <Switch
                         checked={settings.notifications.emailNotifications}
                         onCheckedChange={(checked) => updateNotificationSetting('emailNotifications', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">SMS Notifications</Label>
-                        <p className="text-sm text-gray-500">Send notifications via SMS</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">SMS Notifications</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Send notifications via SMS</p>
                       </div>
                       <Switch
                         checked={settings.notifications.smsNotifications}
                         onCheckedChange={(checked) => updateNotificationSetting('smsNotifications', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Push Notifications</Label>
-                        <p className="text-sm text-gray-500">Send browser push notifications</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Push Notifications</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Send browser push notifications</p>
                       </div>
                       <Switch
                         checked={settings.notifications.pushNotifications}
                         onCheckedChange={(checked) => updateNotificationSetting('pushNotifications', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Transaction Alerts</Label>
-                        <p className="text-sm text-gray-500">Notify users of all transactions</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Transaction Alerts</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Notify users of all transactions</p>
                       </div>
                       <Switch
                         checked={settings.notifications.transactionAlerts}
                         onCheckedChange={(checked) => updateNotificationSetting('transactionAlerts', checked)}
+                        className="shrink-0"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <Label className="text-base font-medium">Security Alerts</Label>
-                        <p className="text-sm text-gray-500">Notify users of security events</p>
+                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Label className="text-sm sm:text-base font-medium">Security Alerts</Label>
+                        <p className="text-xs sm:text-sm text-gray-500">Notify users of security events</p>
                       </div>
                       <Switch
                         checked={settings.notifications.securityAlerts}
                         onCheckedChange={(checked) => updateNotificationSetting('securityAlerts', checked)}
+                        className="shrink-0"
                       />
                     </div>
                   </div>
@@ -648,8 +657,8 @@ export default function SiteSettingsPage() {
             </TabsContent>
 
             {/* Transaction Limits */}
-            <TabsContent value="limits" className="p-6">
-              <div className="space-y-6">
+            <TabsContent value="limits" className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Zap className="h-5 w-5 text-orange-600" />
@@ -658,7 +667,7 @@ export default function SiteSettingsPage() {
                   <div className="grid gap-6">
                     <div className="border-b pb-4">
                       <h4 className="font-semibold mb-3">Deposit Limits</h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="minDeposit">Minimum Deposit (₦)</Label>
                           <Input
@@ -681,7 +690,7 @@ export default function SiteSettingsPage() {
                     </div>
                     <div className="border-b pb-4">
                       <h4 className="font-semibold mb-3">Withdrawal Limits</h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="minWithdrawal">Minimum Withdrawal (₦)</Label>
                           <Input
@@ -704,7 +713,7 @@ export default function SiteSettingsPage() {
                     </div>
                     <div className="border-b pb-4">
                       <h4 className="font-semibold mb-3">Transfer Limits</h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="minTransfer">Minimum Transfer (₦)</Label>
                           <Input

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+  /* Removed scroll-behavior: smooth for instant/snappy scrolling */
 }
 
 body {
@@ -51,6 +51,7 @@ dark ::-webkit-scrollbar-thumb:hover {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -61,6 +62,7 @@ dark ::-webkit-scrollbar-thumb:hover {
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -72,6 +74,7 @@ dark ::-webkit-scrollbar-thumb:hover {
     transform: translateY(-20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;

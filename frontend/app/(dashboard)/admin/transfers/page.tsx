@@ -45,9 +45,9 @@ type Transfer = {
 };
 
 export default function AdminTransfersPage() {
-  
+
   const { branding } = useBranding();
-const [transfers, setTransfers] = useState<Transfer[]>([]);
+  const [transfers, setTransfers] = useState<Transfer[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<{ [key: string]: boolean }>({});
   const [selectedTransfer, setSelectedTransfer] = useState<Transfer | null>(null);
@@ -210,82 +210,82 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
 
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Transfer Management</h1>
-        <p className="text-gray-600 mt-1">Review and approve user transfers</p>
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Transfer Management</h1>
+        <p className="text-gray-600 mt-1 text-sm sm:text-base">Review and approve user transfers</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold">{stats.total}</p>
               </div>
-              <ArrowRightLeft className="h-8 w-8 text-blue-600" />
+              <ArrowRightLeft className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending</p>
-                <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Pending</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{stats.pending}</p>
               </div>
-              <Loader2 className="h-8 w-8 text-yellow-600" />
+              <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-yellow-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Completed</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{stats.completed}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
+              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-green-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Local</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.local}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Local</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">{stats.local}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-600" />
+              <Users className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">International</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.international}</p>
+                <p className="text-xs sm:text-sm text-gray-600">International</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">{stats.international}</p>
               </div>
-              <Globe className="h-8 w-8 text-purple-600" />
+              <Globe className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-purple-600" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="pt-6">
+        <Card className="col-span-2 sm:col-span-1">
+          <CardContent className="p-3 sm:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Amount</p>
-                <p className="text-xl font-bold">{stats.totalAmount.toLocaleString()}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Amount</p>
+                <p className="text-base sm:text-lg md:text-xl font-bold">{stats.totalAmount.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -310,11 +310,11 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                 <TableHeader>
                   <TableRow>
                     <TableHead>From</TableHead>
-                    <TableHead>To</TableHead>
+                    <TableHead className="hidden sm:table-cell">To</TableHead>
                     <TableHead>Amount</TableHead>
-                    <TableHead>Type</TableHead>
+                    <TableHead className="hidden md:table-cell">Type</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
+                    <TableHead className="hidden lg:table-cell">Date</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -324,25 +324,26 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                       <TableCell>
                         <div>
                           <p className="font-medium text-sm">{transfer.senderName}</p>
-                          <p className="text-xs text-gray-500">{transfer.senderEmail}</p>
+                          <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[120px]">{transfer.senderEmail}</p>
+                          <p className="text-xs text-gray-400 sm:hidden">→ {transfer.receiverName}</p>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         <div>
                           <p className="font-medium text-sm">{transfer.receiverName}</p>
-                          <p className="text-xs text-gray-500">{transfer.receiverEmail}</p>
+                          <p className="text-xs text-gray-500 truncate max-w-[100px] sm:max-w-[120px]">{transfer.receiverEmail}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="font-semibold">
+                      <TableCell className="font-semibold text-sm">
                         {transfer.amount.toLocaleString()} {transfer.currency}
                       </TableCell>
-                      <TableCell>{getTransferTypeBadge(transfer.transferType)}</TableCell>
+                      <TableCell className="hidden md:table-cell">{getTransferTypeBadge(transfer.transferType)}</TableCell>
                       <TableCell>{getStatusBadge(transfer.status)}</TableCell>
-                      <TableCell className="text-sm">
+                      <TableCell className="text-sm hidden lg:table-cell">
                         {new Date(transfer.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
                           <Button
                             size="sm"
                             variant="outline"
@@ -350,8 +351,10 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                               setSelectedTransfer(transfer);
                               setShowDetailsModal(true);
                             }}
+                            className="h-7 w-7 sm:h-8 sm:w-8 p-0"
+                            title="View Details"
                           >
-                            <Eye className="h-4 w-4" />
+                            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                           {transfer.status === 'PENDING' && (
                             <>
@@ -359,12 +362,13 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                                 size="sm"
                                 onClick={() => handleApprove(transfer.id)}
                                 disabled={actionLoading[transfer.id]}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-green-600 hover:bg-green-700 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                                title="Approve"
                               >
                                 {actionLoading[transfer.id] ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                  <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
                                 ) : (
-                                  <CheckCircle className="h-4 w-4" />
+                                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                                 )}
                               </Button>
                               <Button
@@ -375,8 +379,10 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                                   setShowRejectModal(true);
                                 }}
                                 disabled={actionLoading[transfer.id]}
+                                className="h-7 w-7 sm:h-8 sm:w-8 p-0"
+                                title="Reject"
                               >
-                                <XCircle className="h-4 w-4" />
+                                <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                               </Button>
                             </>
                           )}
@@ -385,13 +391,13 @@ const [transfers, setTransfers] = useState<Transfer[]>([]);
                             variant="outline"
                             onClick={() => handleDelete(transfer.id)}
                             disabled={actionLoading[`delete_${transfer.id}`]}
-                            className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-600"
+                            className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-600 h-7 w-7 sm:h-8 sm:w-8 p-0 hidden sm:flex"
                             title="Delete Transfer"
                           >
                             {actionLoading[`delete_${transfer.id}`] ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
                             ) : (
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             )}
                           </Button>
                         </div>

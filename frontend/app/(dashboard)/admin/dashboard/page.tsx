@@ -79,9 +79,9 @@ type RecentActivity = {
 };
 
 export default function AdminDashboardPage() {
-  
+
   const { branding } = useBranding();
-const [stats, setStats] = useState<DashboardStats>({
+  const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     activeUsers: 0,
     pendingKYC: 0,
@@ -205,7 +205,7 @@ const [stats, setStats] = useState<DashboardStats>({
               setStats((s) => ({ ...s, pendingApprovals: pending }));
             }
           }
-        } catch (_) {}
+        } catch (_) { }
       }
 
       setLoading(false);
@@ -301,22 +301,22 @@ const [stats, setStats] = useState<DashboardStats>({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 p-4 sm:p-6">
       {/* Modern Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-4 sm:mb-6 md:mb-8"
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl shadow-lg">
-                <Shield className="h-8 w-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl sm:rounded-2xl shadow-lg">
+                <Shield className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
               Admin Dashboard
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">Monitor and manage banking operations</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">Monitor and manage banking operations</p>
           </div>
           <div className="hidden md:flex gap-4">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -352,8 +352,8 @@ const [stats, setStats] = useState<DashboardStats>({
               <p className="text-xs text-yellow-600 mt-2">
                 Make sure the backend server is running on {process.env.NEXT_PUBLIC_API_URL}
               </p>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 onClick={fetchDashboardStats}
                 className="mt-4 bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700 text-white"
               >
@@ -380,7 +380,7 @@ const [stats, setStats] = useState<DashboardStats>({
             </p>
             <p className="text-sm text-red-700">Require immediate attention</p>
           </div>
-          <Button 
+          <Button
             size="sm"
             onClick={() => setAlertsDialogOpen(true)}
             className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white"
@@ -395,7 +395,7 @@ const [stats, setStats] = useState<DashboardStats>({
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8"
+        className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 lg:grid-cols-3 mb-4 sm:mb-6 md:mb-8"
       >
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
@@ -403,15 +403,15 @@ const [stats, setStats] = useState<DashboardStats>({
             <motion.div key={stat.title} variants={itemVariants}>
               <Link href={stat.link}>
                 <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm hover:scale-105">
-                  <CardContent className="pt-6">
+                  <CardContent className="p-4 sm:pt-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-600 mb-2 font-medium">{stat.title}</p>
-                        <p className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{stat.value}</p>
-                        <p className="text-sm text-gray-500 mt-2">{stat.subtitle}</p>
+                        <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 font-medium">{stat.title}</p>
+                        <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{stat.value}</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">{stat.subtitle}</p>
                       </div>
-                      <div className={`p-4 rounded-2xl ${stat.bgColor} group-hover:scale-110 transition-transform`}>
-                        <Icon className={`h-7 w-7 ${stat.color}`} />
+                      <div className={`p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl ${stat.bgColor} group-hover:scale-110 transition-transform`}>
+                        <Icon className={`h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 ${stat.color}`} />
                       </div>
                     </div>
                   </CardContent>
@@ -427,7 +427,7 @@ const [stats, setStats] = useState<DashboardStats>({
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid gap-6 md:grid-cols-2 mb-8"
+        className="grid gap-4 sm:gap-6 md:grid-cols-2 mb-4 sm:mb-6 md:mb-8"
       >
         <motion.div variants={itemVariants}>
           <Card className="border-none shadow-xl bg-white/90 backdrop-blur-sm">
@@ -485,18 +485,18 @@ const [stats, setStats] = useState<DashboardStats>({
                       if (action.includes('CARD')) return CreditCard;
                       return Activity;
                     };
-                    
+
                     const getActivityColor = (action: string) => {
                       if (action.includes('USER') || action.includes('CREATED')) return { bg: 'bg-gradient-to-br from-green-50 to-emerald-50', icon: 'text-green-600' };
                       if (action.includes('KYC')) return { bg: 'bg-gradient-to-br from-orange-50 to-amber-50', icon: 'text-orange-600' };
                       if (action.includes('CARD')) return { bg: 'bg-gradient-to-br from-blue-50 to-cyan-50', icon: 'text-blue-600' };
                       return { bg: 'bg-gradient-to-br from-purple-50 to-pink-50', icon: 'text-purple-600' };
                     };
-                    
+
                     const Icon = getActivityIcon(activity.action);
                     const colors = getActivityColor(activity.action);
                     const timeAgo = new Date(activity.timestamp).toLocaleString();
-                    
+
                     return (
                       <motion.div
                         key={activity.id}
@@ -528,7 +528,7 @@ const [stats, setStats] = useState<DashboardStats>({
       </motion.div>
 
       {/* Charts Grid */}
-      <div className="grid gap-6 md:grid-cols-2 mb-8">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2 mb-4 sm:mb-6 md:mb-8">
         {/* Transaction Volume Chart */}
         <Card>
           <CardHeader>
@@ -544,51 +544,51 @@ const [stats, setStats] = useState<DashboardStats>({
                 </div>
               </div>
             ) : (
-              <div className="h-80">
+              <div className="h-60 sm:h-72 md:h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={volumeData}>
-                  <defs>
-                    <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#6b7280"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <YAxis 
-                    stroke="#6b7280"
-                    style={{ fontSize: '12px' }}
-                    tickFormatter={(value) => `₦${(value / 1000000).toFixed(1)}M`}
-                  />
-                  <Tooltip 
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                      padding: '12px',
-                      boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                    }}
-                    formatter={(value: number, name: string) => {
-                      if (name === 'volume') {
-                        return [`₦${value.toLocaleString()}`, 'Volume'];
-                      }
-                      return [value, 'Transactions'];
-                    }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="volume" 
-                    stroke="#3b82f6" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorVolume)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+                    <defs>
+                      <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis
+                      dataKey="date"
+                      stroke="#6b7280"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <YAxis
+                      stroke="#6b7280"
+                      style={{ fontSize: '12px' }}
+                      tickFormatter={(value) => `₦${(value / 1000000).toFixed(1)}M`}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#fff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                      }}
+                      formatter={(value: number, name: string) => {
+                        if (name === 'volume') {
+                          return [`₦${value.toLocaleString()}`, 'Volume'];
+                        }
+                        return [value, 'Transactions'];
+                      }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="volume"
+                      stroke="#3b82f6"
+                      strokeWidth={3}
+                      fillOpacity={1}
+                      fill="url(#colorVolume)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             )}
           </CardContent>
@@ -609,47 +609,47 @@ const [stats, setStats] = useState<DashboardStats>({
                 </div>
               </div>
             ) : (
-              <div className="h-80">
+              <div className="h-60 sm:h-72 md:h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                  <Pie
-                    data={transactionTypes}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                    animationBegin={0}
-                    animationDuration={800}
-                  >
-                    {transactionTypes.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                      padding: '12px',
-                      boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                    }}
-                    formatter={(value: number) => [`${value}%`, 'Percentage']}
-                  />
-                  <Legend 
-                    verticalAlign="bottom" 
-                    height={36}
-                    iconType="circle"
-                    formatter={(value) => (
-                      <span style={{ color: '#374151', fontSize: '14px' }}>
-                        {value}
-                      </span>
-                    )}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+                    <Pie
+                      data={transactionTypes}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      animationBegin={0}
+                      animationDuration={800}
+                    >
+                      {transactionTypes.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#fff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '12px',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                      }}
+                      formatter={(value: number) => [`${value}%`, 'Percentage']}
+                    />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={36}
+                      iconType="circle"
+                      formatter={(value) => (
+                        <span style={{ color: '#374151', fontSize: '14px' }}>
+                          {value}
+                        </span>
+                      )}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
             )}
           </CardContent>
@@ -690,13 +690,13 @@ const [stats, setStats] = useState<DashboardStats>({
                   text: 'text-blue-700',
                 },
               };
-              
+
               const style = alertStyles[alert.type];
               const timeAgo = new Date(alert.timestamp).toLocaleString();
-              
+
               return (
-                <div 
-                  key={alert.id} 
+                <div
+                  key={alert.id}
                   className={`p-4 rounded-lg border ${style.bg} ${style.border}`}
                 >
                   <div className="flex items-start gap-3">
@@ -706,20 +706,20 @@ const [stats, setStats] = useState<DashboardStats>({
                       <p className={`text-sm mt-1 ${style.text}`}>{alert.message}</p>
                       <p className="text-xs text-gray-500 mt-2">{timeAgo}</p>
                     </div>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline"
                       onClick={() => {
                         // Mark as resolved
                         const newAlerts = alerts.filter(a => a.id !== alert.id);
                         setAlerts(newAlerts);
-                        
+
                         // Update stats count
                         setStats(prev => ({
                           ...prev,
                           systemAlerts: newAlerts.length
                         }));
-                        
+
                         // Close dialog if no alerts left
                         if (newAlerts.length === 0) {
                           setAlertsDialogOpen(false);
@@ -732,7 +732,7 @@ const [stats, setStats] = useState<DashboardStats>({
                 </div>
               );
             })}
-            
+
             {alerts.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <p>No alerts at this time</p>

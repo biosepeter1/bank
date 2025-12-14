@@ -85,8 +85,8 @@ export function Navbar({ variant = 'default' }: NavbarProps) {
                                 <Home size={22} />
                             </Link>
 
-                            {/* Desktop Nav Links */}
-                            <div className="hidden md:flex items-center gap-1">
+                            {/* Desktop Nav Links - Only on large screens */}
+                            <div className="hidden lg:flex items-center gap-1">
                                 {/* About Us Dropdown */}
                                 <div className="relative group">
                                     <button className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors ${textColorClass} ${textHoverClass}`}>
@@ -318,9 +318,9 @@ export function Navbar({ variant = 'default' }: NavbarProps) {
                                 </div>
                             </Link>
 
-                            {/* Mobile Menu Toggle */}
+                            {/* Mobile Menu Toggle - Visible on md and below */}
                             <button
-                                className={`md:hidden p-2 ${iconColorClass}`}
+                                className={`lg:hidden p-2 ${iconColorClass}`}
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             >
                                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

@@ -262,9 +262,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* KYC Status Badge - Only for regular users */}
           {user?.role === 'USER' && user?.kyc?.status ? (
             <div className={`flex items-center gap-1.5 mb-3 text-xs ${user.kyc.status === 'APPROVED' ? 'text-green-400' :
-                user.kyc.status === 'PENDING' ? 'text-yellow-400' :
-                  user.kyc.status === 'REJECTED' ? 'text-red-400' :
-                    'text-gray-400'
+              user.kyc.status === 'PENDING' ? 'text-yellow-400' :
+                user.kyc.status === 'REJECTED' ? 'text-red-400' :
+                  'text-gray-400'
               }`}>
               {user.kyc.status === 'APPROVED' ? (
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -352,8 +352,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     href={item.href}
                     onClick={onClose} // Close menu on navigation
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium relative overflow-hidden ${isActive
-                        ? 'text-white shadow-lg scale-[1.02]'
-                        : 'text-gray-300 hover:bg-gradient-to-r hover:from-slate-800 hover:to-slate-700 hover:text-white hover:shadow-md hover:scale-[1.02]'
+                      ? 'text-white shadow-lg scale-[1.02]'
+                      : 'text-gray-300 hover:bg-gradient-to-r hover:from-slate-800 hover:to-slate-700 hover:text-white hover:shadow-md hover:scale-[1.02]'
                       } ${!isActive ? 'border border-transparent' : ''
                       }`}
                     style={isActive ? {
@@ -374,8 +374,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     {badgeCount > 0 && (
                       <Badge
                         className={`ml-auto h-5 min-w-[20px] px-1.5 text-xs font-bold shadow-lg animate-pulse ${isActive
-                            ? 'bg-white'
-                            : 'bg-gradient-to-r from-red-600 to-red-700 text-white ring-2 ring-red-400/30'
+                          ? 'bg-white'
+                          : 'bg-gradient-to-r from-red-600 to-red-700 text-white ring-2 ring-red-400/30'
                           }`}
                         style={isActive ? {
                           color: branding.colors.primary,
@@ -412,6 +412,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
               onClick={onClose}
               className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
             />
@@ -421,7 +422,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              transition={{ type: 'spring', damping: 30, stiffness: 500 }}
               className="md:hidden fixed inset-y-0 left-0 w-72 z-50"
             >
               <SidebarContent />

@@ -40,6 +40,7 @@ import {
   Headset,
   Wifi,
   WifiOff,
+  ChevronLeft,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import apiClient from '@/lib/api/client';
@@ -470,28 +471,28 @@ export default function AdminSupportPage() {
 
 
   return (
-    <div className="p-6 space-y-6 h-[calc(100vh-80px)] overflow-hidden flex flex-col">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 h-[calc(100vh-80px)] overflow-hidden flex flex-col">
       <div className="flex items-center justify-between flex-shrink-0">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Support Center
           </h1>
-          <p className="text-gray-600 mt-1">Manage tickets and live support</p>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">Manage tickets and live support</p>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
         <div className="flex items-center justify-between border-b px-1">
           <TabsList className="bg-transparent border-b-0 -mb-px">
-            <TabsTrigger value="tickets" className="data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none px-6">
-              <Ticket className="w-4 h-4 mr-2" />
-              Tickets
+            <TabsTrigger value="tickets" className="data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none px-3 sm:px-6 text-sm">
+              <Ticket className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Tickets</span>
             </TabsTrigger>
-            <TabsTrigger value="live-chat" className="data-[state=active]:border-b-2 data-[state=active]:border-green-600 rounded-none px-6">
-              <Headset className="w-4 h-4 mr-2" />
-              Live Chat
+            <TabsTrigger value="live-chat" className="data-[state=active]:border-b-2 data-[state=active]:border-green-600 rounded-none px-3 sm:px-6 text-sm">
+              <Headset className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Live Chat</span>
               {liveSessions.filter(s => s.status === 'QUEUED').length > 0 && (
-                <span className="ml-2 px-2 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold animate-pulse">
+                <span className="ml-1 sm:ml-2 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold animate-pulse">
                   {liveSessions.filter(s => s.status === 'QUEUED').length}
                 </span>
               )}
@@ -501,12 +502,12 @@ export default function AdminSupportPage() {
 
         <TabsContent value="tickets" className="flex-1 overflow-y-auto pt-4">
           {/* Existing Ticket UI Wrapper */}
-          <div className="space-y-6 pb-20">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Ticket Queue</h2>
+          <div className="space-y-4 sm:space-y-6 pb-20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <h2 className="text-lg sm:text-xl font-semibold">Ticket Queue</h2>
               {/* Stats Filters etc */}
               <Select value={filterStatus || 'all'} onValueChange={(value) => setFilterStatus(value === 'all' ? '' : value)}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full sm:w-48 h-9">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -520,56 +521,56 @@ export default function AdminSupportPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">Open</p>
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-xs sm:text-sm text-gray-600">Open</p>
+                      <p className="text-xl sm:text-2xl font-bold text-blue-600">
                         {tickets.filter((t) => t.status === 'OPEN').length}
                       </p>
                     </div>
-                    <AlertCircle className="w-8 h-8 text-blue-600" />
+                    <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">In Progress</p>
-                      <p className="text-2xl font-bold text-yellow-600">
+                      <p className="text-xs sm:text-sm text-gray-600">In Progress</p>
+                      <p className="text-xl sm:text-2xl font-bold text-yellow-600">
                         {tickets.filter((t) => t.status === 'IN_PROGRESS').length}
                       </p>
                     </div>
-                    <Clock className="w-8 h-8 text-yellow-600" />
+                    <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">Resolved</p>
-                      <p className="text-2xl font-bold text-green-600">
+                      <p className="text-xs sm:text-sm text-gray-600">Resolved</p>
+                      <p className="text-xl sm:text-2xl font-bold text-green-600">
                         {tickets.filter((t) => t.status === 'RESOLVED').length}
                       </p>
                     </div>
-                    <CheckCircle2 className="w-8 h-8 text-green-600" />
+                    <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">Total</p>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-xs sm:text-sm text-gray-600">Total</p>
+                      <p className="text-xl sm:text-2xl font-bold text-gray-900">
                         {tickets.length}
                       </p>
                     </div>
-                    <Ticket className="w-8 h-8 text-gray-600" />
+                    <Ticket className="w-6 h-6 sm:w-8 sm:h-8 text-gray-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -597,97 +598,99 @@ export default function AdminSupportPage() {
                       return (
                         <div
                           key={ticket.id}
-                          className={`p-4 border-2 rounded-lg ${getStatusColor(ticket.status)}`}
+                          className={`p-3 sm:p-4 border-2 rounded-lg ${getStatusColor(ticket.status)}`}
                         >
-                          <div className="flex items-start justify-between mb-3">
+                          <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2">
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <h3 className="font-semibold text-lg">{ticket.subject}</h3>
+                              <div className="flex flex-wrap items-center gap-2 mb-2">
+                                <h3 className="font-semibold text-base sm:text-lg">{ticket.subject}</h3>
                                 <span
-                                  className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(ticket.priority)}`}
+                                  className={`px-2 py-0.5 rounded-full text-xs font-medium border ${getPriorityColor(ticket.priority)}`}
                                 >
                                   {ticket.priority}
                                 </span>
                                 {guestInfo && (
-                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 border border-purple-300">
+                                  <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 border border-purple-300">
                                     GUEST
                                   </span>
                                 )}
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-2">
                                 <div className="flex items-center gap-1">
-                                  <User className="w-4 h-4" />
-                                  <span>
+                                  <User className="w-3 h-3 sm:w-4 sm:h-4" />
+                                  <span className="truncate max-w-[150px]">
                                     {guestInfo ? guestInfo.name : `${ticket.user.firstName} ${ticket.user.lastName}`}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                  <Mail className="w-4 h-4" />
+                                  <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
                                   {guestInfo ? (
-                                    <span className="text-purple-700 font-medium">{guestInfo.email}</span>
+                                    <span className="text-purple-700 font-medium truncate max-w-[120px] sm:max-w-[180px]">{guestInfo.email}</span>
                                   ) : (
-                                    <span>{ticket.user.email}</span>
+                                    <span className="truncate max-w-[120px] sm:max-w-[180px]">{ticket.user.email}</span>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-1">
-                                  <Tag className="w-4 h-4" />
+                                  <Tag className="w-3 h-3 sm:w-4 sm:h-4" />
                                   <span>{ticket.category}</span>
                                 </div>
                               </div>
-                              <p className="text-sm text-gray-700 mb-2">
+                              <p className="text-xs sm:text-sm text-gray-700 mb-2 line-clamp-2">
                                 <strong>Message:</strong> {guestInfo ? guestInfo.cleanMessage : ticket.message}
                               </p>
                               {ticket.resolution && (
-                                <p className="text-sm text-green-700 bg-green-50 p-2 rounded">
+                                <p className="text-xs sm:text-sm text-green-700 bg-green-50 p-2 rounded">
                                   <strong>Resolution:</strong> {ticket.resolution}
                                 </p>
                               )}
-                              <p className="text-xs text-gray-500 mt-2">
+                              <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
                                 <Calendar className="w-3 h-3 inline mr-1" />
-                                Created: {new Date(ticket.createdAt).toLocaleString()} • Updated:{' '}
-                                {new Date(ticket.updatedAt).toLocaleString()}
+                                Created: {new Date(ticket.createdAt).toLocaleDateString()} • Updated:{' '}
+                                {new Date(ticket.updatedAt).toLocaleDateString()}
                               </p>
                             </div>
-                            <div className="flex items-center gap-2 ml-4">
+                            <div className="flex items-center gap-2 sm:ml-4">
                               {getStatusIcon(ticket.status)}
                               <span className="text-xs font-medium">
                                 {ticket.status.replace('_', ' ')}
                               </span>
                             </div>
                           </div>
-                          <div className="flex gap-2 flex-wrap">
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2">
                             {guestInfo && (
                               <Button
                                 size="sm"
                                 onClick={() => openEmailReplyDialog(ticket)}
-                                className="bg-purple-600 hover:bg-purple-700"
+                                className="bg-purple-600 hover:bg-purple-700 h-7 sm:h-8 px-2 sm:px-3 text-xs"
                               >
-                                <Mail className="w-4 h-4 mr-1" />
-                                Reply via Email
+                                <Mail className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1" />
+                                <span className="hidden sm:inline">Reply via Email</span>
                               </Button>
                             )}
                             <Button
                               size="sm"
                               onClick={() => openChatDialog(ticket)}
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-green-600 hover:bg-green-700 h-7 sm:h-8 px-2 sm:px-3 text-xs"
                             >
-                              <MessageSquare className="w-4 h-4 mr-1" />
-                              View Chat ({ticket.messages?.length || 0})
+                              <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1" />
+                              <span className="hidden sm:inline">View Chat</span> ({ticket.messages?.length || 0})
                             </Button>
                             <Button
                               size="sm"
                               onClick={() => openUpdateDialog(ticket)}
-                              className="bg-blue-600 hover:bg-blue-700"
+                              className="bg-blue-600 hover:bg-blue-700 h-7 sm:h-8 px-2 sm:px-3 text-xs"
                             >
-                              Update Status
+                              <span className="hidden sm:inline">Update Status</span>
+                              <span className="sm:hidden">Status</span>
                             </Button>
                             <Button
                               size="sm"
                               variant="destructive"
                               onClick={() => handleDeleteTicket(ticket.id)}
+                              className="h-7 sm:h-8 px-2 sm:px-3 text-xs"
                             >
-                              <Trash2 className="w-4 h-4 mr-1" />
-                              Delete
+                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Delete</span>
                             </Button>
                           </div>
                         </div>
@@ -700,21 +703,21 @@ export default function AdminSupportPage() {
           </div>
         </TabsContent>
 
-        <TabsContent value="live-chat" className="flex-1 flex overflow-hidden pt-4 gap-4 h-full">
+        <TabsContent value="live-chat" className="flex-1 flex flex-col md:flex-row overflow-hidden pt-4 gap-2 md:gap-4 h-full">
           {/* Sidebar: Sessions List */}
-          <Card className="w-80 flex flex-col h-full border-r rounded-r-none">
-            <CardHeader className="p-4 border-b">
-              <CardTitle className="text-lg">Live Sessions</CardTitle>
+          <Card className={`${selectedSession ? 'opacity-0 scale-95 pointer-events-none absolute md:opacity-100 md:scale-100 md:pointer-events-auto md:relative' : 'opacity-100 scale-100'} w-full md:w-64 lg:w-80 flex flex-col h-auto max-h-[40vh] md:max-h-full md:h-full border-r-0 md:border-r rounded-r-none shrink-0 transition-all duration-150 ease-out`}>
+            <CardHeader className="p-3 md:p-4 border-b">
+              <CardTitle className="text-base md:text-lg">Live Sessions</CardTitle>
             </CardHeader>
             <div className="flex-1 overflow-y-auto">
               {liveSessions.length === 0 ? (
-                <div className="p-8 text-center text-gray-500 text-sm">No active sessions</div>
+                <div className="p-4 md:p-8 text-center text-gray-500 text-sm">No active sessions</div>
               ) : (
                 liveSessions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).map(session => (
                   <div
                     key={session.id}
                     onClick={() => setSelectedSession(session)}
-                    className={`p-4 border-b cursor-pointer hover:bg-slate-50 transition-colors ${selectedSession?.id === session.id ? 'bg-slate-100 border-l-4 border-l-blue-500' : ''}`}
+                    className={`p-3 md:p-4 border-b cursor-pointer hover:bg-slate-50 transition-colors ${selectedSession?.id === session.id ? 'bg-slate-100 border-l-4 border-l-blue-500' : ''}`}
                   >
                     <div className="flex justify-between items-start mb-1">
                       <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${session.status === 'QUEUED' ? 'bg-yellow-100 text-yellow-700' :
@@ -743,25 +746,37 @@ export default function AdminSupportPage() {
           <Card className="flex-1 flex flex-col h-full rounded-l-none border-l-0 shadow-none">
             {selectedSession ? (
               <>
-                <CardHeader className="p-4 border-b flex flex-row items-center justify-between bg-slate-50/50">
-                  <div>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      {selectedSession.user ? `${selectedSession.user.firstName} ${selectedSession.user.lastName}` : `Guest (${selectedSession.userIp})`}
-                      {selectedSession.status === 'ACTIVE' && <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>}
-                    </CardTitle>
-                    <CardDescription>
-                      ID: {selectedSession.id.slice(0, 8)} • {selectedSession.status}
-                    </CardDescription>
+                <CardHeader className="p-3 md:p-4 border-b flex flex-row items-center justify-between bg-slate-50/50 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedSession(null)}
+                      className="md:hidden h-8 w-8 p-0 shrink-0"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                    <div className="min-w-0">
+                      <CardTitle className="text-base md:text-lg flex items-center gap-2 truncate">
+                        {selectedSession.user ? `${selectedSession.user.firstName} ${selectedSession.user.lastName}` : `Guest`}
+                        {selectedSession.status === 'ACTIVE' && <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>}
+                      </CardTitle>
+                      <CardDescription className="text-xs truncate">
+                        ID: {selectedSession.id.slice(0, 8)} • {selectedSession.status}
+                      </CardDescription>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 md:gap-2 shrink-0">
                     {selectedSession.status === 'QUEUED' && (
-                      <Button onClick={() => acceptChat(selectedSession)} className="bg-green-600 hover:bg-green-700 text-white">
-                        Accept Chat
+                      <Button onClick={() => acceptChat(selectedSession)} className="bg-green-600 hover:bg-green-700 text-white h-8 px-2 md:px-3 text-xs md:text-sm">
+                        <span className="hidden md:inline">Accept Chat</span>
+                        <span className="md:hidden">Accept</span>
                       </Button>
                     )}
                     {selectedSession.status === 'ACTIVE' && (
-                      <Button onClick={() => endChat(selectedSession)} variant="destructive">
-                        End Chat
+                      <Button onClick={() => endChat(selectedSession)} variant="destructive" className="h-8 px-2 md:px-3 text-xs md:text-sm">
+                        <span className="hidden md:inline">End Chat</span>
+                        <span className="md:hidden">End</span>
                       </Button>
                     )}
                   </div>

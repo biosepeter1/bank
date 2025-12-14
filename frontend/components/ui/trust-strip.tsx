@@ -44,14 +44,14 @@ const trustedPartners = [
 
 export function TrustStrip() {
     return (
-        <section className="py-16 bg-white border-b border-slate-100">
+        <section className="py-8 sm:py-12 md:py-16 bg-white border-b border-slate-100">
             <div className="container mx-auto px-4 md:px-6">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-10"
+                    className="text-center mb-6 sm:mb-8 md:mb-10"
                 >
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
                         Trusted & Secured By Industry Leaders
@@ -59,7 +59,7 @@ export function TrustStrip() {
                 </motion.div>
 
                 {/* Partners */}
-                <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
+                <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16">
                     {trustedPartners.map((partner, index) => (
                         <motion.div
                             key={index}
@@ -73,7 +73,7 @@ export function TrustStrip() {
                             {partner.type === "visa" ? (
                                 // VISA - Italic blue text
                                 <span
-                                    className="text-3xl font-black italic tracking-tight"
+                                    className="text-xl sm:text-2xl md:text-3xl font-black italic tracking-tight"
                                     style={{ color: partner.color }}
                                 >
                                     VISA
@@ -90,7 +90,7 @@ export function TrustStrip() {
                             ) : partner.type === "verve" ? (
                                 // Verve - Styled text
                                 <span
-                                    className="text-2xl font-black lowercase tracking-tight"
+                                    className="text-lg sm:text-xl md:text-2xl font-black lowercase tracking-tight"
                                     style={{ color: partner.color }}
                                 >
                                     verve
@@ -98,7 +98,7 @@ export function TrustStrip() {
                             ) : (
                                 // CBN, NDIC, NIBSS - Solid colored badges
                                 <div
-                                    className="px-5 py-2 rounded-lg font-bold text-sm tracking-wide shadow-sm"
+                                    className="px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-lg font-bold text-xs sm:text-sm tracking-wide shadow-sm"
                                     style={{
                                         backgroundColor: partner.bg,
                                         color: partner.text
@@ -117,7 +117,7 @@ export function TrustStrip() {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="mt-16 pt-10 border-t border-slate-100"
+                    className="mt-8 sm:mt-12 md:mt-16 pt-6 sm:pt-8 md:pt-10 border-t border-slate-100"
                 >
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
                         {[
@@ -134,7 +134,7 @@ export function TrustStrip() {
                                 transition={{ delay: 0.5 + i * 0.1 }}
                                 className="text-center"
                             >
-                                <div className="text-3xl md:text-4xl font-black text-brand-primary mb-1">{stat.value}</div>
+                                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-brand-primary mb-1">{stat.value}</div>
                                 <div className="text-sm text-slate-500 font-medium">{stat.label}</div>
                             </motion.div>
                         ))}

@@ -148,7 +148,7 @@ export default function ContactPage() {
       <Toaster position="top-center" />
 
       {/* Hero Section - Enhanced */}
-      <section className="relative min-h-[60vh] flex items-center bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white overflow-hidden">
+      <section className="relative min-h-[50vh] sm:min-h-[55vh] md:min-h-[60vh] flex items-center bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary text-white overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse" />
@@ -156,7 +156,7 @@ export default function ContactPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-white/5 to-transparent rounded-full" />
         </div>
 
-        <div className="container mx-auto px-6 relative z-10 py-20">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 py-12 sm:py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,14 +174,14 @@ export default function ContactPage() {
               <span className="text-sm font-medium">24/7 Customer Support</span>
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
               Get in Touch
               <br />
               <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
                 With Us
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed max-w-2xl mx-auto px-4">
               We're here to help with your banking needs. Reach out through any channel
               and our team will respond promptly and professionally.
             </p>
@@ -190,9 +190,9 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info Cards - Floating */}
-      <section className="relative z-20 -mt-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+      <section className="relative z-20 -mt-10 sm:-mt-12 md:-mt-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 md:gap-5 max-w-2xl mx-auto">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
@@ -200,9 +200,9 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all"
+                className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all"
               >
-                <div className={`w-14 h-14 bg-gradient-to-br ${info.gradient} rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 shadow-lg`}>
                   {info.icon}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">
@@ -221,9 +221,9 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form & Support Options */}
-      <section className="py-24 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-5 gap-10">
+      <section className="py-12 sm:py-16 md:py-24 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-10">
             {/* Contact Form - Takes 3 columns */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -232,12 +232,12 @@ export default function ContactPage() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-3"
             >
-              <div className="bg-white rounded-[2rem] p-8 lg:p-10 shadow-xl border border-gray-100">
-                <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-3">Message Us</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              <div className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-6 lg:p-10 shadow-xl border border-gray-100">
+                <span className="inline-block text-brand-primary font-semibold text-xs sm:text-sm uppercase tracking-wider mb-2 sm:mb-3">Message Us</span>
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Send Us a Message
                 </h2>
-                <p className="text-gray-600 mb-8">
+                <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
                   Fill out the form below and our team will get back to you promptly
                 </p>
 
@@ -359,9 +359,9 @@ export default function ContactPage() {
               className="lg:col-span-2 space-y-6"
             >
               {/* Quick Actions */}
-              <div className="bg-white rounded-[2rem] p-8 shadow-xl border border-gray-100">
-                <span className="inline-block text-brand-primary font-semibold text-sm uppercase tracking-wider mb-3">Quick Actions</span>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              <div className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-6 lg:p-8 shadow-xl border border-gray-100">
+                <span className="inline-block text-brand-primary font-semibold text-xs sm:text-sm uppercase tracking-wider mb-2 sm:mb-3">Quick Actions</span>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                   Other Ways to Reach Us
                 </h3>
 
@@ -399,12 +399,12 @@ export default function ContactPage() {
               </div>
 
               {/* Working Hours */}
-              <div className="bg-white rounded-[2rem] p-8 shadow-xl border border-gray-100">
+              <div className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-6 lg:p-8 shadow-xl border border-gray-100">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-white shadow-lg">
                     <Clock className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900">Working Hours</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Working Hours</h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center py-2 border-b border-gray-100">
@@ -433,13 +433,13 @@ export default function ContactPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary rounded-[2rem] p-12 lg:p-16 text-white text-center relative overflow-hidden"
+            className="bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary rounded-2xl sm:rounded-[2rem] p-6 sm:p-8 lg:p-12 xl:p-16 text-white text-center relative overflow-hidden"
           >
             {/* Background decoration */}
             <div className="absolute inset-0 overflow-hidden">
@@ -448,24 +448,24 @@ export default function ContactPage() {
             </div>
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6">
                 We're Here to Help
               </h2>
-              <p className="text-xl text-white/85 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-white/85 mb-6 sm:mb-8 leading-relaxed">
                 Your satisfaction is our priority. Reach out through any channel, and we'll ensure
                 your concerns are addressed promptly and professionally.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
-                  className="bg-white text-brand-primary hover:bg-white/95 text-lg px-8 py-6 rounded-xl shadow-xl font-semibold transition-all hover:scale-105"
+                  className="bg-white text-brand-primary hover:bg-white/95 text-sm sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded-xl shadow-xl font-semibold transition-all hover:scale-105"
                 >
                   <Phone className="w-5 h-5 mr-2" />
                   Call Us Now
                 </Button>
                 <Button
                   size="lg"
-                  className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-lg px-8 py-6 rounded-xl font-semibold transition-all hover:scale-105"
+                  className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/25 text-sm sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded-xl font-semibold transition-all hover:scale-105"
                 >
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Start Live Chat

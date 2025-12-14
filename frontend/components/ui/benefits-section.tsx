@@ -38,7 +38,7 @@ const benefits = [
 
 export function BenefitsSection() {
     return (
-        <section className="py-32 relative overflow-hidden">
+        <section className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white" />
 
@@ -53,7 +53,7 @@ export function BenefitsSection() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-20"
+                    className="text-center mb-10 sm:mb-16 md:mb-20"
                 >
                     <motion.span
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -63,17 +63,17 @@ export function BenefitsSection() {
                     >
                         ✨ Why Choose Us
                     </motion.span>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 mb-4 sm:mb-6">
                         Banking That
                         <span className="text-brand-primary"> Moves With You</span>
                     </h2>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto font-medium">
+                    <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium px-4">
                         We're not just a bank. We're your financial partner, built for the modern world.
                     </p>
                 </motion.div>
 
                 {/* Cards Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                     {benefits.map((benefit, index) => (
                         <motion.div
                             key={index}
@@ -88,13 +88,13 @@ export function BenefitsSection() {
                             <div className="absolute -inset-1 bg-brand-primary rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500" />
 
                             {/* Card */}
-                            <div className="relative bg-white p-8 rounded-3xl border border-slate-100 shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
+                            <div className="relative bg-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
                                 {/* Icon */}
-                                <div className="w-16 h-16 rounded-2xl bg-brand-primary flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-brand-primary flex items-center justify-center text-white shadow-lg mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                                     {benefit.icon}
                                 </div>
 
-                                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-brand-primary transition-all">
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-brand-primary transition-all">
                                     {benefit.title}
                                 </h3>
                                 <p className="text-slate-600 leading-relaxed">
