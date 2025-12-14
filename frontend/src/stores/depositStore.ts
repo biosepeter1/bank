@@ -1,1 +1,148 @@
-import { create } from 'zustand';\nimport axios from 'axios';\n\ninterface Deposit {\n  id: string;\n  userId: string;\n  amount: number;\n  currency: string;\n  depositMethod: string;\n  paymentProvider: string;\n  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';\n  providerRef?: string;\n  proofUrl?: string;\n  createdAt: string;\n  completedAt?: string;\n}\n\ninterface DepositStore {\n  deposits: Deposit[];\n  currentDeposit: Deposit | null;\n  loading: boolean;\n  error: string | null;\n\n  // Actions\n  initiateDeposit: (amount: number, method: string) => Promise<any>;\n  confirmDeposit: (reference: string) => Promise<void>;\n  getDepositHistory: () => Promise<void>;\n  getDepositById: (depositId: string) => Promise<void>;\n  uploadDepositProof: (depositId: string, file: File) => Promise<void>;\n  clearError: () => void;\n}\n\nconst API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';\n\nexport const useDepositStore = create<DepositStore>((set) => ({\n  deposits: [],\n  currentDeposit: null,\n  loading: false,\n  error: null,\n\n  initiateDeposit: async (amount, method) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.post(\n        `${API_URL}/deposits/initiate`,\n        {\n          amount,\n          method,\n          currency: 'NGN',\n        },\n        {\n          headers: {\n            Authorization: `Bearer ${localStorage.getItem('token')}`,\n          },\n        }\n      );\n\n      set({ currentDeposit: response.data.deposit, loading: false });\n      return response.data;\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to initiate deposit';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  confirmDeposit: async (reference) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.post(\n        `${API_URL}/deposits/confirm`,\n        { reference },\n        {\n          headers: {\n            Authorization: `Bearer ${localStorage.getItem('token')}`,\n          },\n        }\n      );\n\n      set({ currentDeposit: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to confirm deposit';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  getDepositHistory: async () => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/deposits/history`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ deposits: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch deposit history';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  getDepositById: async (depositId) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/deposits/${depositId}`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ currentDeposit: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch deposit details';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  uploadDepositProof: async (depositId, file) => {\n    set({ loading: true, error: null });\n    try {\n      const formData = new FormData();\n      formData.append('file', file);\n\n      const response = await axios.post(\n        `${API_URL}/deposits/${depositId}/upload-proof`,\n        formData,\n        {\n          headers: {\n            Authorization: `Bearer ${localStorage.getItem('token')}`,\n            'Content-Type': 'multipart/form-data',\n          },\n        }\n      );\n\n      set({ currentDeposit: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to upload proof';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  clearError: () => set({ error: null }),\n}));\n"
+import { create } from 'zustand';
+import axios from 'axios';
+
+interface Deposit {
+    id: string;
+    userId: string;
+    amount: number;
+    currency: string;
+    depositMethod: string;
+    paymentProvider: string;
+    status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+    providerRef?: string;
+    proofUrl?: string;
+    createdAt: string;
+    completedAt?: string;
+}
+
+interface DepositStore {
+    deposits: Deposit[];
+    currentDeposit: Deposit | null;
+    loading: boolean;
+    error: string | null;
+
+    // Actions
+    initiateDeposit: (amount: number, method: string) => Promise<any>;
+    confirmDeposit: (reference: string) => Promise<void>;
+    getDepositHistory: () => Promise<void>;
+    getDepositById: (depositId: string) => Promise<void>;
+    uploadDepositProof: (depositId: string, file: File) => Promise<void>;
+    clearError: () => void;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+export const useDepositStore = create<DepositStore>((set) => ({
+    deposits: [],
+    currentDeposit: null,
+    loading: false,
+    error: null,
+
+    initiateDeposit: async (amount, method) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.post(
+                `${API_URL}/deposits/initiate`,
+                {
+                    amount,
+                    method,
+                    currency: 'NGN',
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            set({ currentDeposit: response.data.deposit, loading: false });
+            return response.data;
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to initiate deposit';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    confirmDeposit: async (reference) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.post(
+                `${API_URL}/deposits/confirm`,
+                { reference },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            set({ currentDeposit: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to confirm deposit';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    getDepositHistory: async () => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/deposits/history`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ deposits: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch deposit history';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    getDepositById: async (depositId) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/deposits/${depositId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ currentDeposit: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch deposit details';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    uploadDepositProof: async (depositId, file) => {
+        set({ loading: true, error: null });
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await axios.post(
+                `${API_URL}/deposits/${depositId}/upload-proof`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            set({ currentDeposit: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to upload proof';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    clearError: () => set({ error: null }),
+}));

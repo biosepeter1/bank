@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'ax
 import { ApiResponse, ApiError } from '@/stores/types';
 
 // Create axios instance
-const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 const api: AxiosInstance = axios.create({
   baseURL,

@@ -14,9 +14,10 @@ import { useRouter } from 'next/navigation';
 import apiClient from '@/lib/api/client';
 import { EmailVerificationAlert } from '@/components/EmailVerificationAlert';
 import { useAuthStore } from '@/stores/authStore';
+import { useBranding } from '@/contexts/BrandingContext';
 
 export default function LocalTransferPage() {
-  
+
   const { branding } = useBranding();
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
@@ -66,13 +67,13 @@ export default function LocalTransferPage() {
 
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Check email verification FIRST
     if (!user?.isEmailVerified) {
       toast.error('Please verify your email address before making transfers. Check your profile page.');
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -115,18 +116,18 @@ export default function LocalTransferPage() {
     try {
       // Verify OTP first
       await apiClient.post('/otp/verify', { otpId, code: otpCode });
-      
+
       // Now submit the actual transfer request
       await apiClient.post('/transfers/request/local', {
         recipientAccount: transferData.accountNumber,
         amount: Number(transferData.amount),
         description: transferData.description || `Transfer to ${transferData.beneficiaryName}`,
       });
-      
+
       toast.success('Transfer request submitted successfully! Awaiting admin approval.');
       setShowOtpModal(false);
       setOtp(['', '', '', '', '', '']);
-      
+
       // Reset form
       setTransferData({
         beneficiaryName: '',
@@ -135,9 +136,9 @@ export default function LocalTransferPage() {
         amount: '',
         description: '',
       });
-      
+
       // Optionally redirect to transfers page
-setTimeout(() => router.push('/user/dashboard'), 1500);
+      setTimeout(() => router.push('/user/dashboard'), 1500);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || 'Transfer failed. Please try again.');
     } finally {
@@ -146,25 +147,25 @@ setTimeout(() => router.push('/user/dashboard'), 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6">
       {/* Email Verification Alert */}
       <EmailVerificationAlert />
-      
+
       {/* Modern Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-lg">
-                <Send className="h-8 w-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl sm:rounded-2xl shadow-lg">
+                <Send className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
               </div>
               Local Transfer
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">Send money instantly within your country</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">Send money instantly within your country</p>
           </div>
           <div className="hidden md:flex gap-4">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -347,7 +348,7 @@ setTimeout(() => router.push('/user/dashboard'), 1500);
                         },
                       });
                       setOtpId(start.data.otpId);
-                      setOtp(['','','','','','']);
+                      setOtp(['', '', '', '', '', '']);
                       setResendIn(30);
                       const t = setInterval(() => setResendIn((s) => { if (s <= 1) { clearInterval(t); return 0; } return s - 1; }), 1000);
                       toast.success('Code resent to your email');

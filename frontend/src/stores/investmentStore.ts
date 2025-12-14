@@ -1,1 +1,175 @@
-import { create } from 'zustand';\nimport axios from 'axios';\n\ninterface Investment {\n  id: string;\n  userId: string;\n  planType: string;\n  amount: number;\n  roi: number;\n  expectedReturn: number;\n  totalReturn: number;\n  status: 'ACTIVE' | 'COMPLETED' | 'LIQUIDATED';\n  startDate: string;\n  maturityDate: string;\n  createdAt: string;\n}\n\ninterface InvestmentPlan {\n  name: string;\n  minAmount: number;\n  maxAmount: number | null;\n  roi: number;\n  duration: number;\n}\n\ninterface InvestmentStore {\n  investments: Investment[];\n  investmentPlans: Record<string, InvestmentPlan>;\n  investmentSummary: any | null;\n  currentInvestment: Investment | null;\n  loading: boolean;\n  error: string | null;\n\n  // Actions\n  getInvestmentPlans: () => Promise<void>;\n  createInvestment: (amount: number, planType: string) => Promise<any>;\n  getUserInvestments: () => Promise<void>;\n  getInvestmentSummary: () => Promise<void>;\n  getInvestmentById: (investmentId: string) => Promise<void>;\n  liquidateInvestment: (investmentId: string) => Promise<void>;\n  clearError: () => void;\n}\n\nconst API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';\n\nexport const useInvestmentStore = create<InvestmentStore>((set) => ({\n  investments: [],\n  investmentPlans: {},\n  investmentSummary: null,\n  currentInvestment: null,\n  loading: false,\n  error: null,\n\n  getInvestmentPlans: async () => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/investments/plans`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ investmentPlans: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch investment plans';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  createInvestment: async (amount, planType) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.post(\n        `${API_URL}/investments/create`,\n        { amount, planType },\n        {\n          headers: {\n            Authorization: `Bearer ${localStorage.getItem('token')}`,\n          },\n        }\n      );\n\n      set((state) => ({\n        currentInvestment: response.data,\n        investments: [response.data, ...state.investments],\n        loading: false,\n      }));\n      return response.data;\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to create investment';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  getUserInvestments: async () => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/investments/list`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ investments: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch investments';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  getInvestmentSummary: async () => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/investments/summary`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ investmentSummary: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch investment summary';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  getInvestmentById: async (investmentId) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.get(`${API_URL}/investments/${investmentId}`, {\n        headers: {\n          Authorization: `Bearer ${localStorage.getItem('token')}`,\n        },\n      });\n\n      set({ currentInvestment: response.data, loading: false });\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to fetch investment';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  liquidateInvestment: async (investmentId) => {\n    set({ loading: true, error: null });\n    try {\n      const response = await axios.post(\n        `${API_URL}/investments/${investmentId}/liquidate`,\n        {},\n        {\n          headers: {\n            Authorization: `Bearer ${localStorage.getItem('token')}`,\n          },\n        }\n      );\n\n      set((state) => ({\n        investments: state.investments.map((inv) =>\n          inv.id === investmentId ? response.data : inv\n        ),\n        loading: false,\n      }));\n    } catch (err: any) {\n      const error = err.response?.data?.message || 'Failed to liquidate investment';\n      set({ error, loading: false });\n      throw error;\n    }\n  },\n\n  clearError: () => set({ error: null }),\n}));\n"
+import { create } from 'zustand';
+import axios from 'axios';
+
+interface Investment {
+    id: string;
+    userId: string;
+    planType: string;
+    amount: number;
+    roi: number;
+    expectedReturn: number;
+    totalReturn: number;
+    status: 'ACTIVE' | 'COMPLETED' | 'LIQUIDATED';
+    startDate: string;
+    maturityDate: string;
+    createdAt: string;
+}
+
+interface InvestmentPlan {
+    name: string;
+    minAmount: number;
+    maxAmount: number | null;
+    roi: number;
+    duration: number;
+}
+
+interface InvestmentStore {
+    investments: Investment[];
+    investmentPlans: Record<string, InvestmentPlan>;
+    investmentSummary: any | null;
+    currentInvestment: Investment | null;
+    loading: boolean;
+    error: string | null;
+
+    // Actions
+    getInvestmentPlans: () => Promise<void>;
+    createInvestment: (amount: number, planType: string) => Promise<any>;
+    getUserInvestments: () => Promise<void>;
+    getInvestmentSummary: () => Promise<void>;
+    getInvestmentById: (investmentId: string) => Promise<void>;
+    liquidateInvestment: (investmentId: string) => Promise<void>;
+    clearError: () => void;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+export const useInvestmentStore = create<InvestmentStore>((set) => ({
+    investments: [],
+    investmentPlans: {},
+    investmentSummary: null,
+    currentInvestment: null,
+    loading: false,
+    error: null,
+
+    getInvestmentPlans: async () => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/investments/plans`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ investmentPlans: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch investment plans';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    createInvestment: async (amount, planType) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.post(
+                `${API_URL}/investments/create`,
+                { amount, planType },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            set((state) => ({
+                currentInvestment: response.data,
+                investments: [response.data, ...state.investments],
+                loading: false,
+            }));
+            return response.data;
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to create investment';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    getUserInvestments: async () => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/investments/list`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ investments: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch investments';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    getInvestmentSummary: async () => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/investments/summary`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ investmentSummary: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch investment summary';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    getInvestmentById: async (investmentId) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${API_URL}/investments/${investmentId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            set({ currentInvestment: response.data, loading: false });
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to fetch investment';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    liquidateInvestment: async (investmentId) => {
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.post(
+                `${API_URL}/investments/${investmentId}/liquidate`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            set((state) => ({
+                investments: state.investments.map((inv) =>
+                    inv.id === investmentId ? response.data : inv
+                ),
+                loading: false,
+            }));
+        } catch (err: any) {
+            const error = err.response?.data?.message || 'Failed to liquidate investment';
+            set({ error, loading: false });
+            throw error;
+        }
+    },
+
+    clearError: () => set({ error: null }),
+}));

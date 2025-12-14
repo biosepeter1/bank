@@ -77,9 +77,9 @@ const itemVariants = {
 };
 
 export default function SupportPage() {
-  
+
   const { branding } = useBranding();
-const { settings } = useSettings();
+  const { settings } = useSettings();
   const { user } = useAuthStore();
   const { socket, isConnected } = useSocket(user?.id, user?.role);
   const [activeTab, setActiveTab] = useState<'tickets' | 'faq' | 'contact'>('tickets');
@@ -92,7 +92,7 @@ const { settings } = useSettings();
   const [replyMessage, setReplyMessage] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
   const [startingChat, setStartingChat] = useState(false);
-  
+
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
 
   const [ticketForm, setTicketForm] = useState({
@@ -121,7 +121,7 @@ const { settings } = useSettings();
           };
         });
       }
-      
+
       // Show notification if message is from support
       if (message.senderType === 'ADMIN') {
         toast.success('New message from Support Team');
@@ -301,7 +301,7 @@ const { settings } = useSettings();
           'Authorization': `Bearer ${token}`,
         },
       });
-      
+
       if (response.ok) {
         const latestTickets = await response.json();
         const latestTicket = latestTickets.find((t: SupportTicket) => t.id === ticket.id);
@@ -313,10 +313,10 @@ const { settings } = useSettings();
       console.error('Failed to fetch latest ticket:', error);
       setSelectedTicket(ticket);
     }
-    
+
     setReplyMessage('');
     setShowChatDialog(true);
-    
+
     // Join ticket room for real-time updates
     if (socket) {
       socket.emit('joinTicket', ticket.id);
@@ -330,7 +330,7 @@ const { settings } = useSettings();
       setSendingReply(true);
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
       const token = localStorage.getItem('accessToken');
-      
+
       const response = await fetch(`${backendUrl}/support/tickets/${selectedTicket.id}/reply`, {
         method: 'POST',
         headers: {
@@ -344,7 +344,7 @@ const { settings } = useSettings();
         const newMessage = await response.json();
         toast.success('Message sent');
         setReplyMessage('');
-        
+
         // Update selected ticket with new message immediately
         if (selectedTicket) {
           setSelectedTicket({
@@ -368,7 +368,7 @@ const { settings } = useSettings();
       setStartingChat(true);
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
       const token = localStorage.getItem('accessToken');
-      
+
       const response = await fetch(`${backendUrl}/support/tickets`, {
         method: 'POST',
         headers: {
@@ -409,8 +409,8 @@ const { settings } = useSettings();
   );
 
   return (
-    <>      
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-4 sm:p-6">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -419,30 +419,30 @@ const { settings } = useSettings();
         >
           {/* Modern Header */}
           <motion.div variants={itemVariants}>
-            <div className="flex items-center gap-3 mb-2">
-              <div 
-                className="w-1.5 h-10 rounded-full"
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+              <div
+                className="w-1 sm:w-1.5 h-8 sm:h-10 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
-              <h1 className="text-4xl font-bold" style={{ color: branding.colors.primary }}>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: branding.colors.primary }}>
                 Help & Support
               </h1>
             </div>
-            <p className="text-gray-600 text-lg ml-5">Get help with your account and transactions</p>
+            <p className="text-gray-600 text-sm sm:text-base md:text-lg ml-4 sm:ml-5">Get help with your account and transactions</p>
           </motion.div>
 
           {/* Modern Tabs */}
           <motion.div variants={itemVariants}>
-            <div 
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border-2"
+            <div
+              className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-1.5 sm:p-2 shadow-lg border-2"
               style={{ borderColor: `${branding.colors.primary}10` }}
             >
-              <nav className="flex gap-2">
+              <nav className="flex gap-1 sm:gap-2">
                 <button
                   onClick={() => setActiveTab('tickets')}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
                   style={{
-                    background: activeTab === 'tickets' 
+                    background: activeTab === 'tickets'
                       ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                       : 'transparent',
                     color: activeTab === 'tickets' ? 'white' : '#6b7280',
@@ -450,13 +450,13 @@ const { settings } = useSettings();
                   }}
                 >
                   <Ticket className="w-4 h-4" />
-                  Support Tickets
+                  <span className="hidden sm:inline">Support Tickets</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('faq')}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
                   style={{
-                    background: activeTab === 'faq' 
+                    background: activeTab === 'faq'
                       ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                       : 'transparent',
                     color: activeTab === 'faq' ? 'white' : '#6b7280',
@@ -464,13 +464,13 @@ const { settings } = useSettings();
                   }}
                 >
                   <HelpCircle className="w-4 h-4" />
-                  FAQ
+                  <span className="hidden sm:inline">FAQ</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('contact')}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
                   style={{
-                    background: activeTab === 'contact' 
+                    background: activeTab === 'contact'
                       ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                       : 'transparent',
                     color: activeTab === 'contact' ? 'white' : '#6b7280',
@@ -478,7 +478,7 @@ const { settings } = useSettings();
                   }}
                 >
                   <MessageSquare className="w-4 h-4" />
-                  Contact Us
+                  <span className="hidden sm:inline">Contact Us</span>
                 </button>
               </nav>
             </div>
@@ -499,7 +499,7 @@ const { settings } = useSettings();
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div 
+                          <div
                             className="w-1 h-6 rounded-full"
                             style={{ background: branding.colors.primary }}
                           />
@@ -549,7 +549,7 @@ const { settings } = useSettings();
                                   <p className="text-sm text-gray-600 mb-2">Category: {ticket.category}</p>
                                   <p className="text-sm text-gray-700 mb-2"><strong>Message:</strong> {ticket.message}</p>
                                   <p className="text-xs text-gray-500">
-                                    Created: {new Date(ticket.createdAt).toLocaleString()} • 
+                                    Created: {new Date(ticket.createdAt).toLocaleString()} •
                                     Last Update: {new Date(ticket.updatedAt).toLocaleString()}
                                   </p>
                                 </div>
@@ -583,7 +583,7 @@ const { settings } = useSettings();
                   <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
                     <CardHeader>
                       <div className="flex items-center gap-3">
-                        <div 
+                        <div
                           className="w-1 h-6 rounded-full"
                           style={{ background: branding.colors.primary }}
                         />
@@ -598,13 +598,13 @@ const { settings } = useSettings();
                         {/* Subject Section */}
                         <div className="space-y-4">
                           <div className="flex items-center gap-2">
-                            <div 
+                            <div
                               className="w-1 h-5 rounded-full"
                               style={{ background: branding.colors.primary }}
                             />
                             <h3 className="font-semibold text-base text-gray-800">Ticket Information</h3>
                           </div>
-                          
+
                           <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl border shadow-sm space-y-4">
                             <div>
                               <Label htmlFor="subject" className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -669,13 +669,13 @@ const { settings } = useSettings();
                         {/* Description Section */}
                         <div className="space-y-4">
                           <div className="flex items-center gap-2">
-                            <div 
+                            <div
                               className="w-1 h-5 rounded-full"
                               style={{ background: branding.colors.primary }}
                             />
                             <h3 className="font-semibold text-base text-gray-800">Issue Details</h3>
                           </div>
-                          
+
                           <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl border shadow-sm">
                             <Label htmlFor="description" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                               <span>Description</span>
@@ -699,14 +699,14 @@ const { settings } = useSettings();
                         </div>
 
                         {/* Info Banner */}
-                        <div 
+                        <div
                           className="p-4 rounded-xl border-2 flex items-start gap-3"
                           style={{
                             background: `linear-gradient(135deg, ${branding.colors.primary}08 0%, ${branding.colors.secondary}08 100%)`,
                             borderColor: `${branding.colors.primary}25`
                           }}
                         >
-                          <div 
+                          <div
                             className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
                             style={{ background: `${branding.colors.primary}15` }}
                           >
@@ -720,8 +720,8 @@ const { settings } = useSettings();
 
                         {/* Action Buttons */}
                         <div className="flex gap-4 pt-4">
-                          <Button 
-                            type="submit" 
+                          <Button
+                            type="submit"
                             className="flex-1 h-12 text-white font-semibold shadow-lg hover:shadow-xl transition-all text-base"
                             style={{
                               background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -847,28 +847,28 @@ const { settings } = useSettings();
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-white shadow-2xl"
+                  className="relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 text-white shadow-2xl"
                   style={{
                     background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                   }}
                 >
                   <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+                    <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-white rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-white rounded-full blur-3xl"></div>
                   </div>
                   <div className="relative z-10 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-                      <MessageCircle className="w-10 h-10" />
+                    <div className="inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-sm mb-4 sm:mb-6">
+                      <MessageCircle className="w-7 h-7 sm:w-10 sm:h-10" />
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">We're Here to Help</h2>
-                    <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+                    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">We're Here to Help</h2>
+                    <p className="text-sm sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
                       Have questions? Our support team is ready to assist you through multiple channels
                     </p>
                   </div>
                 </motion.div>
 
                 {/* Contact Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                   {/* Email Support */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -876,12 +876,12 @@ const { settings } = useSettings();
                     transition={{ delay: 0.2 }}
                   >
                     <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
-                      <div 
+                      <div
                         className="absolute top-0 left-0 w-full h-1"
                         style={{ background: branding.colors.primary }}
                       />
                       <CardContent className="pt-8 pb-6 text-center">
-                        <div 
+                        <div
                           className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform"
                           style={{
                             background: `linear-gradient(135deg, ${branding.colors.primary}15 0%, ${branding.colors.secondary}15 100%)`
@@ -893,8 +893,8 @@ const { settings } = useSettings();
                         <p className="text-sm text-gray-600 mb-4 min-h-[40px]">
                           Get detailed assistance via email. We respond within 24 hours.
                         </p>
-                        <a 
-                          href={`mailto:${settings.general.supportEmail}`} 
+                        <a
+                          href={`mailto:${settings.general.supportEmail}`}
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:scale-105"
                           style={{
                             background: `${branding.colors.primary}10`,
@@ -915,12 +915,12 @@ const { settings } = useSettings();
                     transition={{ delay: 0.3 }}
                   >
                     <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
-                      <div 
+                      <div
                         className="absolute top-0 left-0 w-full h-1"
                         style={{ background: branding.colors.secondary }}
                       />
                       <CardContent className="pt-8 pb-6 text-center">
-                        <div 
+                        <div
                           className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform"
                           style={{
                             background: `linear-gradient(135deg, ${branding.colors.secondary}15 0%, ${branding.colors.primary}15 100%)`
@@ -932,8 +932,8 @@ const { settings } = useSettings();
                         <p className="text-sm text-gray-600 mb-4 min-h-[40px]">
                           Speak with our team directly. Available Mon-Fri, 9AM-6PM.
                         </p>
-                        <a 
-                          href={`tel:${settings.general.supportPhone}`} 
+                        <a
+                          href={`tel:${settings.general.supportPhone}`}
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:scale-105"
                           style={{
                             background: `${branding.colors.secondary}10`,
@@ -954,14 +954,14 @@ const { settings } = useSettings();
                     transition={{ delay: 0.4 }}
                   >
                     <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
-                      <div 
+                      <div
                         className="absolute top-0 left-0 w-full h-1"
                         style={{
                           background: `linear-gradient(90deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                         }}
                       />
                       <CardContent className="pt-8 pb-6 text-center">
-                        <div 
+                        <div
                           className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform"
                           style={{
                             background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -973,7 +973,7 @@ const { settings } = useSettings();
                         <p className="text-sm text-gray-600 mb-4 min-h-[40px]">
                           Get instant help through our real-time chat support.
                         </p>
-                        <Button 
+                        <Button
                           onClick={handleStartLiveChat}
                           disabled={startingChat}
                           className="w-full text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
@@ -1024,8 +1024,8 @@ const { settings } = useSettings();
                           <p className="text-gray-600 mb-3">
                             Before contacting support, check our FAQ section for quick answers to common questions.
                           </p>
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            variant="outline"
                             onClick={() => setActiveTab('faq')}
                             className="border-2 font-semibold hover:scale-105 transition-all"
                             style={{
@@ -1048,21 +1048,21 @@ const { settings } = useSettings();
 
       {/* Chat Dialog */}
       {showChatDialog && selectedTicket && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         >
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
+            className="bg-white rounded-xl sm:rounded-2xl max-w-3xl w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
           >
             {/* Header */}
-            <div 
-              className="p-6 text-white relative overflow-hidden"
+            <div
+              className="p-4 sm:p-6 text-white relative overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
               }}
@@ -1075,9 +1075,9 @@ const { settings } = useSettings();
                   {/* Bank Logo */}
                   {branding.logo ? (
                     <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm p-2 flex items-center justify-center shadow-lg">
-                      <img 
-                        src={branding.logo} 
-                        alt="Bank Logo" 
+                      <img
+                        src={branding.logo}
+                        alt="Bank Logo"
                         className="w-full h-full object-contain"
                       />
                     </div>
@@ -1087,7 +1087,7 @@ const { settings } = useSettings();
                     </div>
                   )}
                   <div>
-                    <h3 className="font-bold text-xl">{selectedTicket.subject}</h3>
+                    <h3 className="font-bold text-base sm:text-xl line-clamp-1">{selectedTicket.subject}</h3>
                     <p className="text-sm text-white/80 flex items-center gap-2">
                       <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs">{selectedTicket.category}</span>
                       <span>•</span>
@@ -1107,12 +1107,12 @@ const { settings } = useSettings();
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50 to-white">
               {/* Original Message */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="flex gap-3"
               >
-                <div 
+                <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md"
                   style={{ background: branding.colors.primary }}
                 >
@@ -1133,7 +1133,7 @@ const { settings } = useSettings();
 
               {/* Additional Messages */}
               {selectedTicket.messages?.map((msg, index) => (
-                <motion.div 
+                <motion.div
                   key={msg.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1141,7 +1141,7 @@ const { settings } = useSettings();
                   className={`flex gap-3 ${msg.senderType === 'USER' ? '' : 'flex-row-reverse'}`}
                 >
                   {msg.senderType === 'USER' ? (
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md"
                       style={{ background: branding.colors.primary }}
                     >
@@ -1157,19 +1157,18 @@ const { settings } = useSettings();
                     </div>
                   )}
                   <div className="flex-1">
-                    <div 
-                      className={`rounded-2xl p-4 shadow-md ${
-                        msg.senderType === 'USER' 
-                          ? 'rounded-tl-sm bg-white border-2' 
-                          : 'rounded-tr-sm border-2'
-                      }`}
+                    <div
+                      className={`rounded-2xl p-4 shadow-md ${msg.senderType === 'USER'
+                        ? 'rounded-tl-sm bg-white border-2'
+                        : 'rounded-tr-sm border-2'
+                        }`}
                       style={{
                         borderColor: msg.senderType === 'USER' ? `${branding.colors.primary}20` : `${branding.colors.secondary}20`,
                         background: msg.senderType === 'USER' ? 'white' : `${branding.colors.secondary}08`
                       }}
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <span 
+                        <span
                           className="font-bold text-sm"
                           style={{ color: msg.senderType === 'USER' ? branding.colors.primary : branding.colors.secondary }}
                         >
@@ -1242,7 +1241,7 @@ const { settings } = useSettings();
             )}
             {selectedTicket.status === 'CLOSED' && (
               <div className="p-6 border-t bg-gradient-to-br from-green-50 to-emerald-50 text-center">
-                <motion.div 
+                <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className="inline-flex items-center gap-3 px-6 py-4 bg-white border-2 border-green-200 rounded-2xl shadow-lg"

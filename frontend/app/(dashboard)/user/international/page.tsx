@@ -18,7 +18,7 @@ import { EmailVerificationAlert } from '@/components/EmailVerificationAlert';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function InternationalTransferPage() {
-  
+
   const { branding } = useBranding();
   const { user } = useAuthStore();
   const { currency, formatAmount } = useCurrency();
@@ -61,13 +61,13 @@ export default function InternationalTransferPage() {
 
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Check email verification FIRST
     if (!user?.isEmailVerified) {
       toast.error('Please verify your email address before making transfers. Check your profile page.');
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -183,7 +183,7 @@ export default function InternationalTransferPage() {
 
   const handleCodeRequest = async () => {
     if (!currentCodeType) return;
-    
+
     try {
       await apiClient.post('/transfers/codes/request', { type: currentCodeType });
       toast.success(`${currentCodeType} code request sent. Admin will approve shortly.`);
@@ -201,22 +201,22 @@ export default function InternationalTransferPage() {
     setLoading(true);
     try {
       const codeValue = transferData[currentCodeType.toLowerCase() as 'cot' | 'imf' | 'tax'];
-      const result = await apiClient.post('/transfers/codes/verify', { 
-        type: currentCodeType, 
-        code: codeValue 
+      const result = await apiClient.post('/transfers/codes/verify', {
+        type: currentCodeType,
+        code: codeValue
       });
-      
+
       if (result.data.verified) {
         // Mark this code as verified
         const newVerified = new Set(verifiedCodes);
         newVerified.add(currentCodeType);
         setVerifiedCodes(newVerified);
         toast.success(`${currentCodeType} code verified!`);
-        
+
         // Move to next code or complete transfer
         const allCodes: Array<'COT' | 'IMF' | 'TAX'> = ['COT', 'IMF', 'TAX'];
         const nextCode = allCodes.find(type => !newVerified.has(type));
-        
+
         if (nextCode) {
           setCurrentCodeType(nextCode);
         } else {
@@ -254,30 +254,30 @@ export default function InternationalTransferPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-4 sm:p-6">
       {/* Email Verification Alert */}
       <EmailVerificationAlert />
-      
+
       {/* Modern Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold flex items-center gap-3">
-              <div 
-                className="p-3 rounded-2xl shadow-lg"
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold flex flex-wrap items-center gap-2 sm:gap-3">
+              <div
+                className="p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-lg shrink-0"
                 style={{
                   background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                 }}
               >
-                <Globe className="h-8 w-8 text-white" />
+                <Globe className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
-              <span style={{ color: branding.colors.primary }}>International Wire Transfer</span>
+              <span className="break-words" style={{ color: branding.colors.primary }}>International Wire Transfer</span>
             </h1>
-            <p className="text-gray-600 mt-3 text-lg">Send money across borders securely</p>
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg">Send money across borders securely</p>
           </div>
           <div className="hidden md:flex gap-4">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm border">
@@ -303,7 +303,7 @@ export default function InternationalTransferPage() {
         transition={{ duration: 0.3 }}
       >
         <Card className="border-none shadow-xl bg-white/90 backdrop-blur-sm">
-          <CardHeader 
+          <CardHeader
             className="border-b"
             style={{
               background: `linear-gradient(135deg, ${branding.colors.primary}15 0%, ${branding.colors.secondary}15 100%)`
@@ -315,18 +315,18 @@ export default function InternationalTransferPage() {
             </CardTitle>
             <p className="text-sm text-gray-600 mt-1">Fill in the recipient's international banking information</p>
           </CardHeader>
-          <CardContent className="pt-8">
+          <CardContent className="pt-4 sm:pt-6 md:pt-8">
             <form onSubmit={handleTransfer} className="space-y-8">
               {/* Beneficiary Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div 
+                  <div
                     className="w-1 h-6 rounded-full"
                     style={{ background: branding.colors.primary }}
                   />
                   <h3 className="font-semibold text-lg text-gray-800">Recipient Information</h3>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl border shadow-sm space-y-4">
                   <div>
                     <Label htmlFor="beneficiaryName" className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -393,13 +393,13 @@ export default function InternationalTransferPage() {
               {/* Banking Details Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div 
+                  <div
                     className="w-1 h-6 rounded-full"
                     style={{ background: branding.colors.primary }}
                   />
                   <h3 className="font-semibold text-lg text-gray-800">Banking Details</h3>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl border shadow-sm space-y-4">
                   <div>
                     <Label htmlFor="accountNumber" className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -461,13 +461,13 @@ export default function InternationalTransferPage() {
               {/* Transfer Amount Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div 
+                  <div
                     className="w-1 h-6 rounded-full"
                     style={{ background: branding.colors.primary }}
                   />
                   <h3 className="font-semibold text-lg text-gray-800">Transfer Amount</h3>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl border shadow-sm space-y-4">
                   <div>
                     <Label htmlFor="amount" className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -475,7 +475,7 @@ export default function InternationalTransferPage() {
                       <span className="text-red-500">*</span>
                     </Label>
                     <div className="relative mt-2">
-                      <span 
+                      <span
                         className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold"
                         style={{ color: branding.colors.primary }}
                       >
@@ -494,7 +494,7 @@ export default function InternationalTransferPage() {
                       />
                     </div>
                     {transferData.amount && parseFloat(transferData.amount) > 0 && (
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-sm text-gray-600 mt-2 flex items-center gap-1.5"
@@ -517,14 +517,14 @@ export default function InternationalTransferPage() {
                     />
                   </div>
 
-                  <div 
+                  <div
                     className="p-4 rounded-lg border flex items-center gap-3"
-                    style={{ 
+                    style={{
                       background: `linear-gradient(135deg, ${branding.colors.primary}08 0%, ${branding.colors.secondary}08 100%)`,
                       borderColor: `${branding.colors.primary}20`
                     }}
                   >
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ background: `${branding.colors.primary}15` }}
                     >
@@ -540,7 +540,7 @@ export default function InternationalTransferPage() {
 
 
               {/* Transfer Summary */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="rounded-2xl p-6 shadow-lg border-2"
@@ -550,7 +550,7 @@ export default function InternationalTransferPage() {
                 }}
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <div 
+                  <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
                     style={{ background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)` }}
                   >
@@ -567,12 +567,12 @@ export default function InternationalTransferPage() {
                     <span className="text-gray-600 text-sm">Service Fee (2%)</span>
                     <span className="font-semibold text-gray-900 text-base">{formatAmount((parseFloat(transferData.amount || '0') || 0) * 0.02)}</span>
                   </div>
-                  <div 
+                  <div
                     className="flex justify-between items-center pt-4 mt-2 border-t-2"
                     style={{ borderColor: `${branding.colors.primary}30` }}
                   >
                     <span className="text-gray-900 font-bold text-base">Total Debit</span>
-                    <span 
+                    <span
                       className="font-bold text-2xl"
                       style={{ color: branding.colors.primary }}
                     >
@@ -582,9 +582,9 @@ export default function InternationalTransferPage() {
                 </div>
               </motion.div>
 
-              <Button 
-                type="submit" 
-                className="w-full text-white shadow-lg transition-all duration-300 hover:shadow-xl" 
+              <Button
+                type="submit"
+                className="w-full text-white shadow-lg transition-all duration-300 hover:shadow-xl"
                 style={{
                   background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                 }}
@@ -611,13 +611,13 @@ export default function InternationalTransferPage() {
       <Dialog open={showOtpModal} onOpenChange={setShowOtpModal}>
         <DialogContent className="sm:max-w-md overflow-hidden border-0 shadow-2xl">
           {/* Animated Background Gradient */}
-          <div 
+          <div
             className="absolute inset-0 opacity-5"
             style={{
               background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
             }}
           />
-          
+
           {/* Decorative Circles */}
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-10 blur-3xl"
             style={{ background: branding.colors.primary }}
@@ -625,9 +625,9 @@ export default function InternationalTransferPage() {
           <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-10 blur-3xl"
             style={{ background: branding.colors.secondary }}
           />
-          
+
           <DialogHeader className="relative z-10">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.5 }}
@@ -696,13 +696,13 @@ export default function InternationalTransferPage() {
             {/* Timer/Resend Section */}
             <div className="text-center">
               {resendIn > 0 ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                  style={{ 
+                  style={{
                     background: `${branding.colors.primary}10`,
-                    color: branding.colors.primary 
+                    color: branding.colors.primary
                   }}
                 >
                   <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: branding.colors.primary }} />
@@ -712,7 +712,7 @@ export default function InternationalTransferPage() {
                 <button
                   type="button"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-lg"
-                  style={{ 
+                  style={{
                     background: `linear-gradient(135deg, ${branding.colors.primary}15 0%, ${branding.colors.secondary}15 100%)`,
                     color: branding.colors.primary,
                     border: `2px solid ${branding.colors.primary}30`
@@ -750,9 +750,9 @@ export default function InternationalTransferPage() {
             </div>
 
             {/* Verify Button */}
-            <Button 
-              onClick={handleOtpVerification} 
-              className="w-full h-12 text-base font-semibold shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl text-white" 
+            <Button
+              onClick={handleOtpVerification}
+              className="w-full h-12 text-base font-semibold shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl text-white"
               disabled={loading || otp.join('').length !== 6}
               style={{
                 background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -778,13 +778,13 @@ export default function InternationalTransferPage() {
       <Dialog open={showCodeModal} onOpenChange={setShowCodeModal}>
         <DialogContent className="sm:max-w-lg overflow-hidden border-0 shadow-2xl">
           {/* Animated Background */}
-          <div 
+          <div
             className="absolute inset-0 opacity-5"
             style={{
               background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
             }}
           />
-          
+
           {/* Decorative Elements */}
           <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 blur-3xl"
             style={{ background: branding.colors.secondary }}
@@ -795,7 +795,7 @@ export default function InternationalTransferPage() {
 
           <DialogHeader className="relative z-10">
             {/* Animated Icon */}
-            <motion.div 
+            <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", duration: 0.6 }}
@@ -825,7 +825,7 @@ export default function InternationalTransferPage() {
 
           <div className="space-y-6 py-6 relative z-10">
             {/* Enhanced Info Box */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="rounded-xl p-4 border-2 shadow-lg"
@@ -835,7 +835,7 @@ export default function InternationalTransferPage() {
               }}
             >
               <div className="flex items-start gap-3">
-                <div 
+                <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md"
                   style={{ background: `${branding.colors.primary}20` }}
                 >
@@ -851,11 +851,11 @@ export default function InternationalTransferPage() {
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Code Input with Enhanced Styling */}
             <div>
-              <Label 
-                htmlFor="transferCode" 
+              <Label
+                htmlFor="transferCode"
                 className="text-base font-semibold mb-3 flex items-center gap-2"
                 style={{ color: branding.colors.primary }}
               >
@@ -895,18 +895,18 @@ export default function InternationalTransferPage() {
             </div>
 
             {/* Progress Tracker */}
-            <div 
+            <div
               className="p-4 rounded-xl border shadow-sm"
-              style={{ 
+              style={{
                 background: `${branding.colors.primary}05`,
                 borderColor: `${branding.colors.primary}20`
               }}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold text-gray-700">Verification Progress</span>
-                <span className="text-xs font-bold px-2 py-1 rounded-full" style={{ 
+                <span className="text-xs font-bold px-2 py-1 rounded-full" style={{
                   background: `${branding.colors.secondary}20`,
-                  color: branding.colors.secondary 
+                  color: branding.colors.secondary
                 }}>
                   {verifiedCodes.size}/3 Complete
                 </span>
@@ -917,7 +917,7 @@ export default function InternationalTransferPage() {
                     key={code}
                     className="flex-1 h-2 rounded-full transition-all duration-500"
                     style={{
-                      background: verifiedCodes.has(code as any) 
+                      background: verifiedCodes.has(code as any)
                         ? `linear-gradient(90deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                         : '#e5e7eb'
                     }}
@@ -926,7 +926,7 @@ export default function InternationalTransferPage() {
               </div>
               <div className="flex justify-between mt-2 text-xs font-medium">
                 {['COT', 'IMF', 'TAX'].map((code) => (
-                  <span 
+                  <span
                     key={code}
                     style={{ color: verifiedCodes.has(code as any) ? branding.colors.primary : '#9ca3af' }}
                   >

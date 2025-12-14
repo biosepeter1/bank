@@ -55,9 +55,9 @@ type LoanType = {
 };
 
 export default function LoansPage() {
-  
+
   const { branding } = useBranding();
-const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [selectedLoan, setSelectedLoan] = useState<LoanType | null>(null);
@@ -74,7 +74,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [showHistory, setShowHistory] = useState<Record<string, boolean>>({});
   const [historyLoading, setHistoryLoading] = useState<Record<string, boolean>>({});
   const [histories, setHistories] = useState<Record<string, { disbursement: any | null; repayments: any[] }>>({});
-  
+
   // Fee payment dialog state
   const [feeDialogOpen, setFeeDialogOpen] = useState(false);
   const [selectedLoanForFee, setSelectedLoanForFee] = useState<any>(null);
@@ -300,7 +300,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
       setAppsLoading(true);
       const data = await loansApi.getApplications();
       setApplications(Array.isArray(data) ? data : []);
-    } catch (e:any) {
+    } catch (e: any) {
       console.error('Failed to load applications:', e);
     } finally {
       setAppsLoading(false);
@@ -322,48 +322,48 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
   };
   const noteHas = (note: string | null | undefined, key: string) => !!note && new RegExp(`${key}\\s*=\\s*true`, 'i').test(note);
 
-  const handleRespond = async (id: string, action: 'ACCEPT'|'DECLINE') => {
+  const handleRespond = async (id: string, action: 'ACCEPT' | 'DECLINE') => {
     try {
-      setResponding((p)=>({ ...p, [id]: true }));
+      setResponding((p) => ({ ...p, [id]: true }));
       await loansApi.respondToOffer(id, action);
       toast.success(action === 'ACCEPT' ? 'Offer accepted' : 'Offer declined');
       await fetchApplications();
-    } catch(e:any) {
+    } catch (e: any) {
       toast.error(e?.response?.data?.message || 'Failed to submit response');
     } finally {
-      setResponding((p)=>({ ...p, [id]: false }));
+      setResponding((p) => ({ ...p, [id]: false }));
     }
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this loan application?')) return;
     try {
-      setDeleting((p)=>({ ...p, [id]: true }));
+      setDeleting((p) => ({ ...p, [id]: true }));
       const res = await loansApi.deleteApplication(id);
       toast.success(res?.message || 'Application deleted');
       await fetchApplications();
-    } catch(e:any) {
+    } catch (e: any) {
       toast.error(e?.response?.data?.message || 'Delete failed');
     } finally {
-      setDeleting((p)=>({ ...p, [id]: false }));
+      setDeleting((p) => ({ ...p, [id]: false }));
     }
   };
 
   // initial load
-  useEffect(() => { fetchApplications(); (async ()=>{ try { const p = await profileApi.getProfile(); setWalletBalance(Number(p?.wallet?.balance||0)); setWalletCurrency(p?.wallet?.currency || 'NGN'); } catch {} })(); }, []);
+  useEffect(() => { fetchApplications(); (async () => { try { const p = await profileApi.getProfile(); setWalletBalance(Number(p?.wallet?.balance || 0)); setWalletCurrency(p?.wallet?.currency || 'NGN'); } catch { } })(); }, []);
 
   const toggleHistory = async (id: string) => {
     const visible = !!showHistory[id];
-    setShowHistory((p)=>({ ...p, [id]: !visible }));
+    setShowHistory((p) => ({ ...p, [id]: !visible }));
     if (!visible && !histories[id]) {
       try {
-        setHistoryLoading((p)=>({ ...p, [id]: true }));
+        setHistoryLoading((p) => ({ ...p, [id]: true }));
         const data = await loansApi.getRepayments(id);
-        setHistories((p)=>({ ...p, [id]: data }));
-      } catch(e:any) {
+        setHistories((p) => ({ ...p, [id]: data }));
+      } catch (e: any) {
         toast.error(e?.response?.data?.message || 'Failed to load history');
       } finally {
-        setHistoryLoading((p)=>({ ...p, [id]: false }));
+        setHistoryLoading((p) => ({ ...p, [id]: false }));
       }
     }
   };
@@ -391,13 +391,13 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
 
     try {
       setUploadingProof(true);
-      
+
       // 1. Upload file
       const formData = new FormData();
       formData.append('file', proofFile);
       const token = localStorage.getItem('accessToken');
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-      
+
       const uploadRes = await fetch(`${backendUrl}/upload`, {
         method: 'POST',
         headers: {
@@ -405,16 +405,16 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
         },
         body: formData
       });
-      
+
       if (!uploadRes.ok) {
         throw new Error('Failed to upload file');
       }
-      
+
       const { url } = await uploadRes.json();
-      
+
       // 2. Submit proof to backend
       await loansApi.submitFeeProof(selectedLoanForFee.id, url);
-      
+
       toast.success('Payment proof submitted successfully!');
       setFeeDialogOpen(false);
       setProofFile(null);
@@ -430,7 +430,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.loanType || !formData.amount || !formData.duration || !formData.purpose) {
       toast.error('Please fill in all required fields');
       return;
@@ -475,25 +475,25 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-4 sm:p-6">
       {/* Modern Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-10"
+        className="mb-6 sm:mb-10"
       >
-        <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div 
-                className="w-1.5 h-10 rounded-full"
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+              <div
+                className="w-1 sm:w-1.5 h-8 sm:h-10 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
-              <h1 className="text-4xl font-bold" style={{ color: branding.colors.primary }}>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: branding.colors.primary }}>
                 Loan Services
               </h1>
             </div>
-            <p className="text-gray-600 text-lg ml-5">Apply for loans and financial assistance tailored to your needs</p>
+            <p className="text-gray-600 text-sm sm:text-base md:text-lg ml-4 sm:ml-5">Apply for loans and financial assistance tailored to your needs</p>
           </div>
           <Button
             onClick={() => setShowApplicationForm(!showApplicationForm)}
@@ -511,13 +511,13 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
       {/* Your Applications */}
       <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
         <div className="flex items-center gap-3 mb-5">
-          <div 
+          <div
             className="w-1 h-7 rounded-full"
             style={{ background: branding.colors.primary }}
           />
           <h2 className="text-2xl font-bold text-gray-900">Your Applications</h2>
         </div>
-        <Card 
+        <Card
           className="border-none shadow-xl bg-white/95 backdrop-blur-sm"
         >
           <CardContent className="pt-4">
@@ -527,7 +527,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
               <div className="py-8 text-center text-gray-500">No loan applications yet.</div>
             ) : (
               <div className="space-y-3">
-                {applications.map((a:any) => {
+                {applications.map((a: any) => {
                   const proposed = parseProposedAmountFromNote(a.approvalNote);
                   const offerNote = parseOfferNote(a.approvalNote);
                   const userAccepted = noteHas(a.approvalNote, 'USER_ACCEPTED');
@@ -541,132 +541,132 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                   const nextDue = a.nextPaymentDue ? new Date(a.nextPaymentDue) : null;
                   const progress = amt > 0 ? Math.min(100, (repaid / amt) * 100) : 0;
                   return (
-                    <div 
-                      key={a.id} 
+                    <div
+                      key={a.id}
                       className="p-5 rounded-xl flex flex-col gap-3 border-2 transition-all hover:shadow-md"
                       style={{ borderColor: `${branding.colors.primary}20` }}
                     >
                       {/* Progress */}
                       <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden" title="Progress">
-                        <div 
+                        <div
                           className="h-2.5 rounded-full transition-all duration-500"
-                          style={{ 
+                          style={{
                             width: progress + '%',
                             background: `linear-gradient(90deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
-                          }} 
+                          }}
                         />
                       </div>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                         <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">{Number(a.amount).toLocaleString()} {a.currency}</span>
-                          <span className="text-xs text-gray-500">• {a.duration} mo</span>
-                        </div>
-                        <div className="text-sm text-gray-600 line-clamp-2" title={a.purpose}>{a.purpose}</div>
-                        <div className="text-xs text-gray-500">Created {new Date(a.createdAt).toLocaleString()}</div>
-                        {(a.status === 'APPROVED' || a.status === 'ACTIVE') && (
-                          <div className="flex flex-wrap items-center gap-2 text-xs">
-                            <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Remaining: {remaining.toLocaleString()} {a.currency}</span>
-                            {monthly !== null && (
-                              <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Monthly: {monthly.toLocaleString()} {a.currency}</span>
-                            )}
-                            {nextDue && (
-                              <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Next due: {nextDue.toLocaleDateString()}</span>
-                            )}
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">{Number(a.amount).toLocaleString()} {a.currency}</span>
+                            <span className="text-xs text-gray-500">• {a.duration} mo</span>
                           </div>
-                        )}
-                        {showOfferBanner && (
-                          <Alert className="mt-1 border-amber-200 bg-amber-50">
-                            <Info className="h-4 w-4 text-amber-700" />
-                            <AlertTitle className="text-amber-800">Offer available</AlertTitle>
-                            <AlertDescription className="text-amber-700">
-                              {offerNote ? offerNote : `You have a loan offer of ${proposed?.toLocaleString()} ${a.currency}.`}
-                            </AlertDescription>
-                          </Alert>
-                        )}
-                        {a.status === 'REJECTED' && a.rejectionReason && (
-                          <Alert className="mt-1 border-red-200 bg-red-50">
-                            <X className="h-4 w-4 text-red-700" />
-                            <AlertTitle className="text-red-800">Rejected</AlertTitle>
-                            <AlertDescription className="text-red-700">{a.rejectionReason}</AlertDescription>
-                          </Alert>
-                        )}
-                        {a.status === 'FEE_PENDING' && (
-                          <Alert className="mt-1 border-yellow-200 bg-yellow-50">
-                            <Info className="h-4 w-4 text-yellow-700" />
-                            <AlertTitle className="text-yellow-800">Processing Fee Required</AlertTitle>
-                            <AlertDescription className="text-yellow-700">
-                              Complete the processing fee payment to proceed with your loan application.
-                            </AlertDescription>
-                          </Alert>
-                        )}
-                        {a.status === 'FEE_PAID' && (
-                          <Alert className="mt-1 border-blue-200 bg-blue-50">
-                            <Clock className="h-4 w-4 text-blue-700" />
-                            <AlertTitle className="text-blue-800">Payment Proof Submitted</AlertTitle>
-                            <AlertDescription className="text-blue-700">
-                              Your payment proof is under review by our team.
-                            </AlertDescription>
-                          </Alert>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Button size="sm" variant="outline" onClick={()=>toggleHistory(a.id)} disabled={!!historyLoading[a.id]} className="border-gray-300">
-                          {historyLoading[a.id] ? 'Loading...' : (showHistory[a.id] ? 'Hide History' : 'View History')}
-                        </Button>
-                        {a.status === 'ACTIVE' ? (
-                          <Button 
-                            size="sm" 
-                            onClick={()=>{ setRepayLoanId(a.id); setRepayAmount(a.monthlyPayment ? String(a.monthlyPayment) : ''); setRepayOpen(true); }}
-                            className="text-white"
-                            style={{
-                              background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
-                            }}
-                          >
-                            Repay
+                          <div className="text-sm text-gray-600 line-clamp-2" title={a.purpose}>{a.purpose}</div>
+                          <div className="text-xs text-gray-500">Created {new Date(a.createdAt).toLocaleString()}</div>
+                          {(a.status === 'APPROVED' || a.status === 'ACTIVE') && (
+                            <div className="flex flex-wrap items-center gap-2 text-xs">
+                              <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Remaining: {remaining.toLocaleString()} {a.currency}</span>
+                              {monthly !== null && (
+                                <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Monthly: {monthly.toLocaleString()} {a.currency}</span>
+                              )}
+                              {nextDue && (
+                                <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Next due: {nextDue.toLocaleDateString()}</span>
+                              )}
+                            </div>
+                          )}
+                          {showOfferBanner && (
+                            <Alert className="mt-1 border-amber-200 bg-amber-50">
+                              <Info className="h-4 w-4 text-amber-700" />
+                              <AlertTitle className="text-amber-800">Offer available</AlertTitle>
+                              <AlertDescription className="text-amber-700">
+                                {offerNote ? offerNote : `You have a loan offer of ${proposed?.toLocaleString()} ${a.currency}.`}
+                              </AlertDescription>
+                            </Alert>
+                          )}
+                          {a.status === 'REJECTED' && a.rejectionReason && (
+                            <Alert className="mt-1 border-red-200 bg-red-50">
+                              <X className="h-4 w-4 text-red-700" />
+                              <AlertTitle className="text-red-800">Rejected</AlertTitle>
+                              <AlertDescription className="text-red-700">{a.rejectionReason}</AlertDescription>
+                            </Alert>
+                          )}
+                          {a.status === 'FEE_PENDING' && (
+                            <Alert className="mt-1 border-yellow-200 bg-yellow-50">
+                              <Info className="h-4 w-4 text-yellow-700" />
+                              <AlertTitle className="text-yellow-800">Processing Fee Required</AlertTitle>
+                              <AlertDescription className="text-yellow-700">
+                                Complete the processing fee payment to proceed with your loan application.
+                              </AlertDescription>
+                            </Alert>
+                          )}
+                          {a.status === 'FEE_PAID' && (
+                            <Alert className="mt-1 border-blue-200 bg-blue-50">
+                              <Clock className="h-4 w-4 text-blue-700" />
+                              <AlertTitle className="text-blue-800">Payment Proof Submitted</AlertTitle>
+                              <AlertDescription className="text-blue-700">
+                                Your payment proof is under review by our team.
+                              </AlertDescription>
+                            </Alert>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Button size="sm" variant="outline" onClick={() => toggleHistory(a.id)} disabled={!!historyLoading[a.id]} className="border-gray-300">
+                            {historyLoading[a.id] ? 'Loading...' : (showHistory[a.id] ? 'Hide History' : 'View History')}
                           </Button>
-                        ) : a.status === 'FEE_PENDING' ? (
-                          <Button size="sm" onClick={()=>openFeeDialog(a)} className="bg-yellow-600 hover:bg-yellow-700 text-white">
-                            <Upload className="h-4 w-4 mr-1"/>
-                            Pay Fee
-                          </Button>
-                        ) : (
-                          <Button size="sm" variant="outline" onClick={()=>handleDelete(a.id)} disabled={!!deleting[a.id]} className="text-red-600 border-red-300 hover:bg-red-50">
-                            {deleting[a.id] ? <Loader2 className="h-4 w-4 mr-1 animate-spin"/> : <X className="h-4 w-4 mr-1"/>}
-                            Delete
-                          </Button>
-                        )}
-                        <span 
-                          className="px-3 py-1 rounded-full text-xs font-medium border-2"
-                          style={{ 
-                            borderColor: `${branding.colors.primary}40`,
-                            color: branding.colors.primary,
-                            background: `${branding.colors.primary}10`
-                          }}
-                        >
-                          {a.status}
-                        </span>
-                        {showOfferActions && (
-                          <div className="flex gap-2">
-                            <Button size="sm" variant="outline" disabled={!!responding[a.id]} onClick={()=>handleRespond(a.id, 'DECLINE')} className="text-red-600 border-red-300">
-                              {responding[a.id] ? <Clock className="h-4 w-4 mr-1 animate-spin"/> : <X className="h-4 w-4 mr-1"/>}
-                              Decline
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              disabled={!!responding[a.id]} 
-                              onClick={()=>handleRespond(a.id, 'ACCEPT')}
+                          {a.status === 'ACTIVE' ? (
+                            <Button
+                              size="sm"
+                              onClick={() => { setRepayLoanId(a.id); setRepayAmount(a.monthlyPayment ? String(a.monthlyPayment) : ''); setRepayOpen(true); }}
                               className="text-white"
                               style={{
                                 background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                               }}
                             >
-                              {responding[a.id] ? <Clock className="h-4 w-4 mr-1 animate-spin"/> : <CheckCircle className="h-4 w-4 mr-1"/>}
-                              Accept
+                              Repay
                             </Button>
-                          </div>
-                        )}
-                      </div>
+                          ) : a.status === 'FEE_PENDING' ? (
+                            <Button size="sm" onClick={() => openFeeDialog(a)} className="bg-yellow-600 hover:bg-yellow-700 text-white">
+                              <Upload className="h-4 w-4 mr-1" />
+                              Pay Fee
+                            </Button>
+                          ) : (
+                            <Button size="sm" variant="outline" onClick={() => handleDelete(a.id)} disabled={!!deleting[a.id]} className="text-red-600 border-red-300 hover:bg-red-50">
+                              {deleting[a.id] ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <X className="h-4 w-4 mr-1" />}
+                              Delete
+                            </Button>
+                          )}
+                          <span
+                            className="px-3 py-1 rounded-full text-xs font-medium border-2"
+                            style={{
+                              borderColor: `${branding.colors.primary}40`,
+                              color: branding.colors.primary,
+                              background: `${branding.colors.primary}10`
+                            }}
+                          >
+                            {a.status}
+                          </span>
+                          {showOfferActions && (
+                            <div className="flex gap-2">
+                              <Button size="sm" variant="outline" disabled={!!responding[a.id]} onClick={() => handleRespond(a.id, 'DECLINE')} className="text-red-600 border-red-300">
+                                {responding[a.id] ? <Clock className="h-4 w-4 mr-1 animate-spin" /> : <X className="h-4 w-4 mr-1" />}
+                                Decline
+                              </Button>
+                              <Button
+                                size="sm"
+                                disabled={!!responding[a.id]}
+                                onClick={() => handleRespond(a.id, 'ACCEPT')}
+                                className="text-white"
+                                style={{
+                                  background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
+                                }}
+                              >
+                                {responding[a.id] ? <Clock className="h-4 w-4 mr-1 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-1" />}
+                                Accept
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       {showHistory[a.id] && (
@@ -682,7 +682,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                               {histories[a.id].repayments.length === 0 ? (
                                 <div className="text-gray-500">No repayments yet.</div>
                               ) : (
-                                histories[a.id].repayments.map((r:any)=> (
+                                histories[a.id].repayments.map((r: any) => (
                                   <div key={r.id} className="flex items-center justify-between">
                                     <span>Repayment</span>
                                     <span>{Number(r.amount).toLocaleString()} {r.currency} • {new Date(r.createdAt).toLocaleDateString()}</span>
@@ -705,48 +705,50 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
       </motion.section>
 
       {/* Repay Modal */}
-      <Dialog open={repayOpen} onOpenChange={(o)=>{ setRepayOpen(o); if(!o){ setRepayLoanId(null); setRepayAmount(''); setRepaySubmitting(false);} }}>
+      <Dialog open={repayOpen} onOpenChange={(o) => { setRepayOpen(o); if (!o) { setRepayLoanId(null); setRepayAmount(''); setRepaySubmitting(false); } }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Repay Loan</DialogTitle>
             <DialogDescription>Enter the amount to repay from your wallet.</DialogDescription>
           </DialogHeader>
-          {(() => { const sel = applications.find((x:any)=>x.id===repayLoanId) || null; if(!sel) return null; const amt = Number(sel.amount||0); const repaid = Number(sel.totalRepaid||0); const remaining = Math.max(amt-repaid,0); const monthly = sel.monthlyPayment ? Number(sel.monthlyPayment) : null; const nextDue = sel.nextPaymentDue ? new Date(sel.nextPaymentDue) : null; return (
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Remaining: {remaining.toLocaleString()} {sel.currency}</span>
-              {monthly !== null && (<span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Monthly: {monthly.toLocaleString()} {sel.currency}</span>)}
-              {nextDue && (<span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Next due: {nextDue.toLocaleDateString()}</span>)}
-              <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Wallet: {walletBalance.toLocaleString()} {walletCurrency}</span>
-            </div>
-            <div>
-              <Label>Amount</Label>
-              <Input type="number" min={1} step={1} value={repayAmount} onChange={(e)=>setRepayAmount(e.target.value)} placeholder="0.00"/>
-            </div>
-            <Button
-              disabled={repaySubmitting}
-              onClick={async ()=>{
-                if (!repayLoanId) { toast.error('No loan selected'); return; }
-                const amt = Number(repayAmount);
-                if (!amt || amt<=0) { toast.error('Enter a valid amount'); return; }
-                if (amt > walletBalance) { toast.error('Insufficient wallet balance'); return; }
-                try {
-                  setRepaySubmitting(true);
-                  const res = await loansApi.repayLoan(repayLoanId, amt);
-                  toast.success(res?.message || 'Repayment successful');
-                  setRepayOpen(false);
-                  await fetchApplications();
-                } catch(e:any){
-                  toast.error(e?.response?.data?.message || 'Repayment failed');
-                } finally {
-                  setRepaySubmitting(false);
-                }
-              }}
-              className="w-full"
-            >
-              {repaySubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Processing...</>) : 'Repay Now'}
-            </Button>
-          </div>); })()}
+          {(() => {
+            const sel = applications.find((x: any) => x.id === repayLoanId) || null; if (!sel) return null; const amt = Number(sel.amount || 0); const repaid = Number(sel.totalRepaid || 0); const remaining = Math.max(amt - repaid, 0); const monthly = sel.monthlyPayment ? Number(sel.monthlyPayment) : null; const nextDue = sel.nextPaymentDue ? new Date(sel.nextPaymentDue) : null; return (
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Remaining: {remaining.toLocaleString()} {sel.currency}</span>
+                  {monthly !== null && (<span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Monthly: {monthly.toLocaleString()} {sel.currency}</span>)}
+                  {nextDue && (<span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Next due: {nextDue.toLocaleDateString()}</span>)}
+                  <span className="px-2 py-0.5 rounded-md bg-gray-50 text-gray-700 border">Wallet: {walletBalance.toLocaleString()} {walletCurrency}</span>
+                </div>
+                <div>
+                  <Label>Amount</Label>
+                  <Input type="number" min={1} step={1} value={repayAmount} onChange={(e) => setRepayAmount(e.target.value)} placeholder="0.00" />
+                </div>
+                <Button
+                  disabled={repaySubmitting}
+                  onClick={async () => {
+                    if (!repayLoanId) { toast.error('No loan selected'); return; }
+                    const amt = Number(repayAmount);
+                    if (!amt || amt <= 0) { toast.error('Enter a valid amount'); return; }
+                    if (amt > walletBalance) { toast.error('Insufficient wallet balance'); return; }
+                    try {
+                      setRepaySubmitting(true);
+                      const res = await loansApi.repayLoan(repayLoanId, amt);
+                      toast.success(res?.message || 'Repayment successful');
+                      setRepayOpen(false);
+                      await fetchApplications();
+                    } catch (e: any) {
+                      toast.error(e?.response?.data?.message || 'Repayment failed');
+                    } finally {
+                      setRepaySubmitting(false);
+                    }
+                  }}
+                  className="w-full"
+                >
+                  {repaySubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Processing...</>) : 'Repay Now'}
+                </Button>
+              </div>);
+          })()}
         </DialogContent>
       </Dialog>
 
@@ -758,7 +760,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div 
+              <div
                 className="w-1 h-7 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
@@ -777,7 +779,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                     whileHover={{ y: -8, scale: 1.02 }}
                     onClick={() => setSelectedLoan(loan)}
                   >
-                    <Card 
+                    <Card
                       className="group border-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-full overflow-hidden bg-white"
                       style={{
                         borderColor: '#e5e7eb',
@@ -788,15 +790,15 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                     >
                       <CardContent className="pt-6 pb-6 relative">
                         {/* Decorative gradient */}
-                        <div 
+                        <div
                           className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"
                           style={{ background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)` }}
                         />
-                        
+
                         <div className={`p-4 ${loan.bgColor} rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform duration-300 relative z-10`}>
                           <Icon className={`h-7 w-7 ${loan.iconColor}`} />
                         </div>
-                        <h3 
+                        <h3
                           className="font-bold text-xl text-gray-900 mb-3 transition-colors relative z-10"
                           style={{ '--hover-color': branding.colors.primary } as any}
                           onMouseEnter={(e) => e.currentTarget.style.color = branding.colors.primary}
@@ -806,7 +808,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                         </h3>
                         <p className="text-sm text-gray-600 leading-relaxed relative z-10">{loan.description}</p>
                         <div className="mt-4 pt-4 border-t border-gray-100 relative z-10">
-                          <span 
+                          <span
                             className="text-xs font-semibold flex items-center gap-1 group-hover:gap-2 transition-all"
                             style={{ color: branding.colors.primary }}
                           >
@@ -831,7 +833,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
             transition={{ delay: 0.2 }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div 
+              <div
                 className="w-1 h-7 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
@@ -849,11 +851,11 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                   <Card className="border-none bg-white hover:shadow-xl transition-all duration-300 h-full shadow-md">
                     <CardContent className="pt-6 text-center relative overflow-hidden">
                       {/* Background decoration */}
-                      <div 
+                      <div
                         className="absolute top-0 left-0 right-0 h-1"
                         style={{ background: `linear-gradient(90deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)` }}
                       />
-                      <div 
+                      <div
                         className="inline-flex w-16 h-16 rounded-full items-center justify-center mb-4 shadow-lg relative z-10"
                         style={{ background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)` }}
                       >
@@ -875,7 +877,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
             transition={{ delay: 0.4 }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div 
+              <div
                 className="w-1 h-7 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
@@ -978,9 +980,9 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
                       value={formData.duration}
                       onValueChange={(value) => setFormData({ ...formData, duration: value })}
                     >
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select duration (1-60 months)" />
-                        </SelectTrigger>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select duration (1-60 months)" />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="6">6 months</SelectItem>
                         <SelectItem value="12">12 months</SelectItem>
@@ -1210,7 +1212,7 @@ const [showApplicationForm, setShowApplicationForm] = useState(false);
               Complete the payment and upload proof to proceed with your loan application.
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedLoanForFee && (
             <div className="space-y-6 py-4">
               {/* Loan Details */}

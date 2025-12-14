@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Settings as SettingsIcon, 
-  Lock, 
-  Bell, 
-  Shield, 
-  Eye, 
+import {
+  Settings as SettingsIcon,
+  Lock,
+  Bell,
+  Shield,
+  Eye,
   EyeOff,
   Loader2,
   CheckCircle,
@@ -23,39 +23,39 @@ import { useAuthStore } from '@/stores/authStore';
 import { useBranding } from '@/contexts/BrandingContext';
 
 export default function SettingsPage() {
-  
+
   const { branding } = useBranding();
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState('security');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-4 sm:p-6">
       {/* Modern Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <div 
-            className="w-1.5 h-10 rounded-full"
+      <div className="mb-6 sm:mb-8">
+        <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+          <div
+            className="w-1 sm:w-1.5 h-8 sm:h-10 rounded-full"
             style={{ background: branding.colors.primary }}
           />
-          <h1 className="text-4xl font-bold" style={{ color: branding.colors.primary }}>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: branding.colors.primary }}>
             Settings
           </h1>
         </div>
-        <p className="text-gray-600 text-lg ml-5">Manage your account settings and preferences</p>
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg ml-4 sm:ml-5">Manage your account settings and preferences</p>
       </div>
 
       {/* Modern Tabs */}
-      <div className="mb-8">
-        <div 
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border-2"
+      <div className="mb-6 sm:mb-8">
+        <div
+          className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-1.5 sm:p-2 shadow-lg border-2"
           style={{ borderColor: `${branding.colors.primary}10` }}
         >
-          <nav className="flex gap-2">
+          <nav className="flex gap-1 sm:gap-2">
             <button
               onClick={() => setActiveTab('security')}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
               style={{
-                background: activeTab === 'security' 
+                background: activeTab === 'security'
                   ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                   : 'transparent',
                 color: activeTab === 'security' ? 'white' : '#6b7280',
@@ -63,13 +63,13 @@ export default function SettingsPage() {
               }}
             >
               <Lock className="h-4 w-4" />
-              Security
+              <span className="hidden sm:inline">Security</span>
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
               style={{
-                background: activeTab === 'notifications' 
+                background: activeTab === 'notifications'
                   ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                   : 'transparent',
                 color: activeTab === 'notifications' ? 'white' : '#6b7280',
@@ -77,13 +77,13 @@ export default function SettingsPage() {
               }}
             >
               <Bell className="h-4 w-4" />
-              Notifications
+              <span className="hidden sm:inline">Notifications</span>
             </button>
             <button
               onClick={() => setActiveTab('activity')}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-300"
+              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300"
               style={{
-                background: activeTab === 'activity' 
+                background: activeTab === 'activity'
                   ? `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                   : 'transparent',
                 color: activeTab === 'activity' ? 'white' : '#6b7280',
@@ -91,7 +91,7 @@ export default function SettingsPage() {
               }}
             >
               <Activity className="h-4 w-4" />
-              Activity
+              <span className="hidden sm:inline">Activity</span>
             </button>
           </nav>
         </div>
@@ -122,7 +122,7 @@ function SecuritySettings({ branding }: { branding: any }) {
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (passwords.newPassword !== passwords.confirmPassword) {
       toast.error('New passwords do not match');
       return;
@@ -156,7 +156,7 @@ function SecuritySettings({ branding }: { branding: any }) {
       <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div 
+            <div
               className="w-1 h-6 rounded-full"
               style={{ background: branding.colors.primary }}
             />
@@ -236,9 +236,9 @@ function SecuritySettings({ branding }: { branding: any }) {
               </div>
             </div>
 
-            <Button 
-              type="submit" 
-              disabled={loading} 
+            <Button
+              type="submit"
+              disabled={loading}
               className="text-white font-semibold shadow-lg hover:shadow-xl transition-all"
               style={{
                 background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -255,7 +255,7 @@ function SecuritySettings({ branding }: { branding: any }) {
       <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div 
+            <div
               className="w-1 h-6 rounded-full"
               style={{ background: branding.colors.primary }}
             />
@@ -333,7 +333,7 @@ function NotificationSettings({ branding }: { branding: any }) {
     <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div 
+          <div
             className="w-1 h-6 rounded-full"
             style={{ background: branding.colors.primary }}
           />
@@ -345,101 +345,101 @@ function NotificationSettings({ branding }: { branding: any }) {
           </div>
         </div>
       </CardHeader>
-        <CardContent className="space-y-6">
-          {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin" style={{ color: branding.colors.primary }} />
+      <CardContent className="space-y-6">
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin" style={{ color: branding.colors.primary }} />
+          </div>
+        ) : (
+          <>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Email Notifications</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Transaction Alerts</p>
+                    <p className="text-sm text-gray-600">Get notified about deposits, withdrawals, and transfers</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.emailTransactions}
+                    onChange={(e) => setNotifications({ ...notifications, emailTransactions: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Security Alerts</p>
+                    <p className="text-sm text-gray-600">Login attempts, password changes, and security updates</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.emailSecurity}
+                    onChange={(e) => setNotifications({ ...notifications, emailSecurity: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Marketing & Updates</p>
+                    <p className="text-sm text-gray-600">News, features, and promotional content</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.emailMarketing}
+                    onChange={(e) => setNotifications({ ...notifications, emailMarketing: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                </div>
+              </div>
             </div>
-          ) : (
-            <>
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Email Notifications</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Transaction Alerts</p>
-                      <p className="text-sm text-gray-600">Get notified about deposits, withdrawals, and transfers</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={notifications.emailTransactions}
-                      onChange={(e) => setNotifications({ ...notifications, emailTransactions: e.target.checked })}
-                      className="h-4 w-4"
-                    />
+
+            <Separator />
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4">SMS Notifications</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Transaction Alerts</p>
+                    <p className="text-sm text-gray-600">High-value transactions and withdrawals</p>
                   </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.smsTransactions}
+                    onChange={(e) => setNotifications({ ...notifications, smsTransactions: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                </div>
 
-                  <Separator />
+                <Separator />
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Security Alerts</p>
-                      <p className="text-sm text-gray-600">Login attempts, password changes, and security updates</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={notifications.emailSecurity}
-                      onChange={(e) => setNotifications({ ...notifications, emailSecurity: e.target.checked })}
-                      className="h-4 w-4"
-                    />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Security Alerts</p>
+                    <p className="text-sm text-gray-600">Critical security notifications</p>
                   </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Marketing & Updates</p>
-                      <p className="text-sm text-gray-600">News, features, and promotional content</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={notifications.emailMarketing}
-                      onChange={(e) => setNotifications({ ...notifications, emailMarketing: e.target.checked })}
-                      className="h-4 w-4"
-                    />
-                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.smsSecurity}
+                    onChange={(e) => setNotifications({ ...notifications, smsSecurity: e.target.checked })}
+                    className="h-4 w-4"
+                  />
                 </div>
               </div>
+            </div>
+          </>
+        )}
 
-              <Separator />
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4">SMS Notifications</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Transaction Alerts</p>
-                      <p className="text-sm text-gray-600">High-value transactions and withdrawals</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={notifications.smsTransactions}
-                      onChange={(e) => setNotifications({ ...notifications, smsTransactions: e.target.checked })}
-                      className="h-4 w-4"
-                    />
-                  </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Security Alerts</p>
-                      <p className="text-sm text-gray-600">Critical security notifications</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={notifications.smsSecurity}
-                      onChange={(e) => setNotifications({ ...notifications, smsSecurity: e.target.checked })}
-                      className="h-4 w-4"
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-        <Button 
-          onClick={handleSave} 
-          disabled={loading || saving} 
+        <Button
+          onClick={handleSave}
+          disabled={loading || saving}
           className="text-white font-semibold shadow-lg hover:shadow-xl transition-all"
           style={{
             background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -459,7 +459,7 @@ function ActivitySettings({ user, branding }: { user: any; branding: any }) {
       <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div 
+            <div
               className="w-1 h-6 rounded-full"
               style={{ background: branding.colors.primary }}
             />
@@ -498,7 +498,7 @@ function ActivitySettings({ user, branding }: { user: any; branding: any }) {
       <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div 
+            <div
               className="w-1 h-6 rounded-full"
               style={{ background: branding.colors.primary }}
             />
@@ -512,7 +512,7 @@ function ActivitySettings({ user, branding }: { user: any; branding: any }) {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <div 
+            <div
               className="flex items-center justify-between p-4 border-l-4 rounded-lg"
               style={{
                 borderColor: branding.colors.primary,
@@ -527,7 +527,7 @@ function ActivitySettings({ user, branding }: { user: any; branding: any }) {
               </div>
               <CheckCircle className="h-5 w-5 text-green-600" />
             </div>
-            
+
             <div className="text-center py-4 text-gray-500 text-sm">
               Showing recent activity only
             </div>

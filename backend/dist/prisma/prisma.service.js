@@ -22,6 +22,7 @@ function _ts_metadata(k, v) {
 let PrismaService = class PrismaService extends _client.PrismaClient {
     async onModuleInit() {
         await this.connectWithRetry();
+        this.startKeepAlive();
     }
     async connectWithRetry(attempt = 1) {
         try {
@@ -40,8 +41,37 @@ let PrismaService = class PrismaService extends _client.PrismaClient {
         }
     }
     async onModuleDestroy() {
+        this.stopKeepAlive();
         await this.$disconnect();
         this.logger.log('👋 Database disconnected');
+    }
+    // Start periodic keep-alive pings to prevent idle connection timeout
+    startKeepAlive() {
+        // Ping every 4 minutes (Supabase/PgBouncer typically times out at 5 min)
+        const KEEP_ALIVE_INTERVAL = 4 * 60 * 1000; // 4 minutes
+        this.keepAliveInterval = setInterval(async ()=>{
+            try {
+                await this.$queryRaw`SELECT 1`;
+                this.logger.debug('💓 Database keep-alive ping successful');
+            } catch (error) {
+                this.logger.warn('⚠️ Keep-alive ping failed, attempting reconnect...');
+                try {
+                    await this.$disconnect();
+                    await this.connectWithRetry();
+                } catch (reconnectError) {
+                    this.logger.error(`❌ Keep-alive reconnect failed: ${reconnectError}`);
+                }
+            }
+        }, KEEP_ALIVE_INTERVAL);
+        this.logger.log('💓 Database keep-alive started (4 min interval)');
+    }
+    // Stop keep-alive pings
+    stopKeepAlive() {
+        if (this.keepAliveInterval) {
+            clearInterval(this.keepAliveInterval);
+            this.keepAliveInterval = null;
+            this.logger.log('💓 Database keep-alive stopped');
+        }
     }
     // Health check for database connection
     async isHealthy() {
@@ -90,7 +120,7 @@ let PrismaService = class PrismaService extends _client.PrismaClient {
                 }
             }
         }), this.logger = new _common.Logger(PrismaService.name), this.maxRetries = 5, this.retryDelay = 3000 // 3 seconds
-        ;
+        , this.keepAliveInterval = null;
     }
 };
 PrismaService = _ts_decorate([

@@ -70,7 +70,12 @@ export default function ContactPage() {
       if (response.ok) {
         toast.success(`Message sent successfully! Reference: #${data.reference}. We'll get back to you within 24 hours.`, {
           duration: 5000,
-          icon: '✉️'
+          icon: '✅',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            fontWeight: '500',
+          },
         });
         setFormData({ name: '', email: '', subject: '', category: '', message: '' });
       } else {

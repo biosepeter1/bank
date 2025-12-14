@@ -73,7 +73,7 @@ export default function WalletPage() {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Wallet</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Wallet</h1>
           <p className="text-gray-600">Manage your wallet and transactions</p>
         </div>
         <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
@@ -96,7 +96,7 @@ export default function WalletPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <motion.div key={wallet?.balance} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-5xl font-bold">
+                  <motion.div key={wallet?.balance} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-bold">
                     {showBalance ? formatAmount(wallet?.balance ? Number(wallet.balance) : 0) : '••••••'}
                   </motion.div>
                   <p className="text-sm text-blue-100 mt-2">Currency: {currency.code}</p>
@@ -122,7 +122,7 @@ export default function WalletPage() {
             <CardDescription>Perform wallet operations quickly</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <motion.div whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }}>
                 <Button onClick={() => setDepositModalOpen(true)} className="h-auto py-6 flex-col gap-2 bg-green-600 hover:bg-green-700 w-full shadow-md">
                   <TrendingUp className="h-8 w-8" />

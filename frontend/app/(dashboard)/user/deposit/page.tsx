@@ -25,9 +25,9 @@ type DepositHistory = {
 };
 
 export default function DepositPage() {
-  
+
   const { branding } = useBranding();
-const { settings } = useSettings();
+  const { settings } = useSettings();
   const { currency, formatAmount } = useCurrency();
   const [selectedMethod, setSelectedMethod] = useState<DepositMethod | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,12 +72,12 @@ const { settings } = useSettings();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const depositAmount = parseFloat(amount);
-    
+
     if (!amount || depositAmount <= 0) {
       toast.error('Please enter a valid amount');
       return;
     }
-    
+
     // Validate minimum deposit amounts
     if (selectedMethod === 'usdt') {
       if (depositAmount < 10) {
@@ -85,14 +85,14 @@ const { settings } = useSettings();
         return;
       }
     }
-    
+
     if (selectedMethod === 'bitcoin') {
       if (depositAmount < 0.0001) {
         toast.error('Minimum Bitcoin deposit is 0.0001 BTC');
         return;
       }
     }
-    
+
     setLoading(true);
     try {
       // Call the backend API to create deposit
@@ -103,7 +103,7 @@ const { settings } = useSettings();
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-          body: JSON.stringify({
+        body: JSON.stringify({
           amount: depositAmount,
           method: selectedMethod === 'usdt' ? 'USDT' : 'BITCOIN',
           currency: selectedMethod === 'bitcoin' ? 'BTC' : 'USD',
@@ -158,23 +158,23 @@ const { settings } = useSettings();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-4 sm:p-6">
       {/* Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center gap-2 mb-3">
-          <div 
-            className="w-1.5 h-8 rounded-full"
+        <div className="flex items-center gap-2 mb-2 sm:mb-3">
+          <div
+            className="w-1 sm:w-1.5 h-6 sm:h-8 rounded-full"
             style={{ background: branding.colors.primary }}
           />
-          <h1 className="text-4xl font-bold" style={{ color: branding.colors.primary }}>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: branding.colors.primary }}>
             Add Funds
           </h1>
         </div>
-        <p className="text-gray-600 text-lg ml-4">Quick and secure deposits to your account</p>
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg ml-3 sm:ml-4">Quick and secure deposits to your account</p>
       </motion.div>
 
       {/* Hero Banner */}
@@ -203,7 +203,7 @@ const { settings } = useSettings();
           </div>
         </div>
 
-        <div className="relative z-10 p-12 text-center">
+        <div className="relative z-10 p-6 sm:p-8 md:p-12 text-center">
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -217,7 +217,7 @@ const { settings } = useSettings();
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-4xl font-bold text-white mb-3"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3"
           >
             Fund Your Account
           </motion.h2>
@@ -226,31 +226,31 @@ const { settings } = useSettings();
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-white/90 text-lg max-w-2xl mx-auto"
+            className="text-white/90 text-sm sm:text-base md:text-lg max-w-2xl mx-auto"
           >
             Choose your preferred deposit method and start transacting instantly
           </motion.p>
-          
+
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex justify-center gap-8 mt-8"
+            className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 sm:mt-8"
           >
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">&lt; 10min</div>
-              <div className="text-sm text-white/80">Processing Time</div>
+              <div className="text-lg sm:text-2xl font-bold text-white">&lt; 10min</div>
+              <div className="text-xs sm:text-sm text-white/80">Processing Time</div>
             </div>
-            <div className="w-px bg-white/20"></div>
+            <div className="w-px bg-white/20 hidden sm:block"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">24/7</div>
-              <div className="text-sm text-white/80">Support</div>
+              <div className="text-lg sm:text-2xl font-bold text-white">24/7</div>
+              <div className="text-xs sm:text-sm text-white/80">Support</div>
             </div>
-            <div className="w-px bg-white/20"></div>
+            <div className="w-px bg-white/20 hidden sm:block"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">100%</div>
-              <div className="text-sm text-white/80">Secure</div>
+              <div className="text-lg sm:text-2xl font-bold text-white">100%</div>
+              <div className="text-xs sm:text-sm text-white/80">Secure</div>
             </div>
           </motion.div>
         </div>
@@ -263,20 +263,20 @@ const { settings } = useSettings();
         transition={{ delay: 0.2 }}
       >
         <Card className="border-none shadow-xl bg-white/95 backdrop-blur-sm">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div 
+              <div
                 className="w-1 h-6 rounded-full"
                 style={{ background: branding.colors.primary }}
               />
               <h3 className="text-xl font-bold text-gray-800">Choose Payment Method</h3>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
               {depositMethods.map((method) => {
                 const Icon = method.icon;
                 const isSelected = selectedMethod === method.id;
-                
+
                 return (
                   <motion.button
                     key={method.id}
@@ -286,25 +286,25 @@ const { settings } = useSettings();
                     className="relative flex items-center gap-4 p-6 rounded-2xl border-2 transition-all overflow-hidden group"
                     style={{
                       borderColor: isSelected ? branding.colors.primary : '#e5e7eb',
-                      background: isSelected 
+                      background: isSelected
                         ? `linear-gradient(135deg, ${branding.colors.primary}10 0%, ${branding.colors.secondary}10 100%)`
                         : 'white',
                       boxShadow: isSelected ? `0 8px 20px ${branding.colors.primary}20` : '0 2px 8px rgba(0,0,0,0.05)'
                     }}
                   >
                     {/* Animated background */}
-                    <div 
+                    <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       style={{
                         background: `linear-gradient(135deg, ${branding.colors.primary}05 0%, ${branding.colors.secondary}05 100%)`
                       }}
                     />
-                    
-                    <div 
+
+                    <div
                       className="relative p-4 rounded-xl shadow-sm"
                       style={{ background: `${method.id === 'usdt' ? '#10b981' : '#f59e0b'}15` }}
                     >
-                      <Icon 
+                      <Icon
                         className="h-7 w-7"
                         style={{ color: method.id === 'usdt' ? '#10b981' : '#f59e0b' }}
                       />
@@ -315,7 +315,7 @@ const { settings } = useSettings();
                         {method.id === 'usdt' ? 'TRC20 Network' : 'BTC Network'}
                       </p>
                     </div>
-                    <div 
+                    <div
                       className="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 relative transition-all"
                       style={{
                         borderColor: isSelected ? branding.colors.primary : '#d1d5db',
@@ -365,8 +365,8 @@ const { settings } = useSettings();
                     />
                   </div>
                   <p className="text-sm text-gray-500 mt-2">
-                    {selectedMethod === 'bitcoin' 
-                      ? 'Minimum deposit: 0.0001 BTC' 
+                    {selectedMethod === 'bitcoin'
+                      ? 'Minimum deposit: 0.0001 BTC'
                       : `Minimum deposit: ${formatAmount(10)}`}
                   </p>
                 </div>
@@ -375,7 +375,7 @@ const { settings } = useSettings();
                 {selectedMethod === 'usdt' && settings.payment.usdtWalletAddress && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-4">
                     <h4 className="font-semibold text-green-900 text-lg">USDT Deposit Information</h4>
-                    
+
                     {/* Important Notice */}
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
                       <div className="flex items-start gap-2">
@@ -391,11 +391,11 @@ const { settings } = useSettings();
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* QR Code */}
                     <div className="flex justify-center">
                       <div className="bg-white p-4 rounded-lg border-2 border-green-300 shadow-sm">
-                        <img 
+                        <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(settings.payment.usdtWalletAddress)}`}
                           alt="USDT QR Code"
                           className="w-48 h-48"
@@ -403,7 +403,7 @@ const { settings } = useSettings();
                         <p className="text-xs text-center text-gray-600 mt-2">Scan with your wallet app</p>
                       </div>
                     </div>
-                    
+
                     {/* Wallet Address */}
                     <div>
                       <Label className="text-sm font-semibold text-green-900">Wallet Address (TRC20)</Label>
@@ -421,7 +421,7 @@ const { settings } = useSettings();
                         </Button>
                       </div>
                     </div>
-                    
+
                     {/* Instructions */}
                     <div className="bg-white rounded-lg p-4 border border-green-200">
                       <h5 className="font-semibold text-green-900 text-sm mb-2">How to Deposit:</h5>
@@ -434,7 +434,7 @@ const { settings } = useSettings();
                         <li>Your account will be credited automatically after 1 confirmation</li>
                       </ol>
                     </div>
-                    
+
                     {/* Warning */}
                     <div className="bg-red-50 border-l-4 border-red-400 p-3">
                       <div className="flex items-start gap-2">
@@ -453,7 +453,7 @@ const { settings } = useSettings();
                 {selectedMethod === 'bitcoin' && settings.payment.btcWalletAddress && (
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-4">
                     <h4 className="font-semibold text-orange-900 text-lg">Bitcoin Deposit Information</h4>
-                    
+
                     {/* Important Notice */}
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
                       <div className="flex items-start gap-2">
@@ -469,11 +469,11 @@ const { settings } = useSettings();
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* QR Code */}
                     <div className="flex justify-center">
                       <div className="bg-white p-4 rounded-lg border-2 border-orange-300 shadow-sm">
-                        <img 
+                        <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(settings.payment.btcWalletAddress)}`}
                           alt="Bitcoin QR Code"
                           className="w-48 h-48"
@@ -481,7 +481,7 @@ const { settings } = useSettings();
                         <p className="text-xs text-center text-gray-600 mt-2">Scan with your wallet app</p>
                       </div>
                     </div>
-                    
+
                     {/* Wallet Address */}
                     <div>
                       <Label className="text-sm font-semibold text-orange-900">Bitcoin Wallet Address</Label>
@@ -499,7 +499,7 @@ const { settings } = useSettings();
                         </Button>
                       </div>
                     </div>
-                    
+
                     {/* Instructions */}
                     <div className="bg-white rounded-lg p-4 border border-orange-200">
                       <h5 className="font-semibold text-orange-900 text-sm mb-2">How to Deposit:</h5>
@@ -512,7 +512,7 @@ const { settings } = useSettings();
                         <li>Your account will be credited after 3 network confirmations</li>
                       </ol>
                     </div>
-                    
+
                     {/* Warning */}
                     <div className="bg-red-50 border-l-4 border-red-400 p-3">
                       <div className="flex items-start gap-2">
@@ -559,9 +559,9 @@ const { settings } = useSettings();
         className="mt-8"
       >
         <Card className="border-none shadow-xl bg-white">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-6 md:p-8">
             <h3 className="text-lg font-semibold text-gray-700 mb-6">Recent Deposits</h3>
-            
+
             {historyLoading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
@@ -580,11 +580,10 @@ const { settings } = useSettings();
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg ${
-                        deposit.depositMethod === 'USDT' ? 'bg-green-100' :
-                        deposit.depositMethod === 'BITCOIN' ? 'bg-orange-100' :
-                        'bg-blue-100'
-                      }`}>
+                      <div className={`p-3 rounded-lg ${deposit.depositMethod === 'USDT' ? 'bg-green-100' :
+                          deposit.depositMethod === 'BITCOIN' ? 'bg-orange-100' :
+                            'bg-blue-100'
+                        }`}>
                         {deposit.depositMethod === 'USDT' ? (
                           <DollarSign className="h-5 w-5 text-green-600" />
                         ) : deposit.depositMethod === 'BITCOIN' ? (

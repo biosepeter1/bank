@@ -130,15 +130,13 @@ let AuthService = class AuthService {
         });
         // Generate tokens
         const tokens = await this.generateTokens(user.id, user.email, user.role);
-        // Send welcome email (non-blocking)
-        try {
-            await this.emailService.sendWelcomeEmail({
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                accountNumber: '****' // replace with real if available
-            });
-        } catch  {}
+        // Send welcome email (truly non-blocking - fire and forget)
+        this.emailService.sendWelcomeEmail({
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            accountNumber: '****' // replace with real if available
+        }).catch(()=>{});
         return {
             user,
             ...tokens

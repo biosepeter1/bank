@@ -56,7 +56,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     // Refresh profile data on mount to ensure we have latest data
-    useAuthStore.getState().fetchProfile().catch(() => {});
+    useAuthStore.getState().fetchProfile().catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -84,10 +84,10 @@ export default function ProfilePage() {
     try {
       // TODO: Implement profile update API call
       // await profileApi.updateProfile(formData);
-      
+
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
       toast.success('Profile updated successfully!');
       setIsEditing(false);
     } catch (error: any) {
@@ -111,7 +111,7 @@ export default function ProfilePage() {
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       toast.error('New passwords do not match');
       return;
@@ -126,17 +126,17 @@ export default function ProfilePage() {
     try {
       // TODO: Implement password change API
       // await authApi.changePassword(passwordData.currentPassword, passwordData.newPassword);
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       toast.success('Password changed successfully!');
       setShowPasswordDialog(false);
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error: any) {
       toast.error(error.message || 'Failed to change password');
     } finally {
-    setChangingPassword(false);
+      setChangingPassword(false);
     }
   };
 
@@ -145,7 +145,7 @@ export default function ProfilePage() {
     try {
       const response = await authApi.sendVerificationEmail();
       setOtpId(response.otpId);
-      
+
       toast.success('Verification code sent! Check your email.');
       setShowVerificationDialog(true);
     } catch (error: any) {
@@ -157,7 +157,7 @@ export default function ProfilePage() {
 
   const handleVerifyEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!verificationCode || verificationCode.length !== 6) {
       toast.error('Please enter a valid 6-digit code');
       return;
@@ -166,11 +166,11 @@ export default function ProfilePage() {
     setVerifying(true);
     try {
       await authApi.verifyEmail(otpId, verificationCode);
-      
+
       toast.success('✅ Email verified successfully!');
       setShowVerificationDialog(false);
       setVerificationCode('');
-      
+
       // Refresh user data to update verification status
       await useAuthStore.getState().fetchProfile();
     } catch (error: any) {
@@ -224,7 +224,7 @@ export default function ProfilePage() {
 
   const handleImageUrlSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!imageUrl.trim()) {
       toast.error('Please enter a valid image URL');
       return;
@@ -249,10 +249,10 @@ export default function ProfilePage() {
       });
 
       setProfilePicture(imageUrl);
-      
+
       // TODO: Save to server
       // await profileApi.updateProfilePicture({ imageUrl });
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -278,27 +278,27 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       {/* Hero Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8 relative overflow-hidden rounded-3xl p-8 shadow-xl"
+        className="mb-6 sm:mb-8 relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl"
         style={{
           background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
         }}
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 sm:w-48 h-24 sm:h-48 bg-white/10 rounded-full blur-3xl"></div>
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold text-white mb-2">My Profile</h1>
-          <p className="text-white/90 text-lg">Manage your personal information and security settings</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">My Profile</h1>
+          <p className="text-white/90 text-sm sm:text-base md:text-lg">Manage your personal information and security settings</p>
         </div>
       </motion.div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Profile Overview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
@@ -308,7 +308,7 @@ export default function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <div className="relative group mb-4">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ scale: 1.05 }}
                     className="w-28 h-28 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-2xl relative overflow-hidden"
                     style={{
@@ -324,9 +324,9 @@ export default function ProfilePage() {
                       </>
                     )}
                   </motion.div>
-                  
+
                   {/* Upload Button Overlay */}
-                  <label 
+                  <label
                     htmlFor="profile-picture-upload"
                     className="absolute inset-0 rounded-full flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                   >
@@ -348,7 +348,7 @@ export default function ProfilePage() {
                     className="hidden"
                   />
                 </div>
-                
+
                 {/* Upload Options */}
                 <button
                   onClick={() => setShowImageUrlDialog(true)}
@@ -361,7 +361,7 @@ export default function ProfilePage() {
                   <LinkIcon className="w-4 h-4" />
                   Upload from URL
                 </button>
-                
+
                 <h3 className="text-2xl font-bold bg-clip-text text-transparent" style={{
                   backgroundImage: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                 }}>
@@ -373,10 +373,10 @@ export default function ProfilePage() {
                 </p>
 
                 <div className="w-full space-y-3 mt-6">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="flex items-center justify-between p-4 rounded-xl shadow-md border-l-4"
-                    style={{ 
+                    style={{
                       background: `${branding.colors.primary}08`,
                       borderColor: branding.colors.primary
                     }}
@@ -392,10 +392,10 @@ export default function ProfilePage() {
                     </span>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="flex items-center justify-between p-4 rounded-xl shadow-md border-l-4"
-                    style={{ 
+                    style={{
                       background: `${branding.colors.secondary}08`,
                       borderColor: branding.colors.secondary
                     }}
@@ -423,10 +423,10 @@ export default function ProfilePage() {
                     </span>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="flex items-center justify-between p-4 rounded-xl shadow-md border-l-4"
-                    style={{ 
+                    style={{
                       background: `${branding.colors.primary}08`,
                       borderColor: branding.colors.primary
                     }}
@@ -451,7 +451,7 @@ export default function ProfilePage() {
         </motion.div>
 
         {/* Profile Details */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
@@ -468,8 +468,8 @@ export default function ProfilePage() {
                 <CardTitle className="text-2xl">Personal Information</CardTitle>
               </div>
               {!isEditing && (
-                <Button 
-                  onClick={() => setIsEditing(true)} 
+                <Button
+                  onClick={() => setIsEditing(true)}
                   className="text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{
                     background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
@@ -538,8 +538,8 @@ export default function ProfilePage() {
 
                 {isEditing && (
                   <div className="flex gap-3">
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={loading}
                       className="flex-1 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
                       style={{
@@ -591,10 +591,10 @@ export default function ProfilePage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.01 }}
                 className="flex items-center justify-between p-5 rounded-xl shadow-md border-l-4"
-                style={{ 
+                style={{
                   background: `${branding.colors.primary}05`,
                   borderColor: branding.colors.primary
                 }}
@@ -610,8 +610,8 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShowPasswordDialog(true)}
                   className="border-2 font-semibold hover:scale-105 transition-all"
                   style={{
@@ -623,10 +623,10 @@ export default function ProfilePage() {
                 </Button>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.01 }}
                 className="flex items-center justify-between p-5 rounded-xl shadow-md border-l-4"
-                style={{ 
+                style={{
                   background: `${branding.colors.secondary}05`,
                   borderColor: branding.colors.secondary
                 }}
@@ -642,8 +642,8 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShow2FADialog(true)}
                   className="border-2 font-semibold hover:scale-105 transition-all"
                   style={{
@@ -655,10 +655,10 @@ export default function ProfilePage() {
                 </Button>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.01 }}
                 className="flex items-center justify-between p-5 rounded-xl shadow-md border-l-4"
-                style={{ 
+                style={{
                   background: `${branding.colors.primary}05`,
                   borderColor: branding.colors.primary
                 }}
@@ -674,8 +674,8 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShowActivityDialog(true)}
                   className="border-2 font-semibold hover:scale-105 transition-all"
                   style={{
@@ -690,7 +690,7 @@ export default function ProfilePage() {
           </Card>
         </motion.div>
       </div>
-      
+
       {/* Password Change Dialog */}
       <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
         <DialogContent className="sm:max-w-md">
@@ -871,10 +871,10 @@ export default function ProfilePage() {
                 </button>
               </p>
             </div>
-            
+
             <div className="flex gap-3">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={verifying || verificationCode.length !== 6}
                 className="flex-1 text-white shadow-lg hover:shadow-xl transition-all"
                 style={{
@@ -893,9 +893,9 @@ export default function ProfilePage() {
                   </>
                 )}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setShowVerificationDialog(false);
                   setVerificationCode('');
@@ -946,16 +946,16 @@ export default function ProfilePage() {
                 Supported formats: JPG, PNG, GIF, WebP
               </p>
             </div>
-            
+
             {/* Preview */}
             {imageUrl && (
               <div className="space-y-2">
                 <Label>Preview</Label>
                 <div className="flex justify-center p-4 bg-gray-50 rounded-lg border-2" style={{ borderColor: `${branding.colors.primary}20` }}>
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4" style={{ borderColor: branding.colors.primary }}>
-                    <img 
-                      src={imageUrl} 
-                      alt="Preview" 
+                    <img
+                      src={imageUrl}
+                      alt="Preview"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.currentTarget.src = '';
@@ -966,10 +966,10 @@ export default function ProfilePage() {
                 </div>
               </div>
             )}
-            
+
             <div className="flex gap-3 pt-2">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={uploadingPicture || !imageUrl}
                 className="flex-1 text-white shadow-lg hover:shadow-xl transition-all"
                 style={{
@@ -988,9 +988,9 @@ export default function ProfilePage() {
                   </>
                 )}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setShowImageUrlDialog(false);
                   setImageUrl('');
