@@ -45,22 +45,23 @@ apiClient.interceptors.response.use(
       if (process.env.NODE_ENV === 'development') {
         console.warn('⚠ Network Error:', error.config?.url, '- Backend may be down');
       }
-      
+
       // Create a more user-friendly error
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
       const networkError = new Error(
-        'Cannot connect to server. Please ensure the backend is running on http://localhost:3001'
+        `Cannot connect to server at ${apiUrl}. Please check your connection.`
       );
       return Promise.reject(networkError);
     }
-    
+
     // Only log non-404 errors (404s are expected for missing endpoints during fallback logic)
     if (error.response?.status !== 404 || process.env.NODE_ENV === 'development') {
-      const emoji = error.response?.status === 401 ? '🔒' : 
-                    error.response?.status === 404 ? '🔍' : '❌';
-      console.warn(`${emoji} API ${error.response?.status}:`, error.config?.url, 
-                   error.response?.data?.message || error.message);
+      const emoji = error.response?.status === 401 ? '🔒' :
+        error.response?.status === 404 ? '🔍' : '❌';
+      console.warn(`${emoji} API ${error.response?.status}:`, error.config?.url,
+        error.response?.data?.message || error.message);
     }
-    
+
     if (error.response?.status === 401) {
       // Token expired - try to refresh or logout
       if (typeof window !== 'undefined') {
