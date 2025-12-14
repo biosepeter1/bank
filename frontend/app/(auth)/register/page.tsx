@@ -123,7 +123,13 @@ export default function RegisterPage() {
     if (!validateStep(5)) { toast.error('Please accept all terms'); return; }
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3001/api/auth/register', {
+      // Determine API URL based on current hostname
+      const apiUrl = typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:3001/api'
+        : 'http://64.227.45.177/api';
+
+      const response = await fetch(`${apiUrl}/auth/register`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstName: formData.firstName, lastName: formData.lastName, username: formData.username,
