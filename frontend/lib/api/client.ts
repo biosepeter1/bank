@@ -1,7 +1,23 @@
 import axios from 'axios';
 
+// Helper to get the correct API URL regardless of environment variables
+const getBaseUrl = () => {
+  // In browser: Check current hostname at RUNTIME (not build time)
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    // Local development
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:3001/api';
+    }
+    // Production - use the VPS IP
+    return 'http://64.227.45.177/api';
+  }
+  // Server-side fallback
+  return 'http://64.227.45.177/api';
+};
+
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+  baseURL: getBaseUrl(),
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
