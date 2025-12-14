@@ -1,0 +1,57 @@
+# VPS Auto-Deployment Setup
+
+## Quick Setup (Run on VPS)
+
+### 1. Pull the latest code
+```bash
+cd /var/www/bank
+git pull origin main
+```
+
+### 2. Make deploy script executable
+```bash
+chmod +x /var/www/bank/scripts/deploy.sh
+```
+
+### 3. Start the webhook server with PM2
+```bash
+pm2 start /var/www/bank/scripts/webhook-server.js --name webhook
+pm2 save
+```
+
+### 4. Open firewall port (if using UFW)
+```bash
+ufw allow 9000
+```
+
+### 5. Add Nginx proxy (optional, recommended)
+Add to `/etc/nginx/sites-available/default`:
+```nginx
+location /webhook {
+    proxy_pass http://localhost:9000/webhook;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+```
+Then reload: `sudo systemctl reload nginx`
+
+---
+
+## GitHub Webhook Setup
+
+1. Go to your repo: https://github.com/biosepeter1/bank/settings/hooks
+2. Click "Add webhook"
+3. **Payload URL:** `http://64.227.45.177:9000/webhook` (or `/webhook` if using nginx)
+4. **Content type:** `application/json`
+5. **Secret:** Leave empty for now (or set one and update WEBHOOK_SECRET)
+6. **Events:** Just the push event
+7. Click "Add webhook"
+
+---
+
+## Test It
+1. Make a small code change locally
+2. Commit and push
+3. Check webhook logs: `pm2 logs webhook`
+4. Your site should auto-update!
