@@ -417,50 +417,50 @@ export default function CardsPage() {
                   Create virtual cards for secure online payments, subscription management, and more.
                 </motion.p>
 
-                {/* Features Grid */}
+                {/* Features Grid - Hidden on mobile for cleaner look */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="grid grid-cols-2 gap-4 mb-8"
+                  className="hidden sm:grid grid-cols-2 gap-3 mb-6"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
-                      <Shield className="h-5 w-5 text-white/90" />
+                  <div className="flex items-start gap-2">
+                    <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
+                      <Shield className="h-4 w-4 text-white/90" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-sm mb-1">Secure Payments</h3>
-                      <p className="text-xs text-white/80 leading-relaxed">Protect your main account with separate virtual cards</p>
+                      <h3 className="font-semibold text-xs mb-0.5">Secure Payments</h3>
+                      <p className="text-[10px] text-white/80 leading-relaxed line-clamp-2">Protect your main account</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
-                      <Globe className="h-5 w-5 text-white/90" />
+                  <div className="flex items-start gap-2">
+                    <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
+                      <Globe className="h-4 w-4 text-white/90" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-sm mb-1">Global Acceptance</h3>
-                      <p className="text-xs text-white/80 leading-relaxed">Use anywhere major cards are accepted online</p>
+                      <h3 className="font-semibold text-xs mb-0.5">Global Acceptance</h3>
+                      <p className="text-[10px] text-white/80 leading-relaxed line-clamp-2">Use anywhere major cards are accepted</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
-                      <Sliders className="h-5 w-5 text-white/90" />
+                  <div className="flex items-start gap-2">
+                    <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
+                      <Sliders className="h-4 w-4 text-white/90" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-sm mb-1">Spending Controls</h3>
-                      <p className="text-xs text-white/80 leading-relaxed">Set limits and monitor transactions in real-time</p>
+                      <h3 className="font-semibold text-xs mb-0.5">Spending Controls</h3>
+                      <p className="text-[10px] text-white/80 leading-relaxed line-clamp-2">Set limits and monitor transactions</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
-                      <Bolt className="h-5 w-5 text-white/90" />
+                  <div className="flex items-start gap-2">
+                    <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm flex-shrink-0">
+                      <Bolt className="h-4 w-4 text-white/90" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-sm mb-1">Instant Issuance</h3>
-                      <p className="text-xs text-white/80 leading-relaxed">Create and use cards within minutes</p>
+                      <h3 className="font-semibold text-xs mb-0.5">Instant Issuance</h3>
+                      <p className="text-[10px] text-white/80 leading-relaxed line-clamp-2">Create and use cards in minutes</p>
                     </div>
                   </div>
                 </motion.div>
@@ -504,7 +504,7 @@ export default function CardsPage() {
                 <div className="relative mx-auto md:mx-0">
                   {/* Card Preview with dynamic brand colors */}
                   <div
-                    className="w-96 h-56 rounded-2xl p-6 text-white shadow-2xl transform hover:scale-105 transition-transform duration-300 relative overflow-hidden"
+                    className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[384px] h-40 sm:h-48 md:h-56 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 text-white shadow-2xl relative overflow-hidden"
                     style={{
                       background: `linear-gradient(135deg, ${branding.colors.primary} 0%, ${branding.colors.secondary} 100%)`
                     }}

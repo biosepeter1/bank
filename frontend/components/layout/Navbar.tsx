@@ -107,15 +107,6 @@ export function Navbar({ variant = 'default' }: NavbarProps) {
                                                     <div className="text-xs text-slate-400">Our story & values</div>
                                                 </div>
                                             </Link>
-                                            <Link href="/careers" className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-brand-primary/5 hover:to-brand-secondary/5 hover:text-brand-primary rounded-xl font-medium transition-all group/item">
-                                                <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center group-hover/item:bg-brand-primary/10 transition-colors">
-                                                    <Briefcase size={18} className="text-slate-500 group-hover/item:text-brand-primary" />
-                                                </div>
-                                                <div>
-                                                    <div className="font-semibold">Careers</div>
-                                                    <div className="text-xs text-slate-400">Join our team</div>
-                                                </div>
-                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -378,7 +369,6 @@ export function Navbar({ variant = 'default' }: NavbarProps) {
                                         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">About</h3>
                                         <div className="space-y-1">
                                             <Link href="/about" className="block px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
-                                            <Link href="/careers" className="block px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium" onClick={() => setMobileMenuOpen(false)}>Careers</Link>
                                         </div>
                                     </div>
 

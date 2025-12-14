@@ -18,7 +18,6 @@ export function DynamicTitle() {
       // Public pages
       if (pathname === '/') return 'Home';
       if (pathname === '/about') return 'About Us';
-      if (pathname === '/careers') return 'Careers';
       if (pathname === '/contact') return 'Contact Us';
       if (pathname === '/faq') return 'FAQ';
       if (pathname === '/personal-banking') return 'Personal Banking';

@@ -102,36 +102,22 @@ function SlideVisual({ type, icon }: { type: string; icon: string }) {
                         </div>
                     </div>
 
-                    {/* Arrow/Flow - Hidden on very small, simplified on mobile */}
+                    {/* Arrow/Flow - Hidden on mobile, static on tablet+ */}
                     <div className="hidden sm:flex flex-col items-center gap-2">
-                        <motion.div
-                            animate={{ x: [0, 10, 0] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                            className="text-4xl"
-                        >
-                            💰
-                        </motion.div>
+                        <div className="text-4xl">💰</div>
                         <div className="flex gap-1">
                             {[0, 1, 2].map(i => (
-                                <motion.div
+                                <div
                                     key={i}
-                                    animate={{ opacity: [0.3, 1, 0.3] }}
-                                    transition={{ duration: 0.5, delay: i * 0.2, repeat: Infinity }}
-                                    className="w-3 h-3 bg-brand-primary rounded-full"
+                                    className="w-3 h-3 bg-brand-primary rounded-full opacity-70"
                                 />
                             ))}
                         </div>
                     </div>
 
-                    {/* Mobile arrow */}
+                    {/* Mobile arrow - Static */}
                     <div className="flex sm:hidden flex-col items-center">
-                        <motion.div
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                            className="text-2xl"
-                        >
-                            →
-                        </motion.div>
+                        <div className="text-2xl">→</div>
                     </div>
 
                     {/* Right Phone - Received */}
@@ -298,25 +284,13 @@ export function WemaHero() {
 
     return (
         <section className="relative lg:min-h-screen flex items-center overflow-hidden pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-8 md:pb-16">
-            {/* Background */}
+            {/* Background - Static gradients instead of animated for performance */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-[rgb(var(--brand-primary-rgb)/0.05)]" />
 
-            <motion.div
-                animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-20 right-20 w-[600px] h-[600px] bg-[rgb(var(--brand-primary-rgb)/0.25)] rounded-full blur-3xl"
-            />
-            <motion.div
-                animate={{ scale: [1.2, 1, 1.2], opacity: [0.15, 0.3, 0.15] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[rgb(var(--brand-secondary-rgb)/0.2)] rounded-full blur-3xl"
-            />
-
-            <motion.div
-                animate={{ y: [-20, 20, -20], rotate: [0, 180, 360] }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute top-32 left-[15%] w-16 h-16 border-2 border-brand-primary/30 rounded-xl"
-            />
+            {/* Static decorative blurs - no animation for better mobile perf */}
+            <div className="absolute top-20 right-20 w-[600px] h-[600px] bg-[rgb(var(--brand-primary-rgb)/0.15)] rounded-full blur-3xl opacity-30 hidden md:block" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[rgb(var(--brand-secondary-rgb)/0.15)] rounded-full blur-3xl opacity-25 hidden md:block" />
+            <div className="absolute top-32 left-[15%] w-16 h-16 border-2 border-brand-primary/20 rounded-xl hidden lg:block" />
 
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 

@@ -70,7 +70,6 @@ export default function Footer() {
   const services = [
     { name: 'Contact Us', href: '/contact' },
     { name: 'FAQ', href: '/faq' },
-    { name: 'Careers', href: '/careers' },
   ];
 
   const legal = [
