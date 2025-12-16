@@ -1,6 +1,6 @@
 #!/bin/bash
 # Deploy script for VPS
-# Pre-built: Just pull and restart. Build locally before pushing.
+# Clean build on VPS - .next is not tracked in git
 
 set -e
 
@@ -8,15 +8,23 @@ echo "🚀 Starting deployment..."
 
 cd /var/www/bank
 
-# Pull latest code (includes pre-built .next folder)
+# Pull latest code
 echo "📥 Pulling latest code..."
 git pull origin main
+
+# Frontend: clean build
+echo "🔧 Building frontend..."
+cd frontend
+rm -rf .next
+npm install --legacy-peer-deps
+npm run build
+cd ..
 
 # Restart backend
 echo "🔧 Restarting backend..."
 pm2 restart backend
 
-# Restart frontend (uses pre-built .next from repo)
+# Restart frontend
 echo "🔧 Restarting frontend..."
 pm2 restart frontend
 
