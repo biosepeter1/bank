@@ -10,12 +10,7 @@ const nextConfig: NextConfig = {
   // Optimize compilation
   swcMinify: true,
 
-  // Reduce module resolution overhead
-  modularizeImports: {
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
-    },
-  },
+
 
   // Enable experimental features for better performance
   experimental: {

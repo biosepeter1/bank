@@ -1,1 +1,147 @@
-import { create } from 'zustand';\nimport { Card, CardTransaction, Deposit, ExchangeRate, Loan, LoanPayment, SavingsGoal } from './types';\n\ninterface FinanceStore {\n  // Cards\n  cards: Card[];\n  cardTransactions: CardTransaction[];\n  \n  // Deposits\n  deposits: Deposit[];\n  \n  // Currency\n  exchangeRates: ExchangeRate[];\n  \n  // Loans\n  loans: Loan[];\n  loanPayments: LoanPayment[];\n  \n  // Savings\n  savingsGoals: SavingsGoal[];\n  \n  isLoading: boolean;\n  error: string | null;\n\n  // Card actions\n  setCards: (cards: Card[]) => void;\n  updateCard: (card: Card) => void;\n  addCard: (card: Card) => void;\n  removeCard: (id: string) => void;\n  setCardTransactions: (transactions: CardTransaction[]) => void;\n  \n  // Deposit actions\n  setDeposits: (deposits: Deposit[]) => void;\n  addDeposit: (deposit: Deposit) => void;\n  \n  // Currency actions\n  setExchangeRates: (rates: ExchangeRate[]) => void;\n  getExchangeRate: (from: string, to: string) => ExchangeRate | undefined;\n  \n  // Loan actions\n  setLoans: (loans: Loan[]) => void;\n  addLoan: (loan: Loan) => void;\n  updateLoan: (loan: Loan) => void;\n  setLoanPayments: (payments: LoanPayment[]) => void;\n  addLoanPayment: (payment: LoanPayment) => void;\n  \n  // Savings Goal actions\n  setSavingsGoals: (goals: SavingsGoal[]) => void;\n  addSavingsGoal: (goal: SavingsGoal) => void;\n  updateSavingsGoal: (goal: SavingsGoal) => void;\n  removeSavingsGoal: (id: string) => void;\n  \n  setLoading: (loading: boolean) => void;\n  setError: (error: string | null) => void;\n}\n\nexport const useFinanceStore = create<FinanceStore>((set, get) => ({\n  cards: [],\n  cardTransactions: [],\n  deposits: [],\n  exchangeRates: [],\n  loans: [],\n  loanPayments: [],\n  savingsGoals: [],\n  isLoading: false,\n  error: null,\n\n  // Card actions\n  setCards: (cards) => set({ cards }),\n  \n  updateCard: (card) =>\n    set((state) => ({\n      cards: state.cards.map((c) => (c.id === card.id ? card : c)),\n    })),\n  \n  addCard: (card) =>\n    set((state) => ({\n      cards: [...state.cards, card],\n    })),\n  \n  removeCard: (id) =>\n    set((state) => ({\n      cards: state.cards.filter((c) => c.id !== id),\n    })),\n  \n  setCardTransactions: (transactions) => set({ cardTransactions: transactions }),\n  \n  // Deposit actions\n  setDeposits: (deposits) => set({ deposits }),\n  \n  addDeposit: (deposit) =>\n    set((state) => ({\n      deposits: [deposit, ...state.deposits],\n    })),\n  \n  // Currency actions\n  setExchangeRates: (rates) => set({ exchangeRates: rates }),\n  \n  getExchangeRate: (from, to) => {\n    const state = get();\n    return state.exchangeRates.find(\n      (rate) => rate.fromCurrency === from && rate.toCurrency === to\n    );\n  },\n  \n  // Loan actions\n  setLoans: (loans) => set({ loans }),\n  \n  addLoan: (loan) =>\n    set((state) => ({\n      loans: [...state.loans, loan],\n    })),\n  \n  updateLoan: (loan) =>\n    set((state) => ({\n      loans: state.loans.map((l) => (l.id === loan.id ? loan : l)),\n    })),\n  \n  setLoanPayments: (payments) => set({ loanPayments: payments }),\n  \n  addLoanPayment: (payment) =>\n    set((state) => ({\n      loanPayments: [payment, ...state.loanPayments],\n    })),\n  \n  // Savings Goal actions\n  setSavingsGoals: (goals) => set({ savingsGoals: goals }),\n  \n  addSavingsGoal: (goal) =>\n    set((state) => ({\n      savingsGoals: [...state.savingsGoals, goal],\n    })),\n  \n  updateSavingsGoal: (goal) =>\n    set((state) => ({\n      savingsGoals: state.savingsGoals.map((g) => (g.id === goal.id ? goal : g)),\n    })),\n  \n  removeSavingsGoal: (id) =>\n    set((state) => ({\n      savingsGoals: state.savingsGoals.filter((g) => g.id !== id),\n    })),\n  \n  setLoading: (loading) => set({ isLoading: loading }),\n  \n  setError: (error) => set({ error }),\n}));\n"
+import { create } from 'zustand';
+import { Card, CardTransaction, Deposit, ExchangeRate, Loan, LoanPayment, SavingsGoal } from './types';
+
+interface FinanceStore {
+  // Cards
+  cards: Card[];
+  cardTransactions: CardTransaction[];
+  
+  // Deposits
+  deposits: Deposit[];
+  
+  // Currency
+  exchangeRates: ExchangeRate[];
+  
+  // Loans
+  loans: Loan[];
+  loanPayments: LoanPayment[];
+  
+  // Savings
+  savingsGoals: SavingsGoal[];
+  
+  isLoading: boolean;
+  error: string | null;
+
+  // Card actions
+  setCards: (cards: Card[]) => void;
+  updateCard: (card: Card) => void;
+  addCard: (card: Card) => void;
+  removeCard: (id: string) => void;
+  setCardTransactions: (transactions: CardTransaction[]) => void;
+  
+  // Deposit actions
+  setDeposits: (deposits: Deposit[]) => void;
+  addDeposit: (deposit: Deposit) => void;
+  
+  // Currency actions
+  setExchangeRates: (rates: ExchangeRate[]) => void;
+  getExchangeRate: (from: string, to: string) => ExchangeRate | undefined;
+  
+  // Loan actions
+  setLoans: (loans: Loan[]) => void;
+  addLoan: (loan: Loan) => void;
+  updateLoan: (loan: Loan) => void;
+  setLoanPayments: (payments: LoanPayment[]) => void;
+  addLoanPayment: (payment: LoanPayment) => void;
+  
+  // Savings Goal actions
+  setSavingsGoals: (goals: SavingsGoal[]) => void;
+  addSavingsGoal: (goal: SavingsGoal) => void;
+  updateSavingsGoal: (goal: SavingsGoal) => void;
+  removeSavingsGoal: (id: string) => void;
+  
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+}
+
+export const useFinanceStore = create<FinanceStore>((set, get) => ({
+  cards: [],
+  cardTransactions: [],
+  deposits: [],
+  exchangeRates: [],
+  loans: [],
+  loanPayments: [],
+  savingsGoals: [],
+  isLoading: false,
+  error: null,
+
+  // Card actions
+  setCards: (cards) => set({ cards }),
+  
+  updateCard: (card) =>
+    set((state) => ({
+      cards: state.cards.map((c) => (c.id === card.id ? card : c)),
+    })),
+  
+  addCard: (card) =>
+    set((state) => ({
+      cards: [...state.cards, card],
+    })),
+  
+  removeCard: (id) =>
+    set((state) => ({
+      cards: state.cards.filter((c) => c.id !== id),
+    })),
+  
+  setCardTransactions: (transactions) => set({ cardTransactions: transactions }),
+  
+  // Deposit actions
+  setDeposits: (deposits) => set({ deposits }),
+  
+  addDeposit: (deposit) =>
+    set((state) => ({
+      deposits: [deposit, ...state.deposits],
+    })),
+  
+  // Currency actions
+  setExchangeRates: (rates) => set({ exchangeRates: rates }),
+  
+  getExchangeRate: (from, to) => {
+    const state = get();
+    return state.exchangeRates.find(
+      (rate) => rate.fromCurrency === from && rate.toCurrency === to
+    );
+  },
+  
+  // Loan actions
+  setLoans: (loans) => set({ loans }),
+  
+  addLoan: (loan) =>
+    set((state) => ({
+      loans: [...state.loans, loan],
+    })),
+  
+  updateLoan: (loan) =>
+    set((state) => ({
+      loans: state.loans.map((l) => (l.id === loan.id ? loan : l)),
+    })),
+  
+  setLoanPayments: (payments) => set({ loanPayments: payments }),
+  
+  addLoanPayment: (payment) =>
+    set((state) => ({
+      loanPayments: [payment, ...state.loanPayments],
+    })),
+  
+  // Savings Goal actions
+  setSavingsGoals: (goals) => set({ savingsGoals: goals }),
+  
+  addSavingsGoal: (goal) =>
+    set((state) => ({
+      savingsGoals: [...state.savingsGoals, goal],
+    })),
+  
+  updateSavingsGoal: (goal) =>
+    set((state) => ({
+      savingsGoals: state.savingsGoals.map((g) => (g.id === goal.id ? goal : g)),
+    })),
+  
+  removeSavingsGoal: (id) =>
+    set((state) => ({
+      savingsGoals: state.savingsGoals.filter((g) => g.id !== id),
+    })),
+  
+  setLoading: (loading) => set({ isLoading: loading }),
+  
+  setError: (error) => set({ error }),
+}));

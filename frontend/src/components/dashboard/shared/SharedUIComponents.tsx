@@ -1,1 +1,267 @@
-import React from 'react';\nimport { Check, Clock, AlertCircle, XCircle, TrendingUp, TrendingDown } from 'lucide-react';\n\n// ============================================\n// STATUS BADGE COMPONENT\n// ============================================\nexport interface StatusBadgeProps {\n  status: 'success' | 'pending' | 'warning' | 'error';\n  label: string;\n  size?: 'sm' | 'md' | 'lg';\n}\n\nexport const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, size = 'md' }) => {\n  const baseClasses = 'font-medium rounded-full inline-flex items-center gap-1';\n  const sizeClasses = {\n    sm: 'px-2 py-1 text-xs',\n    md: 'px-3 py-1.5 text-sm',\n    lg: 'px-4 py-2 text-base',\n  };\n\n  const statusClasses = {\n    success: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200',\n    pending: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200',\n    warning: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200',\n    error: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200',\n  };\n\n  const iconClasses = {\n    success: <Check size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,\n    pending: <Clock size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,\n    warning: <AlertCircle size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,\n    error: <XCircle size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,\n  };\n\n  return (\n    <span className={`${baseClasses} ${sizeClasses[size]} ${statusClasses[status]}`}>\n      {iconClasses[status]}\n      {label}\n    </span>\n  );\n};\n\n// ============================================\n// STAT CARD COMPONENT\n// ============================================\nexport interface StatCardProps {\n  label: string;\n  value: string | number;\n  change?: number;\n  icon?: React.ReactNode;\n  trend?: 'up' | 'down' | 'neutral';\n  className?: string;\n}\n\nexport const StatCard: React.FC<StatCardProps> = ({\n  label,\n  value,\n  change,\n  icon,\n  trend = 'neutral',\n  className = '',\n}) => {\n  const trendColor = {\n    up: 'text-green-600 dark:text-green-400',\n    down: 'text-red-600 dark:text-red-400',\n    neutral: 'text-gray-600 dark:text-gray-400',\n  };\n\n  return (\n    <div\n      className={`bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 ${className}`}\n    >\n      <div className=\"flex items-start justify-between\">\n        <div className=\"flex-1\">\n          <p className=\"text-sm text-gray-500 dark:text-gray-400 font-medium\">{label}</p>\n          <p className=\"text-2xl font-bold text-gray-900 dark:text-white mt-2\">{value}</p>\n          {change !== undefined && (\n            <p className={`text-sm mt-2 ${trendColor[trend]}`}>\n              {trend === 'up' && <TrendingUp className=\"inline mr-1\" size={14} />}\n              {trend === 'down' && <TrendingDown className=\"inline mr-1\" size={14} />}\n              {change > 0 ? '+' : ''}{change}%\n            </p>\n          )}\n        </div>\n        {icon && <div className=\"text-gray-400 dark:text-gray-500\">{icon}</div>}\n      </div>\n    </div>\n  );\n};\n\n// ============================================\n// TRANSACTION ITEM COMPONENT\n// ============================================\nexport interface TransactionItemProps {\n  icon: React.ReactNode;\n  title: string;\n  subtitle?: string;\n  amount: string;\n  date: string;\n  status: 'success' | 'pending' | 'warning' | 'error';\n  amountColor?: 'default' | 'positive' | 'negative';\n  onClick?: () => void;\n}\n\nexport const TransactionItem: React.FC<TransactionItemProps> = ({\n  icon,\n  title,\n  subtitle,\n  amount,\n  date,\n  status,\n  amountColor = 'default',\n  onClick,\n}) => {\n  const amountColorClasses = {\n    default: 'text-gray-900 dark:text-white',\n    positive: 'text-green-600 dark:text-green-400',\n    negative: 'text-gray-900 dark:text-white',\n  };\n\n  return (\n    <div\n      onClick={onClick}\n      className={`flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${\n        onClick ? 'cursor-pointer' : ''\n      }`}\n    >\n      <div className=\"flex items-center gap-4\">\n        <div className=\"text-gray-400 dark:text-gray-500\">{icon}</div>\n        <div className=\"flex-1\">\n          <p className=\"text-sm font-medium text-gray-900 dark:text-white\">{title}</p>\n          {subtitle && <p className=\"text-xs text-gray-500 dark:text-gray-400 mt-1\">{subtitle}</p>}\n          <p className=\"text-xs text-gray-400 dark:text-gray-500 mt-1\">{date}</p>\n        </div>\n      </div>\n      <div className=\"text-right\">\n        <p className={`text-sm font-semibold ${amountColorClasses[amountColor]}`}>{amount}</p>\n        <div className=\"mt-1\">\n          <StatusBadge status={status} label=\"\" size=\"sm\" />\n        </div>\n      </div>\n    </div>\n  );\n};\n\n// ============================================\n// FORM INPUT COMPONENT\n// ============================================\nexport interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {\n  label?: string;\n  error?: string;\n  icon?: React.ReactNode;\n  helperText?: string;\n}\n\nexport const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>((\n  { label, error, icon, helperText, className = '', ...props },\n  ref\n) => {\n  return (\n    <div className=\"w-full\">\n      {label && (\n        <label className=\"block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2\">\n          {label}\n        </label>\n      )}\n      <div className=\"relative\">\n        {icon && <div className=\"absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400\">{icon}</div>}\n        <input\n          ref={ref}\n          className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${\n            error\n              ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'\n              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'\n          } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${icon ? 'pl-10' : ''} ${className}`}\n          {...props}\n        />\n      </div>\n      {error && <p className=\"text-red-600 dark:text-red-400 text-xs mt-1\">{error}</p>}\n      {helperText && !error && <p className=\"text-gray-500 dark:text-gray-400 text-xs mt-1\">{helperText}</p>}\n    </div>\n  );\n});\n\nFormInput.displayName = 'FormInput';\n\n// ============================================\n// FORM SELECT COMPONENT\n// ============================================\nexport interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {\n  label?: string;\n  error?: string;\n  options: Array<{ value: string; label: string }>;\n  helperText?: string;\n}\n\nexport const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>((\n  { label, error, options, helperText, className = '', ...props },\n  ref\n) => {\n  return (\n    <div className=\"w-full\">\n      {label && (\n        <label className=\"block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2\">\n          {label}\n        </label>\n      )}\n      <select\n        ref={ref}\n        className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 appearance-none ${\n          error\n            ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'\n            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'\n        } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}\n        {...props}\n      >\n        <option value=\"\">Select an option</option>\n        {options.map((opt) => (\n          <option key={opt.value} value={opt.value}>\n            {opt.label}\n          </option>\n        ))}\n      </select>\n      {error && <p className=\"text-red-600 dark:text-red-400 text-xs mt-1\">{error}</p>}\n      {helperText && !error && <p className=\"text-gray-500 dark:text-gray-400 text-xs mt-1\">{helperText}</p>}\n    </div>\n  );\n});\n\nFormSelect.displayName = 'FormSelect';\n\n// ============================================\n// FORM TEXTAREA COMPONENT\n// ============================================\nexport interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {\n  label?: string;\n  error?: string;\n  helperText?: string;\n}\n\nexport const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>((\n  { label, error, helperText, className = '', ...props },\n  ref\n) => {\n  return (\n    <div className=\"w-full\">\n      {label && (\n        <label className=\"block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2\">\n          {label}\n        </label>\n      )}\n      <textarea\n        ref={ref}\n        className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 resize-none ${\n          error\n            ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'\n            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'\n        } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}\n        {...props}\n      />\n      {error && <p className=\"text-red-600 dark:text-red-400 text-xs mt-1\">{error}</p>}\n      {helperText && !error && <p className=\"text-gray-500 dark:text-gray-400 text-xs mt-1\">{helperText}</p>}\n    </div>\n  );\n});\n\nFormTextarea.displayName = 'FormTextarea';\n"
+import React from 'react';
+import { Check, Clock, AlertCircle, XCircle, TrendingUp, TrendingDown } from 'lucide-react';
+
+// ============================================
+// STATUS BADGE COMPONENT
+// ============================================
+export interface StatusBadgeProps {
+  status: 'success' | 'pending' | 'warning' | 'error';
+  label: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, size = 'md' }) => {
+  const baseClasses = 'font-medium rounded-full inline-flex items-center gap-1';
+  const sizeClasses = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-3 py-1.5 text-sm',
+    lg: 'px-4 py-2 text-base',
+  };
+
+  const statusClasses = {
+    success: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200',
+    pending: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200',
+    warning: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200',
+    error: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200',
+  };
+
+  const iconClasses = {
+    success: <Check size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,
+    pending: <Clock size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,
+    warning: <AlertCircle size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,
+    error: <XCircle size={size === 'sm' ? 14 : size === 'md' ? 16 : 18} />,
+  };
+
+  return (
+    <span className={`${baseClasses} ${sizeClasses[size]} ${statusClasses[status]}`}>
+      {iconClasses[status]}
+      {label}
+    </span>
+  );
+};
+
+// ============================================
+// STAT CARD COMPONENT
+// ============================================
+export interface StatCardProps {
+  label: string;
+  value: string | number;
+  change?: number;
+  icon?: React.ReactNode;
+  trend?: 'up' | 'down' | 'neutral';
+  className?: string;
+}
+
+export const StatCard: React.FC<StatCardProps> = ({
+  label,
+  value,
+  change,
+  icon,
+  trend = 'neutral',
+  className = '',
+}) => {
+  const trendColor = {
+    up: 'text-green-600 dark:text-green-400',
+    down: 'text-red-600 dark:text-red-400',
+    neutral: 'text-gray-600 dark:text-gray-400',
+  };
+
+  return (
+    <div
+      className={`bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 ${className}`}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{label}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">{value}</p>
+          {change !== undefined && (
+            <p className={`text-sm mt-2 ${trendColor[trend]}`}>
+              {trend === 'up' && <TrendingUp className="inline mr-1" size={14} />}
+              {trend === 'down' && <TrendingDown className="inline mr-1" size={14} />}
+              {change > 0 ? '+' : ''}{change}%
+            </p>
+          )}
+        </div>
+        {icon && <div className="text-gray-400 dark:text-gray-500">{icon}</div>}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// TRANSACTION ITEM COMPONENT
+// ============================================
+export interface TransactionItemProps {
+  icon: React.ReactNode;
+  title: string;
+  subtitle?: string;
+  amount: string;
+  date: string;
+  status: 'success' | 'pending' | 'warning' | 'error';
+  amountColor?: 'default' | 'positive' | 'negative';
+  onClick?: () => void;
+}
+
+export const TransactionItem: React.FC<TransactionItemProps> = ({
+  icon,
+  title,
+  subtitle,
+  amount,
+  date,
+  status,
+  amountColor = 'default',
+  onClick,
+}) => {
+  const amountColorClasses = {
+    default: 'text-gray-900 dark:text-white',
+    positive: 'text-green-600 dark:text-green-400',
+    negative: 'text-gray-900 dark:text-white',
+  };
+
+  return (
+    <div
+      onClick={onClick}
+      className={`flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+        onClick ? 'cursor-pointer' : ''
+      }`}
+    >
+      <div className="flex items-center gap-4">
+        <div className="text-gray-400 dark:text-gray-500">{icon}</div>
+        <div className="flex-1">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">{title}</p>
+          {subtitle && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{subtitle}</p>}
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{date}</p>
+        </div>
+      </div>
+      <div className="text-right">
+        <p className={`text-sm font-semibold ${amountColorClasses[amountColor]}`}>{amount}</p>
+        <div className="mt-1">
+          <StatusBadge status={status} label="" size="sm" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// FORM INPUT COMPONENT
+// ============================================
+export interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  icon?: React.ReactNode;
+  helperText?: string;
+}
+
+export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>((
+  { label, error, icon, helperText, className = '', ...props },
+  ref
+) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        {icon && <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">{icon}</div>}
+        <input
+          ref={ref}
+          className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+            error
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'
+              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'
+          } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${icon ? 'pl-10' : ''} ${className}`}
+          {...props}
+        />
+      </div>
+      {error && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>}
+      {helperText && !error && <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{helperText}</p>}
+    </div>
+  );
+});
+
+FormInput.displayName = 'FormInput';
+
+// ============================================
+// FORM SELECT COMPONENT
+// ============================================
+export interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+  options: Array<{ value: string; label: string }>;
+  helperText?: string;
+}
+
+export const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>((
+  { label, error, options, helperText, className = '', ...props },
+  ref
+) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          {label}
+        </label>
+      )}
+      <select
+        ref={ref}
+        className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 appearance-none ${
+          error
+            ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'
+            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'
+        } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}
+        {...props}
+      >
+        <option value="">Select an option</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      {error && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>}
+      {helperText && !error && <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{helperText}</p>}
+    </div>
+  );
+});
+
+FormSelect.displayName = 'FormSelect';
+
+// ============================================
+// FORM TEXTAREA COMPONENT
+// ============================================
+export interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
+}
+
+export const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>((
+  { label, error, helperText, className = '', ...props },
+  ref
+) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          {label}
+        </label>
+      )}
+      <textarea
+        ref={ref}
+        className={`w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 resize-none ${
+          error
+            ? 'border-red-300 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:focus:ring-red-900'
+            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-900'
+        } bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}
+        {...props}
+      />
+      {error && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>}
+      {helperText && !error && <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{helperText}</p>}
+    </div>
+  );
+});
+
+FormTextarea.displayName = 'FormTextarea';

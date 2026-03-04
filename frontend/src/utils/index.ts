@@ -1,1 +1,18 @@
-// Export validation utilities\nexport {\n  validateForm,\n  validators,\n  PATTERNS,\n  luhnCheck,\n  formatPhoneNumber,\n  formatCreditCard,\n  hasErrors,\n  getFieldError,\n  useForm,\n} from './validation';\nexport type {\n  ValidationRule,\n  ValidationRules,\n  ValidationErrors,\n  UseFormOptions,\n} from './validation';\n"
+// Export validation utilities
+export {
+  validateForm,
+  validators,
+  PATTERNS,
+  luhnCheck,
+  formatPhoneNumber,
+  formatCreditCard,
+  hasErrors,
+  getFieldError,
+  useForm,
+} from './validation';
+export type {
+  ValidationRule,
+  ValidationRules,
+  ValidationErrors,
+  UseFormOptions,
+} from './validation';

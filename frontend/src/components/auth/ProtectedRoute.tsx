@@ -1,1 +1,30 @@
-import React, { ReactNode } from 'react';\nimport { Navigate } from 'react-router-dom';\nimport { useUserStore } from '@/stores';\nimport { Spinner } from '@/components/common';\n\nexport interface ProtectedRouteProps {\n  children: ReactNode;\n  redirectTo?: string;\n}\n\nexport const ProtectedRoute: React.FC<ProtectedRouteProps> = ({\n  children,\n  redirectTo = '/login',\n}) => {\n  const { user, isLoading } = useUserStore();\n  const token = localStorage.getItem('authToken');\n\n  // Still loading\n  if (isLoading) {\n    return <Spinner fullScreen size=\"lg\" />;\n  }\n\n  // Not authenticated\n  if (!user || !token) {\n    return <Navigate to={redirectTo} replace />;\n  }\n\n  // Authenticated\n  return <>{children}</>;\n};\n"
+import React, { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useUserStore } from '@/stores';
+import { Spinner } from '@/components/common';
+
+export interface ProtectedRouteProps {
+  children: ReactNode;
+  redirectTo?: string;
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  redirectTo = '/login',
+}) => {
+  const { user, isLoading } = useUserStore();
+  const token = localStorage.getItem('authToken');
+
+  // Still loading
+  if (isLoading) {
+    return <Spinner fullScreen size="lg" />;
+  }
+
+  // Not authenticated
+  if (!user || !token) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  // Authenticated
+  return <>{children}</>;
+};

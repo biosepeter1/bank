@@ -1,1 +1,79 @@
-import React, { useState, useEffect } from 'react';\nimport { useWalletStore } from '@/stores/walletStore';\nimport { useNotificationStore } from '@/stores/notificationStore';\nimport DashboardHeader from './DashboardHeader';\nimport DashboardOverview from './overview/DashboardOverview';\nimport Sidebar from './Sidebar';\nimport TransactionsPage from './pages/TransactionsPage';\nimport TransfersPage from './pages/TransfersPage';\nimport VirtualCardsPage from './pages/VirtualCardsPage';\nimport DepositsPage from './pages/DepositsPage';\nimport CurrencySwapPage from './pages/CurrencySwapPage';\nimport LoansPage from './pages/LoansPage';\nimport SettingsPage from './pages/SettingsPage';\nimport SupportPage from './pages/SupportPage';\n\ntype PageType = 'overview' | 'transactions' | 'transfers' | 'cards' | 'deposits' | 'currency' | 'loans' | 'settings' | 'support';\n\nconst Dashboard: React.FC = () => {\n  const [currentPage, setCurrentPage] = useState<PageType>('overview');\n  const [sidebarOpen, setSidebarOpen] = useState(true);\n  const { getWalletData } = useWalletStore();\n  const { getNotifications } = useNotificationStore();\n\n  useEffect(() => {\n    // Load initial data\n    getWalletData();\n    getNotifications();\n  }, []);\n\n  const renderPage = () => {\n    switch (currentPage) {\n      case 'overview':\n        return <DashboardOverview />;\n      case 'transactions':\n        return <TransactionsPage />;\n      case 'transfers':\n        return <TransfersPage />;\n      case 'cards':\n        return <VirtualCardsPage />;\n      case 'deposits':\n        return <DepositsPage />;\n      case 'currency':\n        return <CurrencySwapPage />;\n      case 'loans':\n        return <LoansPage />;\n      case 'settings':\n        return <SettingsPage />;\n      case 'support':\n        return <SupportPage />;\n      default:\n        return <DashboardOverview />;\n    }\n  };\n\n  return (\n    <div className=\"flex h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50\">\n      {/* Sidebar */}\n      <Sidebar\n        isOpen={sidebarOpen}\n        onToggle={() => setSidebarOpen(!sidebarOpen)}\n        currentPage={currentPage}\n        onPageChange={setCurrentPage}\n      />\n\n      {/* Main Content */}\n      <div className=\"flex-1 flex flex-col overflow-hidden\">\n        {/* Header */}\n        <DashboardHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />\n\n        {/* Page Content */}\n        <main className=\"flex-1 overflow-y-auto\">\n          <div className=\"p-6 md:p-8\">{renderPage()}</div>\n        </main>\n      </div>\n    </div>\n  );\n};\n\nexport default Dashboard;\n"
+import React, { useState, useEffect } from 'react';
+import { useWalletStore } from '@/stores/walletStore';
+import { useNotificationStore } from '@/stores/notificationStore';
+import DashboardHeader from './DashboardHeader';
+import DashboardOverview from './overview/DashboardOverview';
+import Sidebar from './Sidebar';
+import TransactionsPage from './pages/TransactionsPage';
+import TransfersPage from './pages/TransfersPage';
+import VirtualCardsPage from './pages/VirtualCardsPage';
+import DepositsPage from './pages/DepositsPage';
+import CurrencySwapPage from './pages/CurrencySwapPage';
+import LoansPage from './pages/LoansPage';
+import SettingsPage from './pages/SettingsPage';
+import SupportPage from './pages/SupportPage';
+
+type PageType = 'overview' | 'transactions' | 'transfers' | 'cards' | 'deposits' | 'currency' | 'loans' | 'settings' | 'support';
+
+const Dashboard: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<PageType>('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { getWalletData } = useWalletStore();
+  const { getNotifications } = useNotificationStore();
+
+  useEffect(() => {
+    // Load initial data
+    getWalletData();
+    getNotifications();
+  }, []);
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'overview':
+        return <DashboardOverview />;
+      case 'transactions':
+        return <TransactionsPage />;
+      case 'transfers':
+        return <TransfersPage />;
+      case 'cards':
+        return <VirtualCardsPage />;
+      case 'deposits':
+        return <DepositsPage />;
+      case 'currency':
+        return <CurrencySwapPage />;
+      case 'loans':
+        return <LoansPage />;
+      case 'settings':
+        return <SettingsPage />;
+      case 'support':
+        return <SupportPage />;
+      default:
+        return <DashboardOverview />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50">
+      {/* Sidebar */}
+      <Sidebar
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <DashboardHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6 md:p-8">{renderPage()}</div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

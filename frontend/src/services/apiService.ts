@@ -1,1 +1,415 @@
-import api, { handleApiError } from './api';\nimport {\n  User,\n  Account,\n  Transaction,\n  Transfer,\n  Beneficiary,\n  Card,\n  Deposit,\n  ExchangeRate,\n  Loan,\n  LoanPayment,\n  UserSettings,\n  SavingsGoal,\n  ApiResponse,\n  PaginatedResponse,\n} from '@/stores/types';\n\n// ============================================\n// AUTH ENDPOINTS\n// ============================================\nexport const authService = {\n  login: async (email: string, password: string) => {\n    try {\n      const response = await api.post<ApiResponse<{ user: User; token: string }>>(\n        '/auth/login',\n        { email, password }\n      );\n      return response.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  signup: async (userData: Partial<User> & { password: string }) => {\n    try {\n      const response = await api.post<ApiResponse<{ user: User; token: string }>>(\n        '/auth/signup',\n        userData\n      );\n      return response.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  logout: async () => {\n    try {\n      await api.post('/auth/logout');\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// USER ENDPOINTS\n// ============================================\nexport const userService = {\n  getProfile: async () => {\n    try {\n      const response = await api.get<ApiResponse<User>>('/auth/me');\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  updateProfile: async (userData: Partial<User>) => {\n    try {\n      const response = await api.put<ApiResponse<User>>(\n        '/auth/me',\n        userData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  getAccounts: async () => {\n    try {\n      const response = await api.get<ApiResponse<Account[]>>('/users/accounts');\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  getSettings: async () => {\n    try {\n      const response = await api.get<ApiResponse<UserSettings>>(\n        '/users/settings'\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  updateSettings: async (settings: Partial<UserSettings>) => {\n    try {\n      const response = await api.put<ApiResponse<UserSettings>>(\n        '/users/settings',\n        settings\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// TRANSACTION ENDPOINTS\n// ============================================\nexport const transactionService = {\n  getTransactions: async (page = 1, limit = 20) => {\n    try {\n      const response = await api.get<\n        ApiResponse<PaginatedResponse<Transaction>>\n      >('/transactions', {\n        params: { page, limit },\n      });\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  getTransactionDetails: async (id: string) => {\n    try {\n      const response = await api.get<ApiResponse<Transaction>>(\n        `/transactions/${id}`\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  exportTransactions: async (format: 'csv' | 'pdf') => {\n    try {\n      const response = await api.get(`/transactions/export/${format}`, {\n        responseType: 'blob',\n      });\n      return response.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// TRANSFER ENDPOINTS\n// ============================================\nexport const transferService = {\n  getTransfers: async (page = 1, limit = 20) => {\n    try {\n      const response = await api.get<\n        ApiResponse<PaginatedResponse<Transfer>>\n      >('/transfers', {\n        params: { page, limit },\n      });\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  createTransfer: async (transferData: Partial<Transfer>) => {\n    try {\n      const response = await api.post<ApiResponse<Transfer>>(\n        '/transfers',\n        transferData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  getBeneficiaries: async () => {\n    try {\n      const response = await api.get<ApiResponse<Beneficiary[]>>(\n        '/transfers/beneficiaries'\n      );\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  addBeneficiary: async (beneficiary: Partial<Beneficiary>) => {\n    try {\n      const response = await api.post<ApiResponse<Beneficiary>>(\n        '/transfers/beneficiaries',\n        beneficiary\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  removeBeneficiary: async (id: string) => {\n    try {\n      await api.delete(`/transfers/beneficiaries/${id}`);\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// CARD ENDPOINTS\n// ============================================\nexport const cardService = {\n  getCards: async () => {\n    try {\n      const response = await api.get<ApiResponse<Card[]>>('/cards');\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  createCard: async (cardData: Partial<Card>) => {\n    try {\n      const response = await api.post<ApiResponse<Card>>('/cards', cardData);\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  updateCard: async (id: string, cardData: Partial<Card>) => {\n    try {\n      const response = await api.put<ApiResponse<Card>>(\n        `/cards/${id}`,\n        cardData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  freezeCard: async (id: string) => {\n    try {\n      const response = await api.post<ApiResponse<Card>>(\n        `/cards/${id}/freeze`\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  unfreezeCard: async (id: string) => {\n    try {\n      const response = await api.post<ApiResponse<Card>>(\n        `/cards/${id}/unfreeze`\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// DEPOSIT ENDPOINTS\n// ============================================\nexport const depositService = {\n  getDeposits: async (page = 1, limit = 20) => {\n    try {\n      const response = await api.get<\n        ApiResponse<PaginatedResponse<Deposit>>\n      >('/deposits', {\n        params: { page, limit },\n      });\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  createDeposit: async (depositData: Partial<Deposit>) => {\n    try {\n      const response = await api.post<ApiResponse<Deposit>>(\n        '/deposits',\n        depositData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// CURRENCY ENDPOINTS\n// ============================================\nexport const currencyService = {\n  getExchangeRates: async () => {\n    try {\n      const response = await api.get<ApiResponse<ExchangeRate[]>>(\n        '/currency/rates'\n      );\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  convertCurrency: async (\n    fromAmount: number,\n    fromCurrency: string,\n    toCurrency: string\n  ) => {\n    try {\n      const response = await api.post('/currency/convert', {\n        fromAmount,\n        fromCurrency,\n        toCurrency,\n      });\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// LOAN ENDPOINTS\n// ============================================\nexport const loanService = {\n  getLoans: async () => {\n    try {\n      const response = await api.get<ApiResponse<Loan[]>>('/loans');\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  applyForLoan: async (loanData: Partial<Loan>) => {\n    try {\n      const response = await api.post<ApiResponse<Loan>>('/loans', loanData);\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  getLoanPayments: async (loanId: string) => {\n    try {\n      const response = await api.get<ApiResponse<LoanPayment[]>>(\n        `/loans/${loanId}/payments`\n      );\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n\n// ============================================\n// SAVINGS GOAL ENDPOINTS\n// ============================================\nexport const savingsService = {\n  getGoals: async () => {\n    try {\n      const response = await api.get<ApiResponse<SavingsGoal[]>>(\n        '/savings/goals'\n      );\n      return response.data.data || [];\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  createGoal: async (goalData: Partial<SavingsGoal>) => {\n    try {\n      const response = await api.post<ApiResponse<SavingsGoal>>(\n        '/savings/goals',\n        goalData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  updateGoal: async (id: string, goalData: Partial<SavingsGoal>) => {\n    try {\n      const response = await api.put<ApiResponse<SavingsGoal>>(\n        `/savings/goals/${id}`,\n        goalData\n      );\n      return response.data.data;\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n\n  deleteGoal: async (id: string) => {\n    try {\n      await api.delete(`/savings/goals/${id}`);\n    } catch (error) {\n      throw handleApiError(error);\n    }\n  },\n};\n"
+import api, { handleApiError } from './api';
+import {
+  User,
+  Account,
+  Transaction,
+  Transfer,
+  Beneficiary,
+  Card,
+  Deposit,
+  ExchangeRate,
+  Loan,
+  LoanPayment,
+  UserSettings,
+  SavingsGoal,
+  ApiResponse,
+  PaginatedResponse,
+} from '@/stores/types';
+
+// ============================================
+// AUTH ENDPOINTS
+// ============================================
+export const authService = {
+  login: async (email: string, password: string) => {
+    try {
+      const response = await api.post<ApiResponse<{ user: User; token: string }>>(
+        '/auth/login',
+        { email, password }
+      );
+      return response.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  signup: async (userData: Partial<User> & { password: string }) => {
+    try {
+      const response = await api.post<ApiResponse<{ user: User; token: string }>>(
+        '/auth/signup',
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  logout: async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// USER ENDPOINTS
+// ============================================
+export const userService = {
+  getProfile: async () => {
+    try {
+      const response = await api.get<ApiResponse<User>>('/auth/me');
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  updateProfile: async (userData: Partial<User>) => {
+    try {
+      const response = await api.put<ApiResponse<User>>(
+        '/auth/me',
+        userData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  getAccounts: async () => {
+    try {
+      const response = await api.get<ApiResponse<Account[]>>('/users/accounts');
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  getSettings: async () => {
+    try {
+      const response = await api.get<ApiResponse<UserSettings>>(
+        '/users/settings'
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  updateSettings: async (settings: Partial<UserSettings>) => {
+    try {
+      const response = await api.put<ApiResponse<UserSettings>>(
+        '/users/settings',
+        settings
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// TRANSACTION ENDPOINTS
+// ============================================
+export const transactionService = {
+  getTransactions: async (page = 1, limit = 20) => {
+    try {
+      const response = await api.get<
+        ApiResponse<PaginatedResponse<Transaction>>
+      >('/transactions', {
+        params: { page, limit },
+      });
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  getTransactionDetails: async (id: string) => {
+    try {
+      const response = await api.get<ApiResponse<Transaction>>(
+        `/transactions/${id}`
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  exportTransactions: async (format: 'csv' | 'pdf') => {
+    try {
+      const response = await api.get(`/transactions/export/${format}`, {
+        responseType: 'blob',
+      });
+      return response.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// TRANSFER ENDPOINTS
+// ============================================
+export const transferService = {
+  getTransfers: async (page = 1, limit = 20) => {
+    try {
+      const response = await api.get<
+        ApiResponse<PaginatedResponse<Transfer>>
+      >('/transfers', {
+        params: { page, limit },
+      });
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  createTransfer: async (transferData: Partial<Transfer>) => {
+    try {
+      const response = await api.post<ApiResponse<Transfer>>(
+        '/transfers',
+        transferData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  getBeneficiaries: async () => {
+    try {
+      const response = await api.get<ApiResponse<Beneficiary[]>>(
+        '/transfers/beneficiaries'
+      );
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  addBeneficiary: async (beneficiary: Partial<Beneficiary>) => {
+    try {
+      const response = await api.post<ApiResponse<Beneficiary>>(
+        '/transfers/beneficiaries',
+        beneficiary
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  removeBeneficiary: async (id: string) => {
+    try {
+      await api.delete(`/transfers/beneficiaries/${id}`);
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// CARD ENDPOINTS
+// ============================================
+export const cardService = {
+  getCards: async () => {
+    try {
+      const response = await api.get<ApiResponse<Card[]>>('/cards');
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  createCard: async (cardData: Partial<Card>) => {
+    try {
+      const response = await api.post<ApiResponse<Card>>('/cards', cardData);
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  updateCard: async (id: string, cardData: Partial<Card>) => {
+    try {
+      const response = await api.put<ApiResponse<Card>>(
+        `/cards/${id}`,
+        cardData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  freezeCard: async (id: string) => {
+    try {
+      const response = await api.post<ApiResponse<Card>>(
+        `/cards/${id}/freeze`
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  unfreezeCard: async (id: string) => {
+    try {
+      const response = await api.post<ApiResponse<Card>>(
+        `/cards/${id}/unfreeze`
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// DEPOSIT ENDPOINTS
+// ============================================
+export const depositService = {
+  getDeposits: async (page = 1, limit = 20) => {
+    try {
+      const response = await api.get<
+        ApiResponse<PaginatedResponse<Deposit>>
+      >('/deposits', {
+        params: { page, limit },
+      });
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  createDeposit: async (depositData: Partial<Deposit>) => {
+    try {
+      const response = await api.post<ApiResponse<Deposit>>(
+        '/deposits',
+        depositData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// CURRENCY ENDPOINTS
+// ============================================
+export const currencyService = {
+  getExchangeRates: async () => {
+    try {
+      const response = await api.get<ApiResponse<ExchangeRate[]>>(
+        '/currency/rates'
+      );
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  convertCurrency: async (
+    fromAmount: number,
+    fromCurrency: string,
+    toCurrency: string
+  ) => {
+    try {
+      const response = await api.post('/currency/convert', {
+        fromAmount,
+        fromCurrency,
+        toCurrency,
+      });
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// LOAN ENDPOINTS
+// ============================================
+export const loanService = {
+  getLoans: async () => {
+    try {
+      const response = await api.get<ApiResponse<Loan[]>>('/loans');
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  applyForLoan: async (loanData: Partial<Loan>) => {
+    try {
+      const response = await api.post<ApiResponse<Loan>>('/loans', loanData);
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  getLoanPayments: async (loanId: string) => {
+    try {
+      const response = await api.get<ApiResponse<LoanPayment[]>>(
+        `/loans/${loanId}/payments`
+      );
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};
+
+// ============================================
+// SAVINGS GOAL ENDPOINTS
+// ============================================
+export const savingsService = {
+  getGoals: async () => {
+    try {
+      const response = await api.get<ApiResponse<SavingsGoal[]>>(
+        '/savings/goals'
+      );
+      return response.data.data || [];
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  createGoal: async (goalData: Partial<SavingsGoal>) => {
+    try {
+      const response = await api.post<ApiResponse<SavingsGoal>>(
+        '/savings/goals',
+        goalData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  updateGoal: async (id: string, goalData: Partial<SavingsGoal>) => {
+    try {
+      const response = await api.put<ApiResponse<SavingsGoal>>(
+        `/savings/goals/${id}`,
+        goalData
+      );
+      return response.data.data;
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+
+  deleteGoal: async (id: string) => {
+    try {
+      await api.delete(`/savings/goals/${id}`);
+    } catch (error) {
+      throw handleApiError(error);
+    }
+  },
+};

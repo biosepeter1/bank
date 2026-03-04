@@ -1,1 +1,313 @@
-// ============================================\n// VALIDATION UTILITIES\n// ============================================\n\nexport interface ValidationRule {\n  required?: boolean | string;\n  minLength?: number | [number, string];\n  maxLength?: number | [number, string];\n  pattern?: RegExp | [RegExp, string];\n  custom?: (value: any) => string | null;\n  validate?: (value: any) => boolean | string;\n}\n\nexport type ValidationRules = Record<string, ValidationRule>;\n\nexport interface ValidationErrors {\n  [key: string]: string;\n}\n\n// ============================================\n// COMMON PATTERNS\n// ============================================\nexport const PATTERNS = {\n  EMAIL: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,\n  PHONE: /^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$/,\n  URL: /^(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&/=]*)$/,\n  CREDIT_CARD: /^[0-9]{13,19}$/,\n  CVV: /^[0-9]{3,4}$/,\n  ACCOUNT_NUMBER: /^[0-9]{8,17}$/,\n  ROUTING_NUMBER: /^[0-9]{9}$/,\n};\n\n// ============================================\n// VALIDATION FUNCTIONS\n// ============================================\nexport const validators = {\n  required: (value: any, message = 'This field is required'): string | null => {\n    return value === null || value === undefined || value === '' ? message : null;\n  },\n\n  email: (value: string, message = 'Please enter a valid email'): string | null => {\n    if (!value) return null;\n    return PATTERNS.EMAIL.test(value) ? null : message;\n  },\n\n  phone: (value: string, message = 'Please enter a valid phone number'): string | null => {\n    if (!value) return null;\n    return PATTERNS.PHONE.test(value) ? null : message;\n  },\n\n  url: (value: string, message = 'Please enter a valid URL'): string | null => {\n    if (!value) return null;\n    return PATTERNS.URL.test(value) ? null : message;\n  },\n\n  minLength: (value: string, min: number, message?: string): string | null => {\n    if (!value || value.length >= min) return null;\n    return message || `Minimum ${min} characters required`;\n  },\n\n  maxLength: (value: string, max: number, message?: string): string | null => {\n    if (!value || value.length <= max) return null;\n    return message || `Maximum ${max} characters allowed`;\n  },\n\n  creditCard: (value: string, message = 'Please enter a valid credit card number'): string | null => {\n    if (!value) return null;\n    const sanitized = value.replace(/\\s/g, '');\n    if (!PATTERNS.CREDIT_CARD.test(sanitized)) return message;\n    return luhnCheck(sanitized) ? null : message;\n  },\n\n  cvv: (value: string, message = 'Please enter a valid CVV'): string | null => {\n    if (!value) return null;\n    return PATTERNS.CVV.test(value) ? null : message;\n  },\n\n  password: (\n    value: string,\n    message = 'Password must be at least 8 characters with uppercase, lowercase, and number'\n  ): string | null => {\n    if (!value) return null;\n    const hasLength = value.length >= 8;\n    const hasUpper = /[A-Z]/.test(value);\n    const hasLower = /[a-z]/.test(value);\n    const hasNumber = /[0-9]/.test(value);\n    return hasLength && hasUpper && hasLower && hasNumber ? null : message;\n  },\n\n  amount: (value: any, message = 'Please enter a valid amount'): string | null => {\n    if (value === null || value === undefined || value === '') return null;\n    const num = parseFloat(value);\n    return !isNaN(num) && num > 0 ? null : message;\n  },\n\n  accountNumber: (value: string, message = 'Please enter a valid account number'): string | null => {\n    if (!value) return null;\n    return PATTERNS.ACCOUNT_NUMBER.test(value) ? null : message;\n  },\n};\n\n// ============================================\n// FORM VALIDATION\n// ============================================\nexport const validateForm = (\n  data: Record<string, any>,\n  rules: ValidationRules\n): ValidationErrors => {\n  const errors: ValidationErrors = {};\n\n  for (const [field, rule] of Object.entries(rules)) {\n    const value = data[field];\n    let error: string | null = null;\n\n    // Required validation\n    if (rule.required) {\n      error = validators.required(\n        value,\n        typeof rule.required === 'string' ? rule.required : 'This field is required'\n      );\n      if (error) {\n        errors[field] = error;\n        continue;\n      }\n    }\n\n    // Skip other validations if field is empty and not required\n    if (!value && !rule.required) continue;\n\n    // Min length validation\n    if (rule.minLength) {\n      const [min, msg] = Array.isArray(rule.minLength)\n        ? rule.minLength\n        : [rule.minLength, undefined];\n      error = validators.minLength(value, min, msg);\n      if (error) {\n        errors[field] = error;\n        continue;\n      }\n    }\n\n    // Max length validation\n    if (rule.maxLength) {\n      const [max, msg] = Array.isArray(rule.maxLength)\n        ? rule.maxLength\n        : [rule.maxLength, undefined];\n      error = validators.maxLength(value, max, msg);\n      if (error) {\n        errors[field] = error;\n        continue;\n      }\n    }\n\n    // Pattern validation\n    if (rule.pattern) {\n      const [pattern, msg] = Array.isArray(rule.pattern)\n        ? rule.pattern\n        : [rule.pattern, 'Invalid format'];\n      if (!pattern.test(String(value))) {\n        errors[field] = msg;\n        continue;\n      }\n    }\n\n    // Custom validation\n    if (rule.custom) {\n      error = rule.custom(value);\n      if (error) {\n        errors[field] = error;\n        continue;\n      }\n    }\n\n    // Validate function\n    if (rule.validate) {\n      const result = rule.validate(value);\n      if (result !== true) {\n        errors[field] = typeof result === 'string' ? result : 'Invalid value';\n      }\n    }\n  }\n\n  return errors;\n};\n\n// ============================================\n// HELPER FUNCTIONS\n// ============================================\nexport const luhnCheck = (cardNumber: string): boolean => {\n  let sum = 0;\n  let isEven = false;\n\n  for (let i = cardNumber.length - 1; i >= 0; i--) {\n    let digit = parseInt(cardNumber[i], 10);\n\n    if (isEven) {\n      digit *= 2;\n      if (digit > 9) {\n        digit -= 9;\n      }\n    }\n\n    sum += digit;\n    isEven = !isEven;\n  }\n\n  return sum % 10 === 0;\n};\n\nexport const formatPhoneNumber = (value: string): string => {\n  const cleaned = value.replace(/\\D/g, '');\n  const match = cleaned.match(/^(\\d{3})(\\d{3})(\\d{4})$/);\n  if (match) {\n    return `(${match[1]}) ${match[2]}-${match[3]}`;\n  }\n  return value;\n};\n\nexport const formatCreditCard = (value: string): string => {\n  const cleaned = value.replace(/\\D/g, '');\n  const chunks = cleaned.match(/.{1,4}/g) || [];\n  return chunks.join(' ');\n};\n\nexport const hasErrors = (errors: ValidationErrors): boolean => {\n  return Object.keys(errors).length > 0;\n};\n\nexport const getFieldError = (errors: ValidationErrors, field: string): string | null => {\n  return errors[field] || null;\n};\n\n// ============================================\n// REACT HOOK FOR FORM VALIDATION\n// ============================================\nexport interface UseFormOptions {\n  initialValues: Record<string, any>;\n  rules?: ValidationRules;\n  onSubmit?: (values: Record<string, any>) => void | Promise<void>;\n}\n\nexport const useForm = ({\n  initialValues,\n  rules = {},\n  onSubmit,\n}: UseFormOptions) => {\n  const [values, setValues] = React.useState(initialValues);\n  const [errors, setErrors] = React.useState<ValidationErrors>({});\n  const [touched, setTouched] = React.useState<Record<string, boolean>>({});\n  const [isSubmitting, setIsSubmitting] = React.useState(false);\n\n  const handleChange = (e: React.ChangeEvent<any>) => {\n    const { name, value, type, checked } = e.target;\n    setValues((prev) => ({\n      ...prev,\n      [name]: type === 'checkbox' ? checked : value,\n    }));\n  };\n\n  const handleBlur = (e: React.FocusEvent<any>) => {\n    const { name } = e.target;\n    setTouched((prev) => ({\n      ...prev,\n      [name]: true,\n    }));\n  };\n\n  const handleSubmit = async (e: React.FormEvent) => {\n    e.preventDefault();\n    setIsSubmitting(true);\n\n    const formErrors = validateForm(values, rules);\n    setErrors(formErrors);\n\n    if (!hasErrors(formErrors) && onSubmit) {\n      try {\n        await onSubmit(values);\n      } catch (error) {\n        console.error('Form submission error:', error);\n      }\n    }\n\n    setIsSubmitting(false);\n  };\n\n  const reset = () => {\n    setValues(initialValues);\n    setErrors({});\n    setTouched({});\n  };\n\n  const setFieldValue = (name: string, value: any) => {\n    setValues((prev) => ({\n      ...prev,\n      [name]: value,\n    }));\n  };\n\n  return {\n    values,\n    errors,\n    touched,\n    isSubmitting,\n    handleChange,\n    handleBlur,\n    handleSubmit,\n    reset,\n    setFieldValue,\n  };\n};\n\n// Import React for the hook\nimport React from 'react';\n"
+// ============================================
+// VALIDATION UTILITIES
+// ============================================
+
+export interface ValidationRule {
+  required?: boolean | string;
+  minLength?: number | [number, string];
+  maxLength?: number | [number, string];
+  pattern?: RegExp | [RegExp, string];
+  custom?: (value: any) => string | null;
+  validate?: (value: any) => boolean | string;
+}
+
+export type ValidationRules = Record<string, ValidationRule>;
+
+export interface ValidationErrors {
+  [key: string]: string;
+}
+
+// ============================================
+// COMMON PATTERNS
+// ============================================
+export const PATTERNS = {
+  EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  PHONE: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+  URL: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*)$/,
+  CREDIT_CARD: /^[0-9]{13,19}$/,
+  CVV: /^[0-9]{3,4}$/,
+  ACCOUNT_NUMBER: /^[0-9]{8,17}$/,
+  ROUTING_NUMBER: /^[0-9]{9}$/,
+};
+
+// ============================================
+// VALIDATION FUNCTIONS
+// ============================================
+export const validators = {
+  required: (value: any, message = 'This field is required'): string | null => {
+    return value === null || value === undefined || value === '' ? message : null;
+  },
+
+  email: (value: string, message = 'Please enter a valid email'): string | null => {
+    if (!value) return null;
+    return PATTERNS.EMAIL.test(value) ? null : message;
+  },
+
+  phone: (value: string, message = 'Please enter a valid phone number'): string | null => {
+    if (!value) return null;
+    return PATTERNS.PHONE.test(value) ? null : message;
+  },
+
+  url: (value: string, message = 'Please enter a valid URL'): string | null => {
+    if (!value) return null;
+    return PATTERNS.URL.test(value) ? null : message;
+  },
+
+  minLength: (value: string, min: number, message?: string): string | null => {
+    if (!value || value.length >= min) return null;
+    return message || `Minimum ${min} characters required`;
+  },
+
+  maxLength: (value: string, max: number, message?: string): string | null => {
+    if (!value || value.length <= max) return null;
+    return message || `Maximum ${max} characters allowed`;
+  },
+
+  creditCard: (value: string, message = 'Please enter a valid credit card number'): string | null => {
+    if (!value) return null;
+    const sanitized = value.replace(/\s/g, '');
+    if (!PATTERNS.CREDIT_CARD.test(sanitized)) return message;
+    return luhnCheck(sanitized) ? null : message;
+  },
+
+  cvv: (value: string, message = 'Please enter a valid CVV'): string | null => {
+    if (!value) return null;
+    return PATTERNS.CVV.test(value) ? null : message;
+  },
+
+  password: (
+    value: string,
+    message = 'Password must be at least 8 characters with uppercase, lowercase, and number'
+  ): string | null => {
+    if (!value) return null;
+    const hasLength = value.length >= 8;
+    const hasUpper = /[A-Z]/.test(value);
+    const hasLower = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    return hasLength && hasUpper && hasLower && hasNumber ? null : message;
+  },
+
+  amount: (value: any, message = 'Please enter a valid amount'): string | null => {
+    if (value === null || value === undefined || value === '') return null;
+    const num = parseFloat(value);
+    return !isNaN(num) && num > 0 ? null : message;
+  },
+
+  accountNumber: (value: string, message = 'Please enter a valid account number'): string | null => {
+    if (!value) return null;
+    return PATTERNS.ACCOUNT_NUMBER.test(value) ? null : message;
+  },
+};
+
+// ============================================
+// FORM VALIDATION
+// ============================================
+export const validateForm = (
+  data: Record<string, any>,
+  rules: ValidationRules
+): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  for (const [field, rule] of Object.entries(rules)) {
+    const value = data[field];
+    let error: string | null = null;
+
+    // Required validation
+    if (rule.required) {
+      error = validators.required(
+        value,
+        typeof rule.required === 'string' ? rule.required : 'This field is required'
+      );
+      if (error) {
+        errors[field] = error;
+        continue;
+      }
+    }
+
+    // Skip other validations if field is empty and not required
+    if (!value && !rule.required) continue;
+
+    // Min length validation
+    if (rule.minLength) {
+      const [min, msg] = Array.isArray(rule.minLength)
+        ? rule.minLength
+        : [rule.minLength, undefined];
+      error = validators.minLength(value, min, msg);
+      if (error) {
+        errors[field] = error;
+        continue;
+      }
+    }
+
+    // Max length validation
+    if (rule.maxLength) {
+      const [max, msg] = Array.isArray(rule.maxLength)
+        ? rule.maxLength
+        : [rule.maxLength, undefined];
+      error = validators.maxLength(value, max, msg);
+      if (error) {
+        errors[field] = error;
+        continue;
+      }
+    }
+
+    // Pattern validation
+    if (rule.pattern) {
+      const [pattern, msg] = Array.isArray(rule.pattern)
+        ? rule.pattern
+        : [rule.pattern, 'Invalid format'];
+      if (!pattern.test(String(value))) {
+        errors[field] = msg;
+        continue;
+      }
+    }
+
+    // Custom validation
+    if (rule.custom) {
+      error = rule.custom(value);
+      if (error) {
+        errors[field] = error;
+        continue;
+      }
+    }
+
+    // Validate function
+    if (rule.validate) {
+      const result = rule.validate(value);
+      if (result !== true) {
+        errors[field] = typeof result === 'string' ? result : 'Invalid value';
+      }
+    }
+  }
+
+  return errors;
+};
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+export const luhnCheck = (cardNumber: string): boolean => {
+  let sum = 0;
+  let isEven = false;
+
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber[i], 10);
+
+    if (isEven) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+
+    sum += digit;
+    isEven = !isEven;
+  }
+
+  return sum % 10 === 0;
+};
+
+export const formatPhoneNumber = (value: string): string => {
+  const cleaned = value.replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return value;
+};
+
+export const formatCreditCard = (value: string): string => {
+  const cleaned = value.replace(/\D/g, '');
+  const chunks = cleaned.match(/.{1,4}/g) || [];
+  return chunks.join(' ');
+};
+
+export const hasErrors = (errors: ValidationErrors): boolean => {
+  return Object.keys(errors).length > 0;
+};
+
+export const getFieldError = (errors: ValidationErrors, field: string): string | null => {
+  return errors[field] || null;
+};
+
+// ============================================
+// REACT HOOK FOR FORM VALIDATION
+// ============================================
+export interface UseFormOptions {
+  initialValues: Record<string, any>;
+  rules?: ValidationRules;
+  onSubmit?: (values: Record<string, any>) => void | Promise<void>;
+}
+
+export const useForm = ({
+  initialValues,
+  rules = {},
+  onSubmit,
+}: UseFormOptions) => {
+  const [values, setValues] = React.useState(initialValues);
+  const [errors, setErrors] = React.useState<ValidationErrors>({});
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleChange = (e: React.ChangeEvent<any>) => {
+    const { name, value, type, checked } = e.target;
+    setValues((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<any>) => {
+    const { name } = e.target;
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formErrors = validateForm(values, rules);
+    setErrors(formErrors);
+
+    if (!hasErrors(formErrors) && onSubmit) {
+      try {
+        await onSubmit(values);
+      } catch (error) {
+        console.error('Form submission error:', error);
+      }
+    }
+
+    setIsSubmitting(false);
+  };
+
+  const reset = () => {
+    setValues(initialValues);
+    setErrors({});
+    setTouched({});
+  };
+
+  const setFieldValue = (name: string, value: any) => {
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  return {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    reset,
+    setFieldValue,
+  };
+};
+
+// Import React for the hook
+import React from 'react';

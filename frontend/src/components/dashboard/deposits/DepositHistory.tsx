@@ -1,1 +1,120 @@
-import React from 'react';\nimport { Card, Button, Badge } from '@/components/ui';\n\ninterface Deposit {\n  id: string;\n  amount: number;\n  depositMethod: string;\n  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';\n  createdAt: string;\n  completedAt?: string;\n}\n\ninterface DepositHistoryProps {\n  deposits: Deposit[];\n  loading: boolean;\n  onNewDeposit?: () => void;\n}\n\nconst DepositHistory: React.FC<DepositHistoryProps> = ({ deposits, loading, onNewDeposit }) => {\n  const getStatusColor = (status: string) => {\n    switch (status) {\n      case 'COMPLETED':\n        return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';\n      case 'PENDING':\n        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';\n      case 'FAILED':\n        return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';\n      case 'CANCELLED':\n        return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400';\n      default:\n        return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400';\n    }\n  };\n\n  const getMethodIcon = (method: string) => {\n    switch (method) {\n      case 'PAYSTACK':\n        return '💳';\n      case 'USDT':\n        return '🪙';\n      case 'BANK_TRANSFER':\n        return '🏦';\n      default:\n        return '💰';\n    }\n  };\n\n  const formatDate = (dateString: string) => {\n    const date = new Date(dateString);\n    return date.toLocaleDateString('en-US', {\n      month: 'short',\n      day: 'numeric',\n      year: 'numeric',\n      hour: '2-digit',\n      minute: '2-digit',\n    });\n  };\n\n  if (loading) {\n    return (\n      <Card className=\"p-8 text-center\">\n        <p className=\"text-gray-500 dark:text-gray-400\">Loading deposits...</p>\n      </Card>\n    );\n  }\n\n  if (deposits.length === 0) {\n    return (\n      <Card className=\"p-8 text-center\">\n        <p className=\"text-gray-500 dark:text-gray-400 mb-4\">No deposits yet</p>\n        <Button\n          onClick={onNewDeposit}\n          className=\"mx-auto bg-green-600 hover:bg-green-700 text-white\"\n        >\n          Make your first deposit\n        </Button>\n      </Card>\n    );\n  }\n\n  return (\n    <div className=\"space-y-3\">\n      {deposits.map((deposit) => (\n        <Card key={deposit.id} className=\"p-4 hover:shadow-md transition-shadow\">\n          <div className=\"flex items-center justify-between\">\n            <div className=\"flex-1\">\n              <div className=\"flex items-center gap-3\">\n                <div className=\"w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-lg\">\n                  {getMethodIcon(deposit.depositMethod)}\n                </div>\n                <div>\n                  <h4 className=\"font-semibold text-gray-900 dark:text-white\">\n                    {deposit.depositMethod}\n                  </h4>\n                  <p className=\"text-sm text-gray-500 dark:text-gray-400\">\n                    {formatDate(deposit.createdAt)}\n                  </p>\n                </div>\n              </div>\n            </div>\n\n            <div className=\"text-right\">\n              <p className=\"font-semibold text-gray-900 dark:text-white mb-2\">\n                +₦{deposit.amount.toLocaleString('en-NG', {\n                  minimumFractionDigits: 2,\n                  maximumFractionDigits: 2,\n                })}\n              </p>\n              <Badge className={`${getStatusColor(deposit.status)} text-xs font-medium`}>\n                {deposit.status}\n              </Badge>\n            </div>\n          </div>\n        </Card>\n      ))}\n    </div>\n  );\n};\n\nexport default DepositHistory;\n"
+import React from 'react';
+import { Card, Button, Badge } from '@/components/ui';
+
+interface Deposit {
+  id: string;
+  amount: number;
+  depositMethod: string;
+  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+  createdAt: string;
+  completedAt?: string;
+}
+
+interface DepositHistoryProps {
+  deposits: Deposit[];
+  loading: boolean;
+  onNewDeposit?: () => void;
+}
+
+const DepositHistory: React.FC<DepositHistoryProps> = ({ deposits, loading, onNewDeposit }) => {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'COMPLETED':
+        return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
+      case 'PENDING':
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
+      case 'FAILED':
+        return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
+      case 'CANCELLED':
+        return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400';
+      default:
+        return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400';
+    }
+  };
+
+  const getMethodIcon = (method: string) => {
+    switch (method) {
+      case 'PAYSTACK':
+        return '💳';
+      case 'USDT':
+        return '🪙';
+      case 'BANK_TRANSFER':
+        return '🏦';
+      default:
+        return '💰';
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  if (loading) {
+    return (
+      <Card className="p-8 text-center">
+        <p className="text-gray-500 dark:text-gray-400">Loading deposits...</p>
+      </Card>
+    );
+  }
+
+  if (deposits.length === 0) {
+    return (
+      <Card className="p-8 text-center">
+        <p className="text-gray-500 dark:text-gray-400 mb-4">No deposits yet</p>
+        <Button
+          onClick={onNewDeposit}
+          className="mx-auto bg-green-600 hover:bg-green-700 text-white"
+        >
+          Make your first deposit
+        </Button>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {deposits.map((deposit) => (
+        <Card key={deposit.id} className="p-4 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-lg">
+                  {getMethodIcon(deposit.depositMethod)}
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                    {deposit.depositMethod}
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {formatDate(deposit.createdAt)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <p className="font-semibold text-gray-900 dark:text-white mb-2">
+                +₦{deposit.amount.toLocaleString('en-NG', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+              <Badge className={`${getStatusColor(deposit.status)} text-xs font-medium`}>
+                {deposit.status}
+              </Badge>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+export default DepositHistory;

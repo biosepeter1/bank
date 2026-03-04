@@ -1,1 +1,242 @@
-import React, { useEffect, useState } from 'react';\nimport { Card, Button, Input, Label, Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui';\nimport { useTransferStore } from '@/stores/transferStore';\n\nconst BeneficiaryManager: React.FC = () => {\n  const {\n    beneficiaries,\n    loading,\n    error,\n    getBeneficiaries,\n    addBeneficiary,\n    removeBeneficiary,\n    clearError,\n  } = useTransferStore();\n\n  const [showAddForm, setShowAddForm] = useState(false);\n  const [formData, setFormData] = useState({\n    accountNumber: '',\n    accountName: '',\n    bankCode: '',\n  });\n  const [formError, setFormError] = useState('');\n\n  useEffect(() => {\n    getBeneficiaries();\n  }, []);\n\n  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    const { name, value } = e.target;\n    setFormData((prev) => ({\n      ...prev,\n      [name]: value,\n    }));\n    setFormError('');\n  };\n\n  const validateForm = (): boolean => {\n    if (!formData.accountNumber.trim()) {\n      setFormError('Account number is required');\n      return false;\n    }\n    if (!formData.accountName.trim()) {\n      setFormError('Account name is required');\n      return false;\n    }\n    if (!formData.bankCode.trim()) {\n      setFormError('Bank code is required');\n      return false;\n    }\n    return true;\n  };\n\n  const handleAddBeneficiary = async (e: React.FormEvent) => {\n    e.preventDefault();\n    if (!validateForm()) return;\n\n    try {\n      await addBeneficiary({\n        accountNumber: formData.accountNumber,\n        accountName: formData.accountName,\n        bankCode: formData.bankCode,\n      });\n      setFormData({ accountNumber: '', accountName: '', bankCode: '' });\n      setShowAddForm(false);\n    } catch (err) {\n      console.error('Failed to add beneficiary:', err);\n    }\n  };\n\n  const handleRemove = async (beneficiaryId: string) => {\n    if (window.confirm('Are you sure you want to remove this beneficiary?')) {\n      try {\n        await removeBeneficiary(beneficiaryId);\n      } catch (err) {\n        console.error('Failed to remove beneficiary:', err);\n      }\n    }\n  };\n\n  return (\n    <div className=\"space-y-4\">\n      {/* Header */}\n      <div className=\"flex items-center justify-between\">\n        <h3 className=\"text-lg font-semibold text-gray-900 dark:text-white\">Saved Beneficiaries</h3>\n        <Button\n          onClick={() => setShowAddForm(true)}\n          className=\"bg-blue-600 hover:bg-blue-700 text-white\"\n          size=\"sm\"\n        >\n          Add Beneficiary\n        </Button>\n      </div>\n\n      {/* Error Alert */}\n      {error && (\n        <div className=\"bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4\">\n          <p className=\"text-sm text-red-700 dark:text-red-400\">{error}</p>\n          <Button size=\"sm\" variant=\"ghost\" onClick={clearError} className=\"mt-2\">\n            Dismiss\n          </Button>\n        </div>\n      )}\n\n      {/* Beneficiaries List */}\n      {loading ? (\n        <div className=\"text-center py-8\">\n          <p className=\"text-gray-500 dark:text-gray-400\">Loading beneficiaries...</p>\n        </div>\n      ) : beneficiaries.length === 0 ? (\n        <Card className=\"p-8 text-center\">\n          <p className=\"text-gray-500 dark:text-gray-400 mb-4\">No beneficiaries added yet</p>\n          <Button\n            onClick={() => setShowAddForm(true)}\n            variant=\"outline\"\n            className=\"mx-auto\"\n          >\n            Add your first beneficiary\n          </Button>\n        </Card>\n      ) : (\n        <div className=\"grid gap-4\">\n          {beneficiaries.map((beneficiary) => (\n            <Card key={beneficiary.id} className=\"p-4\">\n              <div className=\"flex items-start justify-between\">\n                <div className=\"flex-1\">\n                  <h4 className=\"font-semibold text-gray-900 dark:text-white\">{beneficiary.accountName}</h4>\n                  <p className=\"text-sm text-gray-500 dark:text-gray-400 mt-1\">\n                    Account: {beneficiary.accountNumber}\n                  </p>\n                  <p className=\"text-sm text-gray-500 dark:text-gray-400\">\n                    Bank Code: {beneficiary.bankCode}\n                  </p>\n                </div>\n                <Button\n                  onClick={() => handleRemove(beneficiary.id)}\n                  variant=\"ghost\"\n                  size=\"sm\"\n                  className=\"text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20\"\n                >\n                  Remove\n                </Button>\n              </div>\n            </Card>\n          ))}\n        </div>\n      )}\n\n      {/* Add Beneficiary Modal */}\n      {showAddForm && (\n        <div className=\"fixed inset-0 bg-black/50 flex items-center justify-center z-50\">\n          <Card className=\"w-full max-w-md\">\n            <div className=\"p-6\">\n              <div className=\"flex items-center justify-between mb-4\">\n                <h3 className=\"text-lg font-semibold text-gray-900 dark:text-white\">\n                  Add Beneficiary\n                </h3>\n                <button\n                  onClick={() => setShowAddForm(false)}\n                  className=\"text-gray-400 hover:text-gray-600 dark:hover:text-gray-300\"\n                >\n                  ✕\n                </button>\n              </div>\n\n              <form onSubmit={handleAddBeneficiary} className=\"space-y-4\">\n                <div>\n                  <Label htmlFor=\"accountNumber\" className=\"block text-sm font-medium text-gray-700 dark:text-gray-300\">\n                    Account Number\n                  </Label>\n                  <Input\n                    id=\"accountNumber\"\n                    name=\"accountNumber\"\n                    type=\"text\"\n                    placeholder=\"Enter account number\"\n                    value={formData.accountNumber}\n                    onChange={handleInputChange}\n                    className=\"mt-1 w-full\"\n                  />\n                </div>\n\n                <div>\n                  <Label htmlFor=\"accountName\" className=\"block text-sm font-medium text-gray-700 dark:text-gray-300\">\n                    Account Name\n                  </Label>\n                  <Input\n                    id=\"accountName\"\n                    name=\"accountName\"\n                    type=\"text\"\n                    placeholder=\"Enter account name\"\n                    value={formData.accountName}\n                    onChange={handleInputChange}\n                    className=\"mt-1 w-full\"\n                  />\n                </div>\n\n                <div>\n                  <Label htmlFor=\"bankCode\" className=\"block text-sm font-medium text-gray-700 dark:text-gray-300\">\n                    Bank Code\n                  </Label>\n                  <Input\n                    id=\"bankCode\"\n                    name=\"bankCode\"\n                    type=\"text\"\n                    placeholder=\"e.g. 044\"\n                    value={formData.bankCode}\n                    onChange={handleInputChange}\n                    className=\"mt-1 w-full\"\n                  />\n                </div>\n\n                {formError && (\n                  <div className=\"bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3\">\n                    <p className=\"text-sm text-red-700 dark:text-red-400\">{formError}</p>\n                  </div>\n                )}\n\n                <div className=\"flex gap-3 justify-end\">\n                  <Button\n                    type=\"button\"\n                    variant=\"outline\"\n                    onClick={() => setShowAddForm(false)}\n                  >\n                    Cancel\n                  </Button>\n                  <Button\n                    type=\"submit\"\n                    disabled={loading}\n                    className=\"bg-blue-600 hover:bg-blue-700 text-white\"\n                  >\n                    {loading ? 'Adding...' : 'Add Beneficiary'}\n                  </Button>\n                </div>\n              </form>\n            </div>\n          </Card>\n        </div>\n      )}\n    </div>\n  );\n};\n\nexport default BeneficiaryManager;\n"
+import React, { useEffect, useState } from 'react';
+import { Card, Button, Input, Label, Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui';
+import { useTransferStore } from '@/stores/transferStore';
+
+const BeneficiaryManager: React.FC = () => {
+  const {
+    beneficiaries,
+    loading,
+    error,
+    getBeneficiaries,
+    addBeneficiary,
+    removeBeneficiary,
+    clearError,
+  } = useTransferStore();
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [formData, setFormData] = useState({
+    accountNumber: '',
+    accountName: '',
+    bankCode: '',
+  });
+  const [formError, setFormError] = useState('');
+
+  useEffect(() => {
+    getBeneficiaries();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setFormError('');
+  };
+
+  const validateForm = (): boolean => {
+    if (!formData.accountNumber.trim()) {
+      setFormError('Account number is required');
+      return false;
+    }
+    if (!formData.accountName.trim()) {
+      setFormError('Account name is required');
+      return false;
+    }
+    if (!formData.bankCode.trim()) {
+      setFormError('Bank code is required');
+      return false;
+    }
+    return true;
+  };
+
+  const handleAddBeneficiary = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      await addBeneficiary({
+        accountNumber: formData.accountNumber,
+        accountName: formData.accountName,
+        bankCode: formData.bankCode,
+      });
+      setFormData({ accountNumber: '', accountName: '', bankCode: '' });
+      setShowAddForm(false);
+    } catch (err) {
+      console.error('Failed to add beneficiary:', err);
+    }
+  };
+
+  const handleRemove = async (beneficiaryId: string) => {
+    if (window.confirm('Are you sure you want to remove this beneficiary?')) {
+      try {
+        await removeBeneficiary(beneficiaryId);
+      } catch (err) {
+        console.error('Failed to remove beneficiary:', err);
+      }
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Saved Beneficiaries</h3>
+        <Button
+          onClick={() => setShowAddForm(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+          size="sm"
+        >
+          Add Beneficiary
+        </Button>
+      </div>
+
+      {/* Error Alert */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+          <Button size="sm" variant="ghost" onClick={clearError} className="mt-2">
+            Dismiss
+          </Button>
+        </div>
+      )}
+
+      {/* Beneficiaries List */}
+      {loading ? (
+        <div className="text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400">Loading beneficiaries...</p>
+        </div>
+      ) : beneficiaries.length === 0 ? (
+        <Card className="p-8 text-center">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">No beneficiaries added yet</p>
+          <Button
+            onClick={() => setShowAddForm(true)}
+            variant="outline"
+            className="mx-auto"
+          >
+            Add your first beneficiary
+          </Button>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {beneficiaries.map((beneficiary) => (
+            <Card key={beneficiary.id} className="p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white">{beneficiary.accountName}</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Account: {beneficiary.accountNumber}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Bank Code: {beneficiary.bankCode}
+                  </p>
+                </div>
+                <Button
+                  onClick={() => handleRemove(beneficiary.id)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  Remove
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Add Beneficiary Modal */}
+      {showAddForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-full max-w-md">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Add Beneficiary
+                </h3>
+                <button
+                  onClick={() => setShowAddForm(false)}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleAddBeneficiary} className="space-y-4">
+                <div>
+                  <Label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Account Number
+                  </Label>
+                  <Input
+                    id="accountNumber"
+                    name="accountNumber"
+                    type="text"
+                    placeholder="Enter account number"
+                    value={formData.accountNumber}
+                    onChange={handleInputChange}
+                    className="mt-1 w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="accountName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Account Name
+                  </Label>
+                  <Input
+                    id="accountName"
+                    name="accountName"
+                    type="text"
+                    placeholder="Enter account name"
+                    value={formData.accountName}
+                    onChange={handleInputChange}
+                    className="mt-1 w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="bankCode" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Bank Code
+                  </Label>
+                  <Input
+                    id="bankCode"
+                    name="bankCode"
+                    type="text"
+                    placeholder="e.g. 044"
+                    value={formData.bankCode}
+                    onChange={handleInputChange}
+                    className="mt-1 w-full"
+                  />
+                </div>
+
+                {formError && (
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                    <p className="text-sm text-red-700 dark:text-red-400">{formError}</p>
+                  </div>
+                )}
+
+                <div className="flex gap-3 justify-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowAddForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {loading ? 'Adding...' : 'Add Beneficiary'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BeneficiaryManager;

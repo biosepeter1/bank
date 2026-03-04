@@ -1,1 +1,100 @@
-import React, { useEffect, useState } from 'react';\nimport { Card, Button, Tabs, TabsContent, TabsList, TabsTrigger, Badge } from '@/components/ui';\nimport { useTransferStore } from '@/stores/transferStore';\nimport LocalTransferForm from '../transfers/LocalTransferForm';\nimport BeneficiaryManager from '../transfers/BeneficiaryManager';\nimport TransferHistory from '../transfers/TransferHistory';\n\nconst TransfersTab: React.FC = () => {\n  const [showNewTransfer, setShowNewTransfer] = useState(false);\n  const { transfers, loading, error, getTransferHistory, clearError } = useTransferStore();\n\n  useEffect(() => {\n    getTransferHistory();\n  }, []);\n\n  return (\n    <div className=\"space-y-6\">\n      {/* Header */}\n      <div className=\"flex items-center justify-between\">\n        <div>\n          <h2 className=\"text-2xl font-bold text-gray-900 dark:text-white\">Transfers</h2>\n          <p className=\"text-sm text-gray-500 dark:text-gray-400 mt-1\">\n            Send money locally or internationally\n          </p>\n        </div>\n        <Button\n          onClick={() => setShowNewTransfer(true)}\n          className=\"bg-blue-600 hover:bg-blue-700 text-white\"\n        >\n          New Transfer\n        </Button>\n      </div>\n\n      {/* Error Alert */}\n      {error && (\n        <div className=\"bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4\">\n          <p className=\"text-sm text-red-700 dark:text-red-400\">{error}</p>\n          <Button\n            size=\"sm\"\n            variant=\"ghost\"\n            onClick={clearError}\n            className=\"mt-2\"\n          >\n            Dismiss\n          </Button>\n        </div>\n      )}\n\n      {/* Main Content */}\n      <Tabs defaultValue=\"history\" className=\"w-full\">\n        <TabsList className=\"bg-gray-100 dark:bg-gray-800 p-1\">\n          <TabsTrigger value=\"history\" className=\"data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700\">\n            Transfer History\n          </TabsTrigger>\n          <TabsTrigger value=\"beneficiaries\" className=\"data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700\">\n            Beneficiaries\n          </TabsTrigger>\n        </TabsList>\n\n        {/* Transfer History */}\n        <TabsContent value=\"history\" className=\"mt-4\">\n          <TransferHistory\n            transfers={transfers}\n            loading={loading}\n            onNewTransfer={() => setShowNewTransfer(true)}\n          />\n        </TabsContent>\n\n        {/* Beneficiaries */}\n        <TabsContent value=\"beneficiaries\" className=\"mt-4\">\n          <BeneficiaryManager />\n        </TabsContent>\n      </Tabs>\n\n      {/* New Transfer Modal */}\n      {showNewTransfer && (\n        <div className=\"fixed inset-0 bg-black/50 flex items-center justify-center z-50\">\n          <Card className=\"w-full max-w-md\">\n            <div className=\"p-6\">\n              <div className=\"flex items-center justify-between mb-4\">\n                <h3 className=\"text-lg font-semibold text-gray-900 dark:text-white\">\n                  New Transfer\n                </h3>\n                <button\n                  onClick={() => setShowNewTransfer(false)}\n                  className=\"text-gray-400 hover:text-gray-600 dark:hover:text-gray-300\"\n                >\n                  ✕\n                </button>\n              </div>\n              <LocalTransferForm onSuccess={() => setShowNewTransfer(false)} />\n            </div>\n          </Card>\n        </div>\n      )}\n    </div>\n  );\n};\n\nexport default TransfersTab;\n"
+import React, { useEffect, useState } from 'react';
+import { Card, Button, Tabs, TabsContent, TabsList, TabsTrigger, Badge } from '@/components/ui';
+import { useTransferStore } from '@/stores/transferStore';
+import LocalTransferForm from '../transfers/LocalTransferForm';
+import BeneficiaryManager from '../transfers/BeneficiaryManager';
+import TransferHistory from '../transfers/TransferHistory';
+
+const TransfersTab: React.FC = () => {
+  const [showNewTransfer, setShowNewTransfer] = useState(false);
+  const { transfers, loading, error, getTransferHistory, clearError } = useTransferStore();
+
+  useEffect(() => {
+    getTransferHistory();
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Transfers</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Send money locally or internationally
+          </p>
+        </div>
+        <Button
+          onClick={() => setShowNewTransfer(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          New Transfer
+        </Button>
+      </div>
+
+      {/* Error Alert */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={clearError}
+            className="mt-2"
+          >
+            Dismiss
+          </Button>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <Tabs defaultValue="history" className="w-full">
+        <TabsList className="bg-gray-100 dark:bg-gray-800 p-1">
+          <TabsTrigger value="history" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            Transfer History
+          </TabsTrigger>
+          <TabsTrigger value="beneficiaries" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            Beneficiaries
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Transfer History */}
+        <TabsContent value="history" className="mt-4">
+          <TransferHistory
+            transfers={transfers}
+            loading={loading}
+            onNewTransfer={() => setShowNewTransfer(true)}
+          />
+        </TabsContent>
+
+        {/* Beneficiaries */}
+        <TabsContent value="beneficiaries" className="mt-4">
+          <BeneficiaryManager />
+        </TabsContent>
+      </Tabs>
+
+      {/* New Transfer Modal */}
+      {showNewTransfer && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-full max-w-md">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  New Transfer
+                </h3>
+                <button
+                  onClick={() => setShowNewTransfer(false)}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  ✕
+                </button>
+              </div>
+              <LocalTransferForm onSuccess={() => setShowNewTransfer(false)} />
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default TransfersTab;

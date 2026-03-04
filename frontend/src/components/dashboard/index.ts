@@ -1,1 +1,44 @@
-// Dashboard Main Components\nexport { default as DashboardMain } from './DashboardMain';\n\n// Dashboard Layout Components\nexport { Sidebar } from './layout/Sidebar';\nexport { DashboardHeader } from './layout/DashboardHeader';\n\n// Dashboard Pages\nexport {\n  DashboardOverview,\n  TransactionsPage,\n  TransfersPage,\n  VirtualCardsPage,\n  DepositsPage,\n  CurrencySwapPage,\n  LoansPage,\n  SettingsPage,\n  SupportPage,\n} from './pages';\n\n// Shared UI Components\nexport {\n  StatusBadge,\n  StatCard,\n  TransactionItem,\n  FormInput,\n  FormSelect,\n  FormTextarea,\n} from './shared';\n\nexport type {\n  StatusBadgeProps,\n  StatCardProps,\n  TransactionItemProps,\n  FormInputProps,\n  FormSelectProps,\n  FormTextareaProps,\n} from './shared';\n\n// Overview Sub-components\nexport { BalanceCard } from './pages/overview/BalanceCard';\nexport { QuickActions } from './pages/overview/QuickActions';\nexport { RecentTransactions } from './pages/overview/RecentTransactions';\nexport { SpendingChart } from './pages/overview/SpendingChart';\n"
+// Dashboard Main Components
+export { default as DashboardMain } from './DashboardMain';
+
+// Dashboard Layout Components
+export { Sidebar } from './layout/Sidebar';
+export { DashboardHeader } from './layout/DashboardHeader';
+
+// Dashboard Pages
+export {
+  DashboardOverview,
+  TransactionsPage,
+  TransfersPage,
+  VirtualCardsPage,
+  DepositsPage,
+  CurrencySwapPage,
+  LoansPage,
+  SettingsPage,
+  SupportPage,
+} from './pages';
+
+// Shared UI Components
+export {
+  StatusBadge,
+  StatCard,
+  TransactionItem,
+  FormInput,
+  FormSelect,
+  FormTextarea,
+} from './shared';
+
+export type {
+  StatusBadgeProps,
+  StatCardProps,
+  TransactionItemProps,
+  FormInputProps,
+  FormSelectProps,
+  FormTextareaProps,
+} from './shared';
+
+// Overview Sub-components
+export { BalanceCard } from './pages/overview/BalanceCard';
+export { QuickActions } from './pages/overview/QuickActions';
+export { RecentTransactions } from './pages/overview/RecentTransactions';
+export { SpendingChart } from './pages/overview/SpendingChart';

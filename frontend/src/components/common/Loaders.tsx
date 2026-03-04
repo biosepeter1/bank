@@ -1,1 +1,168 @@
-import React from 'react';\nimport { Loader2 } from 'lucide-react';\n\n// ============================================\n// SPINNER LOADER\n// ============================================\nexport interface SpinnerProps {\n  size?: 'sm' | 'md' | 'lg';\n  color?: 'primary' | 'white' | 'gray';\n  fullScreen?: boolean;\n}\n\nconst sizeClasses = {\n  sm: 'w-6 h-6',\n  md: 'w-10 h-10',\n  lg: 'w-16 h-16',\n};\n\nconst colorClasses = {\n  primary: 'text-blue-600 dark:text-blue-400',\n  white: 'text-white',\n  gray: 'text-gray-400 dark:text-gray-500',\n};\n\nexport const Spinner: React.FC<SpinnerProps> = ({\n  size = 'md',\n  color = 'primary',\n  fullScreen = false,\n}) => {\n  const spinner = (\n    <Loader2 className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`} />\n  );\n\n  if (fullScreen) {\n    return (\n      <div className=\"fixed inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-40\">\n        {spinner}\n      </div>\n    );\n  }\n\n  return <div className=\"flex items-center justify-center p-4\">{spinner}</div>;\n};\n\n// ============================================\n// SKELETON LOADER\n// ============================================\nexport interface SkeletonProps {\n  width?: string;\n  height?: string;\n  variant?: 'text' | 'circle' | 'rect';\n  count?: number;\n  className?: string;\n}\n\nexport const Skeleton: React.FC<SkeletonProps> = ({\n  width = '100%',\n  height = '20px',\n  variant = 'rect',\n  count = 1,\n  className = '',\n}) => {\n  const skeletonItem = (\n    <div\n      className={`bg-gray-200 dark:bg-gray-700 animate-pulse ${\n        variant === 'circle' ? 'rounded-full' : 'rounded'\n      } ${className}`}\n      style={{\n        width: variant === 'circle' ? height : width,\n        height,\n      }}\n    />\n  );\n\n  if (count > 1) {\n    return (\n      <div className=\"space-y-3\">\n        {Array.from({ length: count }).map((_, i) => (\n          <div key={i}>{skeletonItem}</div>\n        ))}\n      </div>\n    );\n  }\n\n  return skeletonItem;\n};\n\n// ============================================\n// SKELETON TABLE ROW\n// ============================================\ninterface SkeletonTableRowProps {\n  columns?: number;\n  rows?: number;\n}\n\nexport const SkeletonTableRow: React.FC<SkeletonTableRowProps> = ({\n  columns = 4,\n  rows = 3,\n}) => {\n  return (\n    <div className=\"space-y-3\">\n      {Array.from({ length: rows }).map((_, rowIdx) => (\n        <div key={rowIdx} className=\"flex gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg\">\n          {Array.from({ length: columns }).map((_, colIdx) => (\n            <Skeleton key={colIdx} width=\"100%\" height=\"20px\" />\n          ))}\n        </div>\n      ))}\n    </div>\n  );\n};\n\n// ============================================\n// SKELETON CARD\n// ============================================\nexport interface SkeletonCardProps {\n  count?: number;\n}\n\nexport const SkeletonCard: React.FC<SkeletonCardProps> = ({ count = 1 }) => {\n  const card = (\n    <div className=\"bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700\">\n      <Skeleton height=\"24px\" width=\"40%\" className=\"mb-4\" />\n      <Skeleton height=\"16px\" width=\"100%\" className=\"mb-3\" />\n      <Skeleton height=\"16px\" width=\"90%\" className=\"mb-4\" />\n      <Skeleton height=\"40px\" width=\"100%\" />\n    </div>\n  );\n\n  if (count > 1) {\n    return (\n      <div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4\">\n        {Array.from({ length: count }).map((_, i) => (\n          <div key={i}>{card}</div>\n        ))}\n      </div>\n    );\n  }\n\n  return card;\n};\n\n// ============================================\n// SKELETON LIST ITEM\n// ============================================\nexport const SkeletonListItem: React.FC<{ count?: number }> = ({ count = 1 }) => {\n  const item = (\n    <div className=\"flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg\">\n      <Skeleton variant=\"circle\" height=\"40px\" className=\"flex-shrink-0\" />\n      <div className=\"flex-1 min-w-0\">\n        <Skeleton height=\"16px\" width=\"60%\" className=\"mb-2\" />\n        <Skeleton height=\"14px\" width=\"40%\" />\n      </div>\n    </div>\n  );\n\n  if (count > 1) {\n    return (\n      <div className=\"space-y-3\">\n        {Array.from({ length: count }).map((_, i) => (\n          <div key={i}>{item}</div>\n        ))}\n      </div>\n    );\n  }\n\n  return item;\n};\n"
+import React from 'react';
+import { Loader2 } from 'lucide-react';
+
+// ============================================
+// SPINNER LOADER
+// ============================================
+export interface SpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'primary' | 'white' | 'gray';
+  fullScreen?: boolean;
+}
+
+const sizeClasses = {
+  sm: 'w-6 h-6',
+  md: 'w-10 h-10',
+  lg: 'w-16 h-16',
+};
+
+const colorClasses = {
+  primary: 'text-blue-600 dark:text-blue-400',
+  white: 'text-white',
+  gray: 'text-gray-400 dark:text-gray-500',
+};
+
+export const Spinner: React.FC<SpinnerProps> = ({
+  size = 'md',
+  color = 'primary',
+  fullScreen = false,
+}) => {
+  const spinner = (
+    <Loader2 className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`} />
+  );
+
+  if (fullScreen) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-40">
+        {spinner}
+      </div>
+    );
+  }
+
+  return <div className="flex items-center justify-center p-4">{spinner}</div>;
+};
+
+// ============================================
+// SKELETON LOADER
+// ============================================
+export interface SkeletonProps {
+  width?: string;
+  height?: string;
+  variant?: 'text' | 'circle' | 'rect';
+  count?: number;
+  className?: string;
+}
+
+export const Skeleton: React.FC<SkeletonProps> = ({
+  width = '100%',
+  height = '20px',
+  variant = 'rect',
+  count = 1,
+  className = '',
+}) => {
+  const skeletonItem = (
+    <div
+      className={`bg-gray-200 dark:bg-gray-700 animate-pulse ${
+        variant === 'circle' ? 'rounded-full' : 'rounded'
+      } ${className}`}
+      style={{
+        width: variant === 'circle' ? height : width,
+        height,
+      }}
+    />
+  );
+
+  if (count > 1) {
+    return (
+      <div className="space-y-3">
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={i}>{skeletonItem}</div>
+        ))}
+      </div>
+    );
+  }
+
+  return skeletonItem;
+};
+
+// ============================================
+// SKELETON TABLE ROW
+// ============================================
+interface SkeletonTableRowProps {
+  columns?: number;
+  rows?: number;
+}
+
+export const SkeletonTableRow: React.FC<SkeletonTableRowProps> = ({
+  columns = 4,
+  rows = 3,
+}) => {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, rowIdx) => (
+        <div key={rowIdx} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          {Array.from({ length: columns }).map((_, colIdx) => (
+            <Skeleton key={colIdx} width="100%" height="20px" />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ============================================
+// SKELETON CARD
+// ============================================
+export interface SkeletonCardProps {
+  count?: number;
+}
+
+export const SkeletonCard: React.FC<SkeletonCardProps> = ({ count = 1 }) => {
+  const card = (
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+      <Skeleton height="24px" width="40%" className="mb-4" />
+      <Skeleton height="16px" width="100%" className="mb-3" />
+      <Skeleton height="16px" width="90%" className="mb-4" />
+      <Skeleton height="40px" width="100%" />
+    </div>
+  );
+
+  if (count > 1) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={i}>{card}</div>
+        ))}
+      </div>
+    );
+  }
+
+  return card;
+};
+
+// ============================================
+// SKELETON LIST ITEM
+// ============================================
+export const SkeletonListItem: React.FC<{ count?: number }> = ({ count = 1 }) => {
+  const item = (
+    <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <Skeleton variant="circle" height="40px" className="flex-shrink-0" />
+      <div className="flex-1 min-w-0">
+        <Skeleton height="16px" width="60%" className="mb-2" />
+        <Skeleton height="14px" width="40%" />
+      </div>
+    </div>
+  );
+
+  if (count > 1) {
+    return (
+      <div className="space-y-3">
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={i}>{item}</div>
+        ))}
+      </div>
+    );
+  }
+
+  return item;
+};

@@ -1,1 +1,86 @@
-import { create } from 'zustand';\nimport { Transaction, Transfer, Beneficiary, TransactionFilter } from './types';\n\ninterface TransactionStore {\n  transactions: Transaction[];\n  transfers: Transfer[];\n  beneficiaries: Beneficiary[];\n  isLoading: boolean;\n  error: string | null;\n\n  // Transaction actions\n  setTransactions: (transactions: Transaction[]) => void;\n  addTransaction: (transaction: Transaction) => void;\n  filterTransactions: (filter: TransactionFilter) => Transaction[];\n  \n  // Transfer actions\n  setTransfers: (transfers: Transfer[]) => void;\n  addTransfer: (transfer: Transfer) => void;\n  \n  // Beneficiary actions\n  setBeneficiaries: (beneficiaries: Beneficiary[]) => void;\n  addBeneficiary: (beneficiary: Beneficiary) => void;\n  removeBeneficiary: (id: string) => void;\n  \n  setLoading: (loading: boolean) => void;\n  setError: (error: string | null) => void;\n}\n\nexport const useTransactionStore = create<TransactionStore>((set, get) => ({\n  transactions: [],\n  transfers: [],\n  beneficiaries: [],\n  isLoading: false,\n  error: null,\n\n  setTransactions: (transactions) => set({ transactions }),\n  \n  addTransaction: (transaction) =>\n    set((state) => ({\n      transactions: [transaction, ...state.transactions],\n    })),\n  \n  filterTransactions: (filter) => {\n    const state = get();\n    return state.transactions.filter((tx) => {\n      if (filter.type && tx.type !== filter.type) return false;\n      if (filter.category && tx.category !== filter.category) return false;\n      if (filter.status && tx.status !== filter.status) return false;\n      if (filter.startDate && tx.date < filter.startDate) return false;\n      if (filter.endDate && tx.date > filter.endDate) return false;\n      if (filter.minAmount && tx.amount < filter.minAmount) return false;\n      if (filter.maxAmount && tx.amount > filter.maxAmount) return false;\n      if (\n        filter.searchQuery &&\n        !tx.description\n          .toLowerCase()\n          .includes(filter.searchQuery.toLowerCase())\n      )\n        return false;\n      return true;\n    });\n  },\n  \n  setTransfers: (transfers) => set({ transfers }),\n  \n  addTransfer: (transfer) =>\n    set((state) => ({\n      transfers: [transfer, ...state.transfers],\n    })),\n  \n  setBeneficiaries: (beneficiaries) => set({ beneficiaries }),\n  \n  addBeneficiary: (beneficiary) =>\n    set((state) => ({\n      beneficiaries: [...state.beneficiaries, beneficiary],\n    })),\n  \n  removeBeneficiary: (id) =>\n    set((state) => ({\n      beneficiaries: state.beneficiaries.filter((b) => b.id !== id),\n    })),\n  \n  setLoading: (loading) => set({ isLoading: loading }),\n  \n  setError: (error) => set({ error }),\n}));\n"
+import { create } from 'zustand';
+import { Transaction, Transfer, Beneficiary, TransactionFilter } from './types';
+
+interface TransactionStore {
+  transactions: Transaction[];
+  transfers: Transfer[];
+  beneficiaries: Beneficiary[];
+  isLoading: boolean;
+  error: string | null;
+
+  // Transaction actions
+  setTransactions: (transactions: Transaction[]) => void;
+  addTransaction: (transaction: Transaction) => void;
+  filterTransactions: (filter: TransactionFilter) => Transaction[];
+  
+  // Transfer actions
+  setTransfers: (transfers: Transfer[]) => void;
+  addTransfer: (transfer: Transfer) => void;
+  
+  // Beneficiary actions
+  setBeneficiaries: (beneficiaries: Beneficiary[]) => void;
+  addBeneficiary: (beneficiary: Beneficiary) => void;
+  removeBeneficiary: (id: string) => void;
+  
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+}
+
+export const useTransactionStore = create<TransactionStore>((set, get) => ({
+  transactions: [],
+  transfers: [],
+  beneficiaries: [],
+  isLoading: false,
+  error: null,
+
+  setTransactions: (transactions) => set({ transactions }),
+  
+  addTransaction: (transaction) =>
+    set((state) => ({
+      transactions: [transaction, ...state.transactions],
+    })),
+  
+  filterTransactions: (filter) => {
+    const state = get();
+    return state.transactions.filter((tx) => {
+      if (filter.type && tx.type !== filter.type) return false;
+      if (filter.category && tx.category !== filter.category) return false;
+      if (filter.status && tx.status !== filter.status) return false;
+      if (filter.startDate && tx.date < filter.startDate) return false;
+      if (filter.endDate && tx.date > filter.endDate) return false;
+      if (filter.minAmount && tx.amount < filter.minAmount) return false;
+      if (filter.maxAmount && tx.amount > filter.maxAmount) return false;
+      if (
+        filter.searchQuery &&
+        !tx.description
+          .toLowerCase()
+          .includes(filter.searchQuery.toLowerCase())
+      )
+        return false;
+      return true;
+    });
+  },
+  
+  setTransfers: (transfers) => set({ transfers }),
+  
+  addTransfer: (transfer) =>
+    set((state) => ({
+      transfers: [transfer, ...state.transfers],
+    })),
+  
+  setBeneficiaries: (beneficiaries) => set({ beneficiaries }),
+  
+  addBeneficiary: (beneficiary) =>
+    set((state) => ({
+      beneficiaries: [...state.beneficiaries, beneficiary],
+    })),
+  
+  removeBeneficiary: (id) =>
+    set((state) => ({
+      beneficiaries: state.beneficiaries.filter((b) => b.id !== id),
+    })),
+  
+  setLoading: (loading) => set({ isLoading: loading }),
+  
+  setError: (error) => set({ error }),
+}));

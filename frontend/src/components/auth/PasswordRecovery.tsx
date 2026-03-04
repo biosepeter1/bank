@@ -1,1 +1,220 @@
-import React, { useState } from 'react';\nimport { Mail, Loader2, ArrowLeft } from 'lucide-react';\nimport { useForm, PATTERNS } from '@/utils';\nimport { FormInput } from '@/components/common';\nimport { useToast } from '@/components/common';\n\nexport interface PasswordRecoveryProps {\n  onBack?: () => void;\n}\n\nexport const PasswordRecovery: React.FC<PasswordRecoveryProps> = ({ onBack }) => {\n  const [step, setStep] = useState<'email' | 'code' | 'reset'>('email');\n  const [recoveryEmail, setRecoveryEmail] = useState('');\n  const { success, error } = useToast();\n\n  const emailForm = useForm({\n    initialValues: { email: '' },\n    rules: {\n      email: {\n        required: 'Email is required',\n        pattern: [PATTERNS.EMAIL, 'Invalid email format'],\n      },\n    },\n    onSubmit: async (values) => {\n      try {\n        // TODO: Call API to send recovery code\n        setRecoveryEmail(values.email);\n        setStep('code');\n        success('Recovery code sent to your email');\n      } catch (err: any) {\n        error('Failed to send recovery code');\n      }\n    },\n  });\n\n  const codeForm = useForm({\n    initialValues: { code: '' },\n    rules: {\n      code: {\n        required: 'Recovery code is required',\n        minLength: [6, 'Code must be 6 characters'],\n      },\n    },\n    onSubmit: async (values) => {\n      try {\n        // TODO: Call API to verify code\n        setStep('reset');\n        success('Code verified');\n      } catch (err: any) {\n        error('Invalid recovery code');\n      }\n    },\n  });\n\n  const resetForm = useForm({\n    initialValues: { password: '', confirmPassword: '' },\n    rules: {\n      password: {\n        required: 'New password is required',\n        minLength: [8, 'Minimum 8 characters'],\n      },\n      confirmPassword: {\n        required: 'Confirm password is required',\n        custom: (value) => {\n          if (value !== resetForm.values.password) {\n            return 'Passwords do not match';\n          }\n          return null;\n        },\n      },\n    },\n    onSubmit: async (values) => {\n      try {\n        // TODO: Call API to reset password\n        success('Password reset successfully');\n        onBack?.();\n      } catch (err: any) {\n        error('Failed to reset password');\n      }\n    },\n  });\n\n  return (\n    <div className=\"space-y-6\">\n      <div className=\"flex items-center gap-2\">\n        <button\n          onClick={onBack || (() => setStep('email'))}\n          className=\"p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors\"\n        >\n          <ArrowLeft size={20} className=\"text-gray-600 dark:text-gray-400\" />\n        </button>\n        <h2 className=\"text-2xl font-bold text-gray-900 dark:text-white\">\n          {step === 'email' && 'Recover Password'}\n          {step === 'code' && 'Enter Recovery Code'}\n          {step === 'reset' && 'Set New Password'}\n        </h2>\n      </div>\n\n      {/* Step 1: Email */}\n      {step === 'email' && (\n        <form onSubmit={emailForm.handleSubmit} className=\"space-y-4\">\n          <p className=\"text-gray-600 dark:text-gray-400 text-sm\">\n            Enter your email address and we'll send you a code to reset your password.\n          </p>\n          <FormInput\n            label=\"Email Address\"\n            type=\"email\"\n            name=\"email\"\n            placeholder=\"you@example.com\"\n            value={emailForm.values.email}\n            onChange={emailForm.handleChange}\n            onBlur={emailForm.handleBlur}\n            error={emailForm.touched.email ? emailForm.errors.email : undefined}\n            icon={<Mail size={18} />}\n          />\n          <button\n            type=\"submit\"\n            disabled={emailForm.isSubmitting}\n            className=\"w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2\"\n          >\n            {emailForm.isSubmitting ? (\n              <>\n                <Loader2 size={18} className=\"animate-spin\" />\n                Sending...\n              </>\n            ) : (\n              'Send Recovery Code'\n            )}\n          </button>\n        </form>\n      )}\n\n      {/* Step 2: Code */}\n      {step === 'code' && (\n        <form onSubmit={codeForm.handleSubmit} className=\"space-y-4\">\n          <p className=\"text-gray-600 dark:text-gray-400 text-sm\">\n            We've sent a recovery code to <strong>{recoveryEmail}</strong>. Enter it below.\n          </p>\n          <FormInput\n            label=\"Recovery Code\"\n            type=\"text\"\n            name=\"code\"\n            placeholder=\"000000\"\n            value={codeForm.values.code}\n            onChange={codeForm.handleChange}\n            onBlur={codeForm.handleBlur}\n            error={codeForm.touched.code ? codeForm.errors.code : undefined}\n          />\n          <div className=\"flex gap-2\">\n            <button\n              type=\"button\"\n              onClick={() => setStep('email')}\n              className=\"flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors\"\n            >\n              Back\n            </button>\n            <button\n              type=\"submit\"\n              disabled={codeForm.isSubmitting}\n              className=\"flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2\"\n            >\n              {codeForm.isSubmitting ? (\n                <>\n                  <Loader2 size={18} className=\"animate-spin\" />\n                  Verifying...\n                </>\n              ) : (\n                'Verify Code'\n              )}\n            </button>\n          </div>\n        </form>\n      )}\n\n      {/* Step 3: Reset */}\n      {step === 'reset' && (\n        <form onSubmit={resetForm.handleSubmit} className=\"space-y-4\">\n          <p className=\"text-gray-600 dark:text-gray-400 text-sm\">\n            Enter your new password below.\n          </p>\n          <FormInput\n            label=\"New Password\"\n            type=\"password\"\n            name=\"password\"\n            placeholder=\"••••••••\"\n            value={resetForm.values.password}\n            onChange={resetForm.handleChange}\n            onBlur={resetForm.handleBlur}\n            error={resetForm.touched.password ? resetForm.errors.password : undefined}\n            helperText=\"Minimum 8 characters with uppercase, lowercase, and number\"\n          />\n          <FormInput\n            label=\"Confirm Password\"\n            type=\"password\"\n            name=\"confirmPassword\"\n            placeholder=\"••••••••\"\n            value={resetForm.values.confirmPassword}\n            onChange={resetForm.handleChange}\n            onBlur={resetForm.handleBlur}\n            error={resetForm.touched.confirmPassword ? resetForm.errors.confirmPassword : undefined}\n          />\n          <button\n            type=\"submit\"\n            disabled={resetForm.isSubmitting}\n            className=\"w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2\"\n          >\n            {resetForm.isSubmitting ? (\n              <>\n                <Loader2 size={18} className=\"animate-spin\" />\n                Resetting...\n              </>\n            ) : (\n              'Reset Password'\n            )}\n          </button>\n        </form>\n      )}\n    </div>\n  );\n};\n"
+import React, { useState } from 'react';
+import { Mail, Loader2, ArrowLeft } from 'lucide-react';
+import { useForm, PATTERNS } from '@/utils';
+import { FormInput } from '@/components/common';
+import { useToast } from '@/components/common';
+
+export interface PasswordRecoveryProps {
+  onBack?: () => void;
+}
+
+export const PasswordRecovery: React.FC<PasswordRecoveryProps> = ({ onBack }) => {
+  const [step, setStep] = useState<'email' | 'code' | 'reset'>('email');
+  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const { success, error } = useToast();
+
+  const emailForm = useForm({
+    initialValues: { email: '' },
+    rules: {
+      email: {
+        required: 'Email is required',
+        pattern: [PATTERNS.EMAIL, 'Invalid email format'],
+      },
+    },
+    onSubmit: async (values) => {
+      try {
+        // TODO: Call API to send recovery code
+        setRecoveryEmail(values.email);
+        setStep('code');
+        success('Recovery code sent to your email');
+      } catch (err: any) {
+        error('Failed to send recovery code');
+      }
+    },
+  });
+
+  const codeForm = useForm({
+    initialValues: { code: '' },
+    rules: {
+      code: {
+        required: 'Recovery code is required',
+        minLength: [6, 'Code must be 6 characters'],
+      },
+    },
+    onSubmit: async (values) => {
+      try {
+        // TODO: Call API to verify code
+        setStep('reset');
+        success('Code verified');
+      } catch (err: any) {
+        error('Invalid recovery code');
+      }
+    },
+  });
+
+  const resetForm = useForm({
+    initialValues: { password: '', confirmPassword: '' },
+    rules: {
+      password: {
+        required: 'New password is required',
+        minLength: [8, 'Minimum 8 characters'],
+      },
+      confirmPassword: {
+        required: 'Confirm password is required',
+        custom: (value) => {
+          if (value !== resetForm.values.password) {
+            return 'Passwords do not match';
+          }
+          return null;
+        },
+      },
+    },
+    onSubmit: async (values) => {
+      try {
+        // TODO: Call API to reset password
+        success('Password reset successfully');
+        onBack?.();
+      } catch (err: any) {
+        error('Failed to reset password');
+      }
+    },
+  });
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={onBack || (() => setStep('email'))}
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        >
+          <ArrowLeft size={20} className="text-gray-600 dark:text-gray-400" />
+        </button>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {step === 'email' && 'Recover Password'}
+          {step === 'code' && 'Enter Recovery Code'}
+          {step === 'reset' && 'Set New Password'}
+        </h2>
+      </div>
+
+      {/* Step 1: Email */}
+      {step === 'email' && (
+        <form onSubmit={emailForm.handleSubmit} className="space-y-4">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Enter your email address and we'll send you a code to reset your password.
+          </p>
+          <FormInput
+            label="Email Address"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            value={emailForm.values.email}
+            onChange={emailForm.handleChange}
+            onBlur={emailForm.handleBlur}
+            error={emailForm.touched.email ? emailForm.errors.email : undefined}
+            icon={<Mail size={18} />}
+          />
+          <button
+            type="submit"
+            disabled={emailForm.isSubmitting}
+            className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            {emailForm.isSubmitting ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Sending...
+              </>
+            ) : (
+              'Send Recovery Code'
+            )}
+          </button>
+        </form>
+      )}
+
+      {/* Step 2: Code */}
+      {step === 'code' && (
+        <form onSubmit={codeForm.handleSubmit} className="space-y-4">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            We've sent a recovery code to <strong>{recoveryEmail}</strong>. Enter it below.
+          </p>
+          <FormInput
+            label="Recovery Code"
+            type="text"
+            name="code"
+            placeholder="000000"
+            value={codeForm.values.code}
+            onChange={codeForm.handleChange}
+            onBlur={codeForm.handleBlur}
+            error={codeForm.touched.code ? codeForm.errors.code : undefined}
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setStep('email')}
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={codeForm.isSubmitting}
+              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              {codeForm.isSubmitting ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                'Verify Code'
+              )}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* Step 3: Reset */}
+      {step === 'reset' && (
+        <form onSubmit={resetForm.handleSubmit} className="space-y-4">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Enter your new password below.
+          </p>
+          <FormInput
+            label="New Password"
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            value={resetForm.values.password}
+            onChange={resetForm.handleChange}
+            onBlur={resetForm.handleBlur}
+            error={resetForm.touched.password ? resetForm.errors.password : undefined}
+            helperText="Minimum 8 characters with uppercase, lowercase, and number"
+          />
+          <FormInput
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            placeholder="••••••••"
+            value={resetForm.values.confirmPassword}
+            onChange={resetForm.handleChange}
+            onBlur={resetForm.handleBlur}
+            error={resetForm.touched.confirmPassword ? resetForm.errors.confirmPassword : undefined}
+          />
+          <button
+            type="submit"
+            disabled={resetForm.isSubmitting}
+            className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            {resetForm.isSubmitting ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Resetting...
+              </>
+            ) : (
+              'Reset Password'
+            )}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+};

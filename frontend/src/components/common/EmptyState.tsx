@@ -1,1 +1,145 @@
-import React, { ReactNode } from 'react';\nimport { AlertCircle, Package, Search, Inbox } from 'lucide-react';\n\n// ============================================\n// EMPTY STATE\n// ============================================\nexport interface EmptyStateProps {\n  icon?: ReactNode;\n  title: string;\n  description?: string;\n  action?: {\n    label: string;\n    onClick: () => void;\n  };\n  variant?: 'empty' | 'search' | 'error' | 'no-data';\n}\n\nconst variantIcons = {\n  empty: <Package className=\"w-16 h-16 text-gray-300 dark:text-gray-600\" />,\n  search: <Search className=\"w-16 h-16 text-gray-300 dark:text-gray-600\" />,\n  error: <AlertCircle className=\"w-16 h-16 text-red-300 dark:text-red-600\" />,\n  'no-data': <Inbox className=\"w-16 h-16 text-gray-300 dark:text-gray-600\" />,\n};\n\nexport const EmptyState: React.FC<EmptyStateProps> = ({\n  icon,\n  title,\n  description,\n  action,\n  variant = 'empty',\n}) => {\n  return (\n    <div className=\"flex flex-col items-center justify-center py-12 px-4\">\n      <div className=\"mb-4\">\n        {icon || variantIcons[variant]}\n      </div>\n      <h3 className=\"text-lg font-semibold text-gray-900 dark:text-white mb-2\">\n        {title}\n      </h3>\n      {description && (\n        <p className=\"text-gray-500 dark:text-gray-400 text-center max-w-sm mb-6\">\n          {description}\n        </p>\n      )}\n      {action && (\n        <button\n          onClick={action.onClick}\n          className=\"px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors\"\n        >\n          {action.label}\n        </button>\n      )}\n    </div>\n  );\n};\n\n// ============================================\n// ERROR BOUNDARY\n// ============================================\ninterface ErrorBoundaryProps {\n  children: ReactNode;\n}\n\ninterface ErrorBoundaryState {\n  hasError: boolean;\n  error: Error | null;\n}\n\nexport class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {\n  constructor(props: ErrorBoundaryProps) {\n    super(props);\n    this.state = { hasError: false, error: null };\n  }\n\n  static getDerivedStateFromError(error: Error): ErrorBoundaryState {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {\n    console.error('Error caught by boundary:', error, errorInfo);\n  }\n\n  handleReset = () => {\n    this.setState({ hasError: false, error: null });\n  };\n\n  render() {\n    if (this.state.hasError) {\n      return (\n        <div className=\"min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-4\">\n          <div className=\"max-w-md w-full text-center\">\n            <div className=\"mb-4 flex justify-center\">\n              <AlertCircle className=\"w-16 h-16 text-red-500\" />\n            </div>\n            <h2 className=\"text-2xl font-bold text-gray-900 dark:text-white mb-2\">\n              Something went wrong\n            </h2>\n            <p className=\"text-gray-600 dark:text-gray-400 mb-6\">\n              {this.state.error?.message || 'An unexpected error occurred'}\n            </p>\n            <button\n              onClick={this.handleReset}\n              className=\"px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors\"\n            >\n              Try Again\n            </button>\n          </div>\n        </div>\n      );\n    }\n\n    return this.props.children;\n  }\n}\n\n// ============================================\n// ERROR ALERT\n// ============================================\nexport interface ErrorAlertProps {\n  error: Error | string | null;\n  onDismiss?: () => void;\n}\n\nexport const ErrorAlert: React.FC<ErrorAlertProps> = ({ error, onDismiss }) => {\n  if (!error) return null;\n\n  const message = typeof error === 'string' ? error : error.message;\n\n  return (\n    <div className=\"bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4 flex items-start gap-3\">\n      <AlertCircle className=\"w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5\" />\n      <div className=\"flex-1\">\n        <p className=\"text-sm text-red-800 dark:text-red-200\">{message}</p>\n      </div>\n      {onDismiss && (\n        <button\n          onClick={onDismiss}\n          className=\"text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300\"\n        >\n          ✕\n        </button>\n      )}\n    </div>\n  );\n};\n"
+import React, { ReactNode } from 'react';
+import { AlertCircle, Package, Search, Inbox } from 'lucide-react';
+
+// ============================================
+// EMPTY STATE
+// ============================================
+export interface EmptyStateProps {
+  icon?: ReactNode;
+  title: string;
+  description?: string;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+  variant?: 'empty' | 'search' | 'error' | 'no-data';
+}
+
+const variantIcons = {
+  empty: <Package className="w-16 h-16 text-gray-300 dark:text-gray-600" />,
+  search: <Search className="w-16 h-16 text-gray-300 dark:text-gray-600" />,
+  error: <AlertCircle className="w-16 h-16 text-red-300 dark:text-red-600" />,
+  'no-data': <Inbox className="w-16 h-16 text-gray-300 dark:text-gray-600" />,
+};
+
+export const EmptyState: React.FC<EmptyStateProps> = ({
+  icon,
+  title,
+  description,
+  action,
+  variant = 'empty',
+}) => {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 px-4">
+      <div className="mb-4">
+        {icon || variantIcons[variant]}
+      </div>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        {title}
+      </h3>
+      {description && (
+        <p className="text-gray-500 dark:text-gray-400 text-center max-w-sm mb-6">
+          {description}
+        </p>
+      )}
+      {action && (
+        <button
+          onClick={action.onClick}
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+        >
+          {action.label}
+        </button>
+      )}
+    </div>
+  );
+};
+
+// ============================================
+// ERROR BOUNDARY
+// ============================================
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-4">
+          <div className="max-w-md w-full text-center">
+            <div className="mb-4 flex justify-center">
+              <AlertCircle className="w-16 h-16 text-red-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Something went wrong
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              {this.state.error?.message || 'An unexpected error occurred'}
+            </p>
+            <button
+              onClick={this.handleReset}
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// ============================================
+// ERROR ALERT
+// ============================================
+export interface ErrorAlertProps {
+  error: Error | string | null;
+  onDismiss?: () => void;
+}
+
+export const ErrorAlert: React.FC<ErrorAlertProps> = ({ error, onDismiss }) => {
+  if (!error) return null;
+
+  const message = typeof error === 'string' ? error : error.message;
+
+  return (
+    <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4 flex items-start gap-3">
+      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+      <div className="flex-1">
+        <p className="text-sm text-red-800 dark:text-red-200">{message}</p>
+      </div>
+      {onDismiss && (
+        <button
+          onClick={onDismiss}
+          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+        >
+          ✕
+        </button>
+      )}
+    </div>
+  );
+};
