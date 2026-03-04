@@ -1,4 +1,4 @@
-'use client';
+
 
 import { SettingsProvider } from '@/contexts/SettingsContext';
 import { DynamicTitle } from '@/components/DynamicTitle';
