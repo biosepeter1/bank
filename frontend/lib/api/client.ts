@@ -2,18 +2,23 @@ import axios from 'axios';
 
 // Helper to get the correct API URL regardless of environment variables
 const getBaseUrl = () => {
-  // In browser: Check current hostname at RUNTIME (not build time)
+  // If NEXT_PUBLIC_API_URL is set, always use it as the source of truth
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  // In browser: Check current hostname at RUNTIME (fallback)
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     // Local development
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       return 'http://localhost:3001/api';
     }
-    // Production - use the VPS IP
-    return 'http://64.227.45.177/api';
+    // Production fallback if env var is missing
+    return 'https://bank-cy9c.onrender.com/api';
   }
   // Server-side fallback
-  return 'http://64.227.45.177/api';
+  return 'https://bank-cy9c.onrender.com/api';
 };
 
 const apiClient = axios.create({

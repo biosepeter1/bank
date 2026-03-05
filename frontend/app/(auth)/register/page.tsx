@@ -123,11 +123,11 @@ export default function RegisterPage() {
     if (!validateStep(5)) { toast.error('Please accept all terms'); return; }
     setIsLoading(true);
     try {
-      // Determine API URL based on current hostname
-      const apiUrl = typeof window !== 'undefined' &&
+      // Determine API URL based on environment or fallback
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' &&
         (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? 'http://localhost:3001/api'
-        : 'http://64.227.45.177/api';
+        : 'https://bank-cy9c.onrender.com/api');
 
       const response = await fetch(`${apiUrl}/auth/register`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
