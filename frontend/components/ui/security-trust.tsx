@@ -10,12 +10,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- Sub-Components for Functional Artifacts ---
 
-// 1. Diagnostic Shuffler
+// 1. Fraud Detection Engine
 const DiagnosticShuffler = () => {
   const [items, setItems] = useState([
-    { id: 1, label: "FRAUD_SCAN_ACTIVE", status: "SECURE" },
-    { id: 2, label: "ENCRYPTION_LAYER_03", status: "LOCKED" },
-    { id: 3, label: "PACKET_INTEGRITY", status: "VERIFIED" }
+    { id: 1, label: "SECURE_TRANSACTION", status: "SECURE" },
+    { id: 2, label: "ENCRYPT_PROT_V3", status: "LOCKED" },
+    { id: 3, label: "AUDIT_VERIFIED", status: "VERIFIED" }
   ]);
 
   useEffect(() => {
@@ -38,9 +38,9 @@ const DiagnosticShuffler = () => {
             key={item.id}
             layout
             initial={{ opacity: 0, y: 50, scale: 0.8 }}
-            animate={{ 
-              opacity: 1 - index * 0.3, 
-              y: index * -20, 
+            animate={{
+              opacity: 1 - index * 0.3,
+              y: index * -20,
               z: index * -50,
               scale: 1 - index * 0.05,
               zIndex: 10 - index
@@ -64,15 +64,15 @@ const DiagnosticShuffler = () => {
   );
 };
 
-// 2. Telemetry Typewriter
+// 2. Immutable Audit Logging
 const TelemetryTypewriter = () => {
   const [text, setText] = useState('');
   const messages = [
-    "> INITIALIZING_AES_256",
-    "> HANDSHAKE_COMPLETE",
-    "> SSL_CERT_VERIFIED",
-    "> NODE_STABLE_001",
-    "> FIREWALL_OPERATIONAL"
+    "> AES_256_INIT",
+    "> SECURE_HANDSHAKE",
+    "> CERT_VERIFIED",
+    "> AUTH_STABLE_001",
+    "> SECURITY_ACTIVE"
   ];
   const [msgIndex, setMsgIndex] = useState(0);
 
@@ -109,7 +109,7 @@ const TelemetryTypewriter = () => {
         <div className="flex gap-1">
           {[...Array(20)].map((_, i) => (
             <div key={i} className="h-1 flex-1 bg-white/5 overflow-hidden">
-              <motion.div 
+              <motion.div
                 className="h-full bg-[#E63B2E]/40"
                 animate={{ width: ["0%", "100%", "0%"] }}
                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
@@ -122,7 +122,7 @@ const TelemetryTypewriter = () => {
   );
 };
 
-// 3. Cursor Protocol Scheduler
+// 3. Cursor Biometric Access Control
 const CursorProtocolScheduler = () => {
   return (
     <div className="relative bg-white border border-black/5 rounded-2xl p-6 h-48 flex flex-col">
@@ -140,13 +140,13 @@ const CursorProtocolScheduler = () => {
           </motion.div>
         ))}
       </div>
-      
-      <motion.div 
+
+      <motion.div
         className="mt-auto bg-black text-white font-mono text-[10px] py-2 px-4 rounded-full self-start flex items-center gap-2"
         animate={{ scale: [1, 0.95, 1] }}
         transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
       >
-        SAVE_PROTOCOL
+        SAVE_SETTINGS
       </motion.div>
 
       {/* Animated Cursor */}
@@ -174,9 +174,9 @@ const CursorProtocolScheduler = () => {
 const testimonials = [
   {
     name: "Sarah Mitchell",
-    role: "CEO, Nura Health",
+    role: "Global Logistics Director",
     avatar: "SM",
-    content: "The protocol reliability is surgical. We haven't seen a single security bottleneck since deployment.",
+    content: "The platform reliability is exceptional. We have not seen a single security bottleneck since deployment.",
     rating: 5
   },
   {
@@ -199,7 +199,7 @@ export function SecurityTrust() {
   return (
     <section className="bg-[#F5F3EE] py-24 sm:py-32 md:py-48 relative overflow-hidden border-t border-black/5">
       <div className="container mx-auto px-6 relative z-10">
-        
+
         {/* Header */}
         <div className="max-w-4xl mb-24 md:mb-32">
           <div className="flex items-center gap-4 mb-8">
@@ -208,14 +208,14 @@ export function SecurityTrust() {
               Security Protocol
             </span>
           </div>
-          
+
           <h2 className="font-space-grotesk text-5xl md:text-7xl lg:text-8xl font-black text-black leading-[0.9] tracking-tighter mb-12">
-            YOUR MONEY IS <br/>
+            YOUR MONEY IS <br />
             <span className="font-dm-serif-display italic font-normal text-[#E63B2E]">Fort Knox Safe.</span>
           </h2>
-          
+
           <p className="font-space-grotesk text-xl md:text-2xl text-black/60 max-w-2xl leading-snug font-medium">
-            We use the same high-intensity security protocols trusted by the world's largest financial institutions. 
+            We use the same high-intensity security protocols trusted by the world's largest financial institutions.
             Zero compromise, raw precision.
           </p>
         </div>
@@ -226,7 +226,7 @@ export function SecurityTrust() {
           <div className="group bg-[#E8E4DD] p-8 md:p-10 rounded-[2.5rem] border border-black/5 flex flex-col justify-between shadow-sm hover:shadow-2xl transition-all duration-500">
             <DiagnosticShuffler />
             <div className="mt-8">
-              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Diagnostic Shuffler</h3>
+              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Fraud Detection Engine</h3>
               <p className="font-space-grotesk text-black/50 leading-relaxed font-medium">Real-time fraud detection cycling through active data packets to ensure total integrity.</p>
             </div>
           </div>
@@ -235,7 +235,7 @@ export function SecurityTrust() {
           <div className="group bg-[#E8E4DD] p-8 md:p-10 rounded-[2.5rem] border border-black/5 flex flex-col justify-between shadow-sm hover:shadow-2xl transition-all duration-500">
             <TelemetryTypewriter />
             <div className="mt-8">
-              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Telemetry Typewriter</h3>
+              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Immutable Audit Logging</h3>
               <p className="font-space-grotesk text-black/50 leading-relaxed font-medium">Live terminal feed detailing every encryption handshake and verification protocol in real-time.</p>
             </div>
           </div>
@@ -244,7 +244,7 @@ export function SecurityTrust() {
           <div className="group bg-[#E8E4DD] p-8 md:p-10 rounded-[2.5rem] border border-black/5 flex flex-col justify-between shadow-sm hover:shadow-2xl transition-all duration-500">
             <CursorProtocolScheduler />
             <div className="mt-8">
-              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Protocol Scheduler</h3>
+              <h3 className="font-space-grotesk text-2xl font-black text-black mb-4 uppercase tracking-tight">Biometric Access Control</h3>
               <p className="font-space-grotesk text-black/50 leading-relaxed font-medium">Automated biometric access scheduling with precise cursor-tracking validation sequences.</p>
             </div>
           </div>
@@ -253,12 +253,12 @@ export function SecurityTrust() {
         {/* Testimonials */}
         <div className="bg-black rounded-[4rem] p-12 md:p-24 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 grayscale pointer-events-none bg-cover bg-center"
-               style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070")' }} />
-          
+            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070")' }} />
+
           <div className="relative z-10">
             <div className="mb-20 text-center md:text-left">
               <h3 className="font-space-grotesk text-4xl md:text-6xl font-black text-white mb-6 uppercase tracking-tighter">
-                TRUSTED_BY <br/>
+                TRUSTED_BY <br />
                 <span className="font-dm-serif-display italic font-normal text-[#E63B2E] text-5xl md:text-7xl">50,000+ Users.</span>
               </h3>
               <div className="flex flex-col md:flex-row items-center gap-6">

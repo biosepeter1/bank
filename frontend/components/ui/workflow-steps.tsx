@@ -11,19 +11,19 @@ const steps = [
   {
     number: "01",
     title: "Create Account",
-    description: "Sign up in under 3 minutes with just your BVN and a quick selfie. No paperwork, no branch visits.",
+    description: "Open your account in minutes with seamless digital verification. Zero paperwork, zero branch visits.",
     color: "#E63B2E"
   },
   {
     number: "02",
     title: "Verify Identity",
-    description: "Our AI-powered verification takes seconds. Unlock premium features and higher limits instantly.",
+    description: "Securely verify your identity in seconds. Gain instant access to premium banking features.",
     color: "#111111"
   },
   {
     number: "03",
     title: "Start Banking",
-    description: "Fund your account and unlock the full power of digital banking. Send, save, invest — all in one app.",
+    description: "Deposit funds and experience the future of finance. Manage payments and savings with absolute precision.",
     color: "#E63B2E"
   }
 ];
@@ -82,32 +82,32 @@ export function WorkflowSection() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-[#E8E4DD]">
+    <div ref={containerRef} className="relative h-[100dvh] w-full overflow-hidden bg-[#E8E4DD]">
       {steps.map((step, i) => (
         <div
           key={i}
           ref={(el) => { if (el) cardsRef.current[i] = el; }}
-          className="absolute inset-0 flex items-center justify-center h-screen w-full p-6"
+          className="absolute inset-0 flex items-center justify-center h-[100dvh] w-full p-4 md:p-6"
           style={{ zIndex: i + 1 }}
         >
-          <div className="relative w-full max-w-6xl aspect-video bg-[#F5F3EE] rounded-[3rem] border border-black/10 shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row">
+          <div className="relative w-full max-w-6xl aspect-auto md:aspect-video min-h-[500px] md:min-h-0 bg-[#F5F3EE] rounded-[2rem] md:rounded-[3rem] border border-black/10 shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row">
             {/* Left Content */}
-            <div className="flex-1 p-12 md:p-20 flex flex-col justify-center">
-              <div className="font-mono text-xl md:text-2xl text-[#E63B2E] mb-6 tracking-widest">
+            <div className="flex-1 p-8 md:p-20 flex flex-col justify-center">
+              <div className="font-mono text-lg md:text-2xl text-[#E63B2E] mb-4 md:mb-6 tracking-widest">
                 STEP_{step.number}
               </div>
-              <h2 className="font-space-grotesk text-5xl md:text-7xl lg:text-8xl font-black text-[#111111] mb-8 leading-tight uppercase">
+              <h2 className="font-space-grotesk text-4xl md:text-7xl lg:text-8xl font-black text-[#111111] mb-6 md:mb-8 leading-tight uppercase">
                 {step.title}
               </h2>
-              <p className="font-space-grotesk text-xl md:text-2xl text-[#111111]/70 max-w-md leading-snug">
+              <p className="font-space-grotesk text-lg md:text-2xl text-[#111111]/70 max-w-md leading-snug">
                 {step.description}
               </p>
             </div>
 
             {/* Right Visual Animation */}
-            <div className="flex-1 bg-black/5 flex items-center justify-center relative border-l border-black/5 overflow-hidden">
+            <div className="h-[250px] md:h-auto md:flex-1 bg-black/5 flex items-center justify-center relative border-t md:border-t-0 md:border-l border-black/10 overflow-hidden">
               {i === 0 && (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full flex items-center justify-center scale-75 md:scale-100">
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -147,7 +147,7 @@ export function WorkflowSection() {
               )}
 
               {i === 2 && (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full flex items-center justify-center scale-75 md:scale-100">
                   <svg width="400" height="200" viewBox="0 0 400 200" className="opacity-80">
                     <motion.path
                       d="M 0 100 L 50 100 L 60 70 L 80 130 L 100 20 L 120 180 L 140 100 L 190 100 L 200 40 L 220 160 L 240 100 L 400 100"

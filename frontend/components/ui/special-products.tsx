@@ -20,37 +20,37 @@ const products = [
     icon: <CreditCard size={28} />,
     title: "Virtual Cards",
     description: "Create unlimited virtual cards for safe online shopping with zero FX fees.",
-    code: "CARD_SYS_v2.1"
+    code: "SECURE_VIRTUAL"
   },
   {
     icon: <Globe size={28} />,
     title: "Global Transfers",
     description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes.",
-    code: "TRANS_X_GLOBAL"
+    code: "SWIFT_GLOBAL"
   },
   {
     icon: <PiggyBank size={28} />,
     title: "High-Yield Savings",
     description: "Earn up to 15% interest p.a. on your savings goals. Watch your money grow.",
-    code: "ROI_YIELD_MAX"
+    code: "ANNUAL_YIELD"
   },
   {
     icon: <Briefcase size={28} />,
     title: "Business Accounts",
     description: "Powerful tools for entrepreneurs. Invoicing, payroll, and multi-user access.",
-    code: "BIZ_OPS_ALPHA"
+    code: "CORP_SOLUTIONS"
   },
   {
     icon: <LineChart size={28} />,
     title: "Investment Hub",
     description: "Stocks, mutual funds, and fixed deposits. Grow your wealth with expert guidance.",
-    code: "EQ_HUB_ACTIVE"
+    code: "INVEST_HUB"
   },
   {
     icon: <GraduationCap size={28} />,
     title: "Education Trust",
     description: "Secure your child's future with our dedicated education savings plan.",
-    code: "TRUST_SEC_99"
+    code: "EDUCATION_TRUST"
   },
 ];
 
@@ -58,7 +58,7 @@ export function SpecialProducts() {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
-  
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -103,12 +103,12 @@ export function SpecialProducts() {
   }, []);
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className="bg-[#111111] py-24 sm:py-32 md:py-48 relative overflow-hidden"
     >
       {/* Parallax Background Texture */}
-      <motion.div 
+      <motion.div
         style={{ y: bgy, backgroundImage: 'url("https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?q=80&w=2070&auto=format&fit=crop")' }}
         className="absolute inset-x-0 -top-20 bottom-0 bg-cover bg-center grayscale opacity-10 pointer-events-none"
       />
@@ -125,13 +125,13 @@ export function SpecialProducts() {
 
           <div className="space-y-4">
             <p className="font-space-grotesk text-xl md:text-3xl lg:text-4xl text-white/40 leading-tight manifesto-word">
-              Most banking focuses on: <span className="text-white/60">fragmented legacy systems.</span>
+              Most banking focuses on: <span className="text-white/60">isolated legacy systems.</span>
             </p>
             <h2 className="font-space-grotesk text-5xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter">
               <span className="manifesto-word inline-block">WE FOCUS </span>
-              <span className="manifesto-word inline-block text-[#E63B2E]">ON:</span><br/>
+              <span className="manifesto-word inline-block text-[#E63B2E]">ON:</span><br />
               <span className="font-dm-serif-display italic font-normal text-[#E63B2E] manifesto-word inline-block mt-4 md:mt-8">
-                Integrated Protocols.
+                Unified Banking.
               </span>
             </h2>
           </div>

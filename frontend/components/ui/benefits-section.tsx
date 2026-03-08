@@ -13,37 +13,37 @@ const benefits = [
     icon: <Smartphone size={28} />,
     title: "Mobile-First Banking",
     description: "Your entire bank fits in your pocket. Pay, save, and invest with just a tap.",
-    code: "010100 FAST_SYNC"
+    code: "MOBILE_VERIFIED"
   },
   {
     icon: <ShieldCheck size={28} />,
     title: "Military-Grade Security",
     description: "256-bit encryption, biometrics, and real-time fraud detection protect every transaction.",
-    code: "SEC_PROTOCOL_ACTIVE"
+    code: "AES_PROT_L3"
   },
   {
     icon: <Zap size={28} />,
     title: "Instant Everything",
     description: "Lightning-fast transfers, real-time notifications, and zero-lag performance.",
-    code: "LATENCY < 2MS"
+    code: "REALTIME_001"
   },
   {
     icon: <TrendingUp size={28} />,
     title: "Grow Your Wealth",
     description: "High-yield savings up to 15% APY. Watch your money work harder for you.",
-    code: "ROI_OPTIMIZED"
+    code: "SECURE_YIELD"
   },
   {
     icon: <CreditCard size={28} />,
     title: "Virtual & Physical Cards",
     description: "Create unlimited virtual cards instantly. Shop globally with zero FX fees.",
-    code: "CARD_EMISSION_99"
+    code: "INSTANT_EMIT"
   },
   {
     icon: <Globe size={28} />,
     title: "Global Transfers",
     description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes.",
-    code: "CROSS_BORDER_READY"
+    code: "GLOBAL_SWIFT"
   }
 ];
 
@@ -88,7 +88,7 @@ export function BenefitsSection() {
     >
       {/* Background Texture Info Labels (Brutalist Style) */}
       <div className="absolute top-10 left-10 opacity-20 pointer-events-none hidden lg:block">
-        <div className="font-mono text-[10px] tracking-widest text-black">SYSTEM_PROTOCOL // BENEFITS_GRID</div>
+        <div className="font-mono text-[10px] tracking-widest text-black">SERVICE_BENEFITS // OVERVIEW</div>
         <div className="font-mono text-[10px] tracking-widest text-black mt-1">LAT_76.223 LONG_9.112</div>
       </div>
 
@@ -98,20 +98,20 @@ export function BenefitsSection() {
           <div className="flex items-center gap-4 mb-8">
             <div className="h-[2px] w-12 bg-[#E63B2E]" />
             <span className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-[#E63B2E]">
-              System Parameters
+              Excellence in Banking
             </span>
           </div>
           
           <h2 className="font-space-grotesk text-5xl md:text-7xl lg:text-8xl font-black text-[#111111] leading-tight tracking-tighter">
-            UPGRADE THE <br/>
+            ELEVATE YOUR <br/>
             <span className="font-dm-serif-display italic font-normal text-[#E63B2E] text-6xl md:text-8xl lg:text-9xl ml-4 sm:ml-8">
-              Protocol.
+              Standards.
             </span>
           </h2>
           
           <div className="mt-12 max-w-xl">
             <p className="font-space-grotesk text-xl md:text-2xl text-[#111111] leading-tight font-medium">
-              We've eliminated the friction of traditional banking. 
+              We've eliminated the friction of legacy banking. 
               Pure information density, raw precision, and zero limits.
             </p>
           </div>
@@ -144,7 +144,7 @@ export function BenefitsSection() {
               </div>
 
               <div className="flex items-center gap-2 text-[#E63B2E] transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider">Initialize</span>
+                <span className="font-mono text-xs font-bold uppercase tracking-wider">Explore</span>
                 <ArrowRight size={14} />
               </div>
               
