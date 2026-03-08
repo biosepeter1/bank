@@ -1,124 +1,119 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
+import { ArrowRight, Activity, Zap } from 'lucide-react';
 import Link from 'next/link';
+import gsap from 'gsap';
 
 export function BoldCTA() {
-    return (
-        <section className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
-            {/* Gradient background using brand colors */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-primary via-brand-primary to-brand-secondary" />
+  const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-            {/* Overlay for depth */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.15),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,0,0,0.1),transparent_50%)]" />
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Magnetic effect for the primary button
+      const button = buttonRef.current;
+      if (button) {
+        const onMouseMove = (e: MouseEvent) => {
+          const { clientX, clientY } = e;
+          const { left, top, width, height } = button.getBoundingClientRect();
+          const x = clientX - (left + width / 2);
+          const y = clientY - (top + height / 2);
+          
+          gsap.to(button, {
+            x: x * 0.2,
+            y: y * 0.2,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        };
 
-            {/* Grid pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        const onMouseLeave = () => {
+          gsap.to(button, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: "elastic.out(1, 0.3)"
+          });
+        };
 
-            {/* Floating orbs */}
-            <motion.div
-                animate={{
-                    scale: [1, 1.3, 1],
-                    opacity: [0.2, 0.4, 0.2]
-                }}
-                transition={{ duration: 8, repeat: Infinity }}
-                className="absolute top-20 right-[20%] w-72 h-72 bg-white/10 rounded-full blur-3xl"
-            />
-            <motion.div
-                animate={{
-                    scale: [1.2, 1, 1.2],
-                    opacity: [0.15, 0.3, 0.15]
-                }}
-                transition={{ duration: 10, repeat: Infinity }}
-                className="absolute bottom-20 left-[20%] w-80 h-80 bg-white/10 rounded-full blur-3xl"
-            />
+        button.addEventListener('mousemove', onMouseMove);
+        button.addEventListener('mouseleave', onMouseLeave);
+        return () => {
+          button.removeEventListener('mousemove', onMouseMove);
+          button.removeEventListener('mouseleave', onMouseLeave);
+        };
+      }
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
 
-            {/* Floating geometric shapes */}
-            <motion.div
-                animate={{ y: [-20, 20, -20], rotate: [0, 360] }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute top-40 left-[10%] w-16 h-16 border-2 border-white/20 rounded-xl"
-            />
-            <motion.div
-                animate={{ y: [20, -20, 20] }}
-                transition={{ duration: 8, repeat: Infinity }}
-                className="absolute bottom-32 right-[15%] w-12 h-12 bg-white/10 rounded-full"
-            />
+  return (
+    <section 
+      ref={containerRef}
+      className="bg-[#111111] py-32 md:py-48 relative overflow-hidden flex items-center justify-center border-t border-white/5"
+    >
+      {/* Background Texture */}
+      <div 
+        className="absolute inset-x-0 -top-40 bottom-0 bg-cover bg-center grayscale opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070")' }}
+      />
+      
+      {/* Noise Overlay */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    className="text-center text-white max-w-4xl mx-auto"
-                >
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-white/10 backdrop-blur rounded-full mb-4 sm:mb-8 border border-white/20"
-                    >
-                        <Sparkles size={18} className="text-yellow-300" />
-                        <span className="font-bold text-sm sm:text-base">Join 50,000+ Happy Customers</span>
-                    </motion.div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center max-w-5xl mx-auto">
+          {/* System Status */}
+          <div className="inline-flex items-center gap-3 mb-12 overflow-hidden">
+            <div className="w-2 h-2 rounded-full bg-[#E63B2E] animate-pulse" />
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.4em] text-[#E63B2E]">
+              INITIALIZE_PROTOCOL_09
+            </span>
+          </div>
 
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-8 leading-tight px-2">
-                        Ready to Experience
-                        <span className="block text-white/90">
-                            The Future of Banking?
-                        </span>
-                    </h2>
+          <h2 className="font-space-grotesk text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter mb-16 uppercase">
+            READY TO <br/>
+            <span className="text-[#E63B2E]">SCALE?</span>
+          </h2>
 
-                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 mb-8 sm:mb-12 max-w-2xl mx-auto font-medium leading-relaxed px-4">
-                        Open your free account in under 3 minutes. No paperwork, no minimum balance, no hidden fees.
-                    </p>
+          <p className="font-space-grotesk text-xl md:text-2xl text-white/40 mb-20 max-w-2xl mx-auto leading-tight font-medium">
+            Deploy your private banking infrastructure in under 180 seconds. 
+            No paperwork. No fragmentation. Pure precision.
+          </p>
 
-                    {/* Benefits */}
-                    <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-8 sm:mb-12 px-4">
-                        {["Free to open", "No monthly fees", "Instant virtual card", "24/7 support"].map((benefit, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="flex items-center gap-2 text-white/90"
-                            >
-                                <CheckCircle size={20} className="text-green-300" />
-                                <span className="font-semibold text-sm sm:text-base">{benefit}</span>
-                            </motion.div>
-                        ))}
-                    </div>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Link href="/register">
+              <button
+                ref={buttonRef}
+                className="group relative h-20 px-12 bg-[#E63B2E] text-white flex items-center gap-4 overflow-hidden rounded-[2rem] transition-transform hover:scale-105 active:scale-95"
+              >
+                <div className="absolute inset-0 bg-black/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo" />
+                <span className="relative z-10 font-space-grotesk text-xl font-black uppercase tracking-tight">Deploy Interface</span>
+                <ArrowRight size={24} className="relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
+              </button>
+            </Link>
 
-                    {/* CTA Buttons - Fixed and improved */}
-                    <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                        <Link href="/register">
-                            <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-12 text-base sm:text-lg md:text-xl font-black rounded-xl sm:rounded-2xl bg-white text-brand-primary hover:bg-white/95 shadow-2xl shadow-black/30 flex items-center gap-2 sm:gap-3 transition-colors"
-                            >
-                                Get Started Free
-                                <ArrowRight className="group-hover:translate-x-2 transition-transform" size={24} />
-                            </motion.button>
-                        </Link>
-                        <Link href="/contact">
-                            <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-12 text-base sm:text-lg md:text-xl font-bold rounded-xl sm:rounded-2xl border-2 border-white/40 text-white hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center gap-2"
-                            >
-                                Talk to Sales
-                            </motion.button>
-                        </Link>
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
+            <Link href="/contact">
+              <button className="h-20 px-12 border-2 border-[#E8E4DD]/20 text-[#E8E4DD] rounded-[2rem] font-mono text-sm font-bold uppercase tracking-widest hover:bg-[#E8E4DD]/5 transition-colors flex items-center gap-3 group">
+                <Activity size={18} className="text-[#E63B2E] group-hover:rotate-180 transition-transform duration-700" />
+                GET_DATA_PACK
+              </button>
+            </Link>
+          </div>
+
+          {/* System Ready Indicator */}
+          <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+            {["ZERO_LATENCY", "ENCRYPTED_SSL", "GLOBAL_STABLE"].map((label, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <Zap size={14} className="text-[#E63B2E] opacity-50" />
+                <span className="font-mono text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

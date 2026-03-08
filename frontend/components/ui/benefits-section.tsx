@@ -1,110 +1,159 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Smartphone, Zap, TrendingUp, CreditCard, Globe } from 'lucide-react';
+import { ShieldCheck, Smartphone, Zap, TrendingUp, CreditCard, Globe, ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
-    {
-        icon: <Smartphone size={28} />,
-        title: "Mobile-First Banking",
-        description: "Your entire bank fits in your pocket. Pay, save, and invest with just a tap."
-    },
-    {
-        icon: <ShieldCheck size={28} />,
-        title: "Military-Grade Security",
-        description: "256-bit encryption, biometrics, and real-time fraud detection protect every transaction."
-    },
-    {
-        icon: <Zap size={28} />,
-        title: "Instant Everything",
-        description: "Lightning-fast transfers, real-time notifications, and zero-lag performance."
-    },
-    {
-        icon: <TrendingUp size={28} />,
-        title: "Grow Your Wealth",
-        description: "High-yield savings up to 15% APY. Watch your money work harder for you."
-    },
-    {
-        icon: <CreditCard size={28} />,
-        title: "Virtual & Physical Cards",
-        description: "Create unlimited virtual cards instantly. Shop globally with zero FX fees."
-    },
-    {
-        icon: <Globe size={28} />,
-        title: "Global Transfers",
-        description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes."
-    }
+  {
+    icon: <Smartphone size={28} />,
+    title: "Mobile-First Banking",
+    description: "Your entire bank fits in your pocket. Pay, save, and invest with just a tap.",
+    code: "010100 FAST_SYNC"
+  },
+  {
+    icon: <ShieldCheck size={28} />,
+    title: "Military-Grade Security",
+    description: "256-bit encryption, biometrics, and real-time fraud detection protect every transaction.",
+    code: "SEC_PROTOCOL_ACTIVE"
+  },
+  {
+    icon: <Zap size={28} />,
+    title: "Instant Everything",
+    description: "Lightning-fast transfers, real-time notifications, and zero-lag performance.",
+    code: "LATENCY < 2MS"
+  },
+  {
+    icon: <TrendingUp size={28} />,
+    title: "Grow Your Wealth",
+    description: "High-yield savings up to 15% APY. Watch your money work harder for you.",
+    code: "ROI_OPTIMIZED"
+  },
+  {
+    icon: <CreditCard size={28} />,
+    title: "Virtual & Physical Cards",
+    description: "Create unlimited virtual cards instantly. Shop globally with zero FX fees.",
+    code: "CARD_EMISSION_99"
+  },
+  {
+    icon: <Globe size={28} />,
+    title: "Global Transfers",
+    description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes.",
+    code: "CROSS_BORDER_READY"
+  }
 ];
 
 export function BenefitsSection() {
-    return (
-        <section className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
-            {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white" />
+  const sectionRef = useRef(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-            {/* Decorative elements using brand colors */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-primary/30 to-transparent" />
-            <div className="absolute top-20 right-10 w-72 h-72 bg-brand-primary/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 left-10 w-72 h-72 bg-brand-secondary/10 rounded-full blur-3xl" />
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".brutalist-header > *", {
+        scrollTrigger: {
+          trigger: ".brutalist-header",
+          start: "top 85%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+      });
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-10 sm:mb-16 md:mb-20"
-                >
-                    <motion.span
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-sm font-bold text-brand-primary mb-6"
-                    >
-                        ✨ Why Choose Us
-                    </motion.span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 mb-4 sm:mb-6">
-                        Banking That
-                        <span className="text-brand-primary"> Moves With You</span>
-                    </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium px-4">
-                        We're not just a bank. We're your financial partner, built for the modern world.
-                    </p>
-                </motion.div>
+      gsap.from(cardsRef.current, {
+        scrollTrigger: {
+          trigger: ".brutalist-grid",
+          start: "top 80%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.12,
+        ease: "power3.out"
+      });
+    }, sectionRef);
 
-                {/* Cards Grid */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                    {benefits.map((benefit, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            whileHover={{ y: -10, scale: 1.02 }}
-                            className="group relative"
-                        >
-                            {/* Card glow on hover */}
-                            <div className="absolute -inset-1 bg-brand-primary rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500" />
+    return () => ctx.revert();
+  }, []);
 
-                            {/* Card */}
-                            <div className="relative bg-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
-                                {/* Icon */}
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-brand-primary flex items-center justify-center text-white shadow-lg mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                    {benefit.icon}
-                                </div>
+  return (
+    <section 
+      ref={sectionRef} 
+      className="bg-[#E8E4DD] py-20 sm:py-32 relative overflow-hidden border-y-[1px] border-black/10"
+    >
+      {/* Background Texture Info Labels (Brutalist Style) */}
+      <div className="absolute top-10 left-10 opacity-20 pointer-events-none hidden lg:block">
+        <div className="font-mono text-[10px] tracking-widest text-black">SYSTEM_PROTOCOL // BENEFITS_GRID</div>
+        <div className="font-mono text-[10px] tracking-widest text-black mt-1">LAT_76.223 LONG_9.112</div>
+      </div>
 
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-brand-primary transition-all">
-                                    {benefit.title}
-                                </h3>
-                                <p className="text-slate-600 leading-relaxed">
-                                    {benefit.description}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
+        <div className="brutalist-header mb-20 md:mb-32">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-[2px] w-12 bg-[#E63B2E]" />
+            <span className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-[#E63B2E]">
+              System Parameters
+            </span>
+          </div>
+          
+          <h2 className="font-space-grotesk text-5xl md:text-7xl lg:text-8xl font-black text-[#111111] leading-tight tracking-tighter">
+            UPGRADE THE <br/>
+            <span className="font-dm-serif-display italic font-normal text-[#E63B2E] text-6xl md:text-8xl lg:text-9xl ml-4 sm:ml-8">
+              Protocol.
+            </span>
+          </h2>
+          
+          <div className="mt-12 max-w-xl">
+            <p className="font-space-grotesk text-xl md:text-2xl text-[#111111] leading-tight font-medium">
+              We've eliminated the friction of traditional banking. 
+              Pure information density, raw precision, and zero limits.
+            </p>
+          </div>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="brutalist-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-1">
+          {benefits.map((benefit, index) => (
+            <div
+              key={index}
+              ref={el => { cardsRef.current[index] = el }}
+              className="group relative bg-[#F5F3EE] p-10 border border-black/5 flex flex-col justify-between transition-colors duration-300 hover:bg-white"
+            >
+              <div>
+                <div className="flex justify-between items-start mb-12">
+                  <div className="text-[#E63B2E] transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                    {benefit.icon}
+                  </div>
+                  <div className="font-mono text-[10px] uppercase text-black/30 tracking-widest">
+                    {benefit.code}
+                  </div>
                 </div>
+
+                <h3 className="font-space-grotesk text-2xl font-black text-[#111111] mb-4 uppercase tracking-tight">
+                  {benefit.title}
+                </h3>
+                <p className="font-space-grotesk text-[#111111]/70 leading-snug font-medium mb-8">
+                  {benefit.description}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-[#E63B2E] transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0">
+                <span className="font-mono text-xs font-bold uppercase tracking-wider">Initialize</span>
+                <ArrowRight size={14} />
+              </div>
+              
+              {/* Brutalist Accent Line */}
+              <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#E63B2E] transition-all duration-500 group-hover:w-full" />
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

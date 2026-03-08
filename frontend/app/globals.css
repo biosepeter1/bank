@@ -48,18 +48,23 @@
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 2rem;
 
-  /* Dynamic Brand Colors (updated by BrandingContext) */
-  --brand-primary: #00416A;
-  /* Default: First Bank blue */
-  --brand-secondary: #FFB81C;
-  /* Default: First Bank gold */
-  --brand-primary-rgb: 0 65 106;
-  /* RGB for Tailwind */
-  --brand-secondary-rgb: 255 184 28;
+  /* Preset C — "Brutalist Signal" Tokens */
+  --brand-paper: #E8E4DD;
+  --brand-primary: #E63B2E; /* Signal Red */
+  --brand-bg: #F5F3EE; /* Off-white */
+  --brand-text: #111111;
+  --brand-dark: #FFFFFF;
+  
+  --brand-primary-rgb: 230 59 46;
+  --brand-secondary-rgb: 0 0 0;
 
-  /* Legacy Biopete Bank Colors (kept for compatibility) */
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-dm-serif-display: var(--font-dm-serif-display);
+  --font-space-mono: var(--font-space-mono);
+
+  /* Legacy Biopete Bank Colors */
   --cyan-primary: 200 100% 40%;
   /* #00C8C8 */
   --cyan-bright: 180 100% 41%;
@@ -341,5 +346,23 @@ a.hover\:bg-blue-600:hover {
   .hero-foldable-override .hero-visual-card {
     max-width: 280px !important;
     margin: 0 auto !important;
+  }
+}
+
+/* Cinematic specific utilities */
+@layer utilities {
+  .magnetic-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .magnetic-btn:hover {
+    transform: scale(1.03);
+  }
+  .cinematic-link {
+    transition: transform 0.2s ease;
+  }
+  .cinematic-link:hover {
+    transform: translateY(-1px);
   }
 }

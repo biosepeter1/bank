@@ -9,10 +9,10 @@ import { DynamicFavicon } from './DynamicFavicon';
  * Used in the root layout to provide dynamic meta for all pages.
  */
 export function DynamicMeta() {
-    return (
-        <>
-            <DynamicTitle />
-            <DynamicFavicon />
-        </>
-    );
+ return (
+ <>
+ <DynamicTitle />
+ <DynamicFavicon />
+ </>
+ );
 }

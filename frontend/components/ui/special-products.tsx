@@ -1,124 +1,176 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-    Briefcase,
-    Globe,
-    PiggyBank,
-    CreditCard,
-    LineChart,
-    GraduationCap,
+  Briefcase,
+  Globe,
+  PiggyBank,
+  CreditCard,
+  LineChart,
+  GraduationCap
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const products = [
-    {
-        icon: <CreditCard size={28} />,
-        title: "Virtual Cards",
-        description: "Create unlimited virtual cards for safe online shopping with zero FX fees.",
-        pattern: "💳"
-    },
-    {
-        icon: <Globe size={28} />,
-        title: "Global Transfers",
-        description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes.",
-        pattern: "🌍"
-    },
-    {
-        icon: <PiggyBank size={28} />,
-        title: "High-Yield Savings",
-        description: "Earn up to 15% interest p.a. on your savings goals. Watch your money grow.",
-        pattern: "🐷"
-    },
-    {
-        icon: <Briefcase size={28} />,
-        title: "Business Accounts",
-        description: "Powerful tools for entrepreneurs. Invoicing, payroll, and multi-user access.",
-        pattern: "💼"
-    },
-    {
-        icon: <LineChart size={28} />,
-        title: "Investment Hub",
-        description: "Stocks, mutual funds, and fixed deposits. Grow your wealth with expert guidance.",
-        pattern: "📈"
-    },
-    {
-        icon: <GraduationCap size={28} />,
-        title: "Education Trust",
-        description: "Secure your child's future with our dedicated education savings plan.",
-        pattern: "🎓"
-    },
+  {
+    icon: <CreditCard size={28} />,
+    title: "Virtual Cards",
+    description: "Create unlimited virtual cards for safe online shopping with zero FX fees.",
+    code: "CARD_SYS_v2.1"
+  },
+  {
+    icon: <Globe size={28} />,
+    title: "Global Transfers",
+    description: "Send money to 150+ countries with the best exchange rates. Arrives in minutes.",
+    code: "TRANS_X_GLOBAL"
+  },
+  {
+    icon: <PiggyBank size={28} />,
+    title: "High-Yield Savings",
+    description: "Earn up to 15% interest p.a. on your savings goals. Watch your money grow.",
+    code: "ROI_YIELD_MAX"
+  },
+  {
+    icon: <Briefcase size={28} />,
+    title: "Business Accounts",
+    description: "Powerful tools for entrepreneurs. Invoicing, payroll, and multi-user access.",
+    code: "BIZ_OPS_ALPHA"
+  },
+  {
+    icon: <LineChart size={28} />,
+    title: "Investment Hub",
+    description: "Stocks, mutual funds, and fixed deposits. Grow your wealth with expert guidance.",
+    code: "EQ_HUB_ACTIVE"
+  },
+  {
+    icon: <GraduationCap size={28} />,
+    title: "Education Trust",
+    description: "Secure your child's future with our dedicated education savings plan.",
+    code: "TRUST_SEC_99"
+  },
 ];
 
 export function SpecialProducts() {
-    return (
-        <section className="py-16 sm:py-24 md:py-32 bg-slate-50 relative overflow-hidden">
-            {/* Background decorations */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-primary/30 to-transparent" />
-            <div className="absolute top-40 right-20 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-40 left-20 w-96 h-96 bg-brand-secondary/10 rounded-full blur-3xl" />
+  const sectionRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
+  const bgy = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-10 sm:mb-12 md:mb-16"
-                >
-                    <span className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-sm font-bold text-brand-primary mb-6">
-                        🛍️ Products
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 mb-3 sm:mb-4">
-                        Explore Our
-                        <span className="text-brand-primary"> Products</span>
-                    </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-xl mx-auto px-4">
-                        From cards to savings, we have everything you need for a complete financial life.
-                    </p>
-                </motion.div>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Manifesto text animation
+      const words = headlineRef.current?.querySelectorAll('.manifesto-word');
+      if (words) {
+        gsap.from(words, {
+          scrollTrigger: {
+            trigger: headlineRef.current,
+            start: "top 80%",
+          },
+          y: 60,
+          opacity: 0,
+          rotateX: -45,
+          duration: 1.2,
+          stagger: 0.1,
+          ease: "power4.out"
+        });
+      }
 
-                {/* Products Grid */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                    {products.map((product, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <motion.div
-                                whileHover={{ y: -10 }}
-                                className="relative h-full group"
-                            >
-                                {/* Glow effect */}
-                                <div className="absolute -inset-1 bg-brand-primary rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500" />
+      // Cards stagger
+      gsap.from(cardsRef.current, {
+        scrollTrigger: {
+          trigger: ".products-grid",
+          start: "top 85%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out"
+      });
+    }, sectionRef);
 
-                                {/* Card */}
-                                <div className="relative bg-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-2xl transition-all h-full border border-slate-100 overflow-hidden">
-                                    {/* Background pattern */}
-                                    <div className="absolute top-4 right-4 text-6xl opacity-10 group-hover:opacity-20 transition-opacity">
-                                        {product.pattern}
-                                    </div>
+    return () => ctx.revert();
+  }, []);
 
-                                    {/* Icon */}
-                                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-brand-primary flex items-center justify-center text-white shadow-lg mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                        {product.icon}
-                                    </div>
+  return (
+    <section 
+      ref={sectionRef} 
+      className="bg-[#111111] py-24 sm:py-32 md:py-48 relative overflow-hidden"
+    >
+      {/* Parallax Background Texture */}
+      <motion.div 
+        style={{ y: bgy, backgroundImage: 'url("https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?q=80&w=2070&auto=format&fit=crop")' }}
+        className="absolute inset-x-0 -top-20 bottom-0 bg-cover bg-center grayscale opacity-10 pointer-events-none"
+      />
 
-                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-brand-primary transition-all">
-                                        {product.title}
-                                    </h3>
-                                    <p className="text-slate-600 leading-relaxed">
-                                        {product.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        </motion.div>
-                    ))}
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Manifesto Section */}
+        <div ref={headlineRef} className="max-w-6xl mb-32 md:mb-48">
+          <div className="inline-flex items-center gap-3 mb-10 overflow-hidden">
+            <div className="h-px w-8 bg-[#E63B2E]/50" />
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.4em] text-[#E63B2E] manifesto-word">
+              The Philosophy
+            </span>
+          </div>
+
+          <div className="space-y-4">
+            <p className="font-space-grotesk text-xl md:text-3xl lg:text-4xl text-white/40 leading-tight manifesto-word">
+              Most banking focuses on: <span className="text-white/60">fragmented legacy systems.</span>
+            </p>
+            <h2 className="font-space-grotesk text-5xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter">
+              <span className="manifesto-word inline-block">WE FOCUS </span>
+              <span className="manifesto-word inline-block text-[#E63B2E]">ON:</span><br/>
+              <span className="font-dm-serif-display italic font-normal text-[#E63B2E] manifesto-word inline-block mt-4 md:mt-8">
+                Integrated Protocols.
+              </span>
+            </h2>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="products-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
+          {products.map((product, index) => (
+            <div
+              key={index}
+              ref={(el) => { if (el) cardsRef.current[index] = el; }}
+              className="group relative bg-[#111111] p-10 md:p-14 hover:bg-[#1a1a1a] transition-colors duration-500 overflow-hidden"
+            >
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-16">
+                  <div className="text-[#E63B2E] w-12 h-12 flex items-center justify-center bg-[#E63B2E]/10 rounded-full group-hover:bg-[#E63B2E] group-hover:text-white transition-all duration-300">
+                    {product.icon}
+                  </div>
+                  <span className="font-mono text-[10px] uppercase text-white/20 tracking-widest mt-2">
+                    {product.code}
+                  </span>
                 </div>
+
+                <h3 className="font-space-grotesk text-2xl font-black text-white mb-4 uppercase tracking-tight">
+                  {product.title}
+                </h3>
+                <p className="font-space-grotesk text-white/50 leading-relaxed font-medium max-w-xs">
+                  {product.description}
+                </p>
+              </div>
+
+              {/* Brutalist border effects */}
+              <div className="absolute top-0 right-0 w-px h-full bg-white/5" />
+              <div className="absolute bottom-0 left-0 w-full h-px bg-white/5" />
+              <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#E63B2E] transition-all duration-700 group-hover:w-full" />
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
