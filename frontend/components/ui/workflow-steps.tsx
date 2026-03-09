@@ -42,8 +42,9 @@ export function WorkflowSection() {
           trigger: card,
           start: "top top",
           pin: true,
-          pinSpacing: false,
+          pinSpacing: i === cards.length - 1, // Only the last card gets spacing
           end: () => `+=${window.innerHeight}`,
+          anticipatePin: 1, // Add anticipation for smoother pinning
         });
 
         // Animate the PREVIOUS card as this one moves in
