@@ -37,44 +37,30 @@ export function WorkflowSection() {
       const cards = cardsRef.current;
 
       cards.forEach((card, i) => {
-        if (i === 0) return;
-
-        gsap.fromTo(card, {
-          yPercent: 100,
-        }, {
-          yPercent: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: () => `top+=${i * 100}% top`,
-            end: () => `top+=${(i + 1) * 100}% top`,
-            scrub: true,
-          }
+        // Pin each card at the top
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top top",
+          pin: true,
+          pinSpacing: false,
+          end: () => `+=${window.innerHeight}`,
         });
 
-        // Background card effect: scale, blur, fade
-        gsap.to(cards[i - 1], {
-          scale: 0.9,
-          filter: "blur(20px)",
-          opacity: 0.5,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: () => `top+=${i * 100}% top`,
-            end: () => `top+=${(i + 1) * 100}% top`,
-            scrub: true,
-          }
-        });
-      });
-
-      // Pin the whole container
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: () => `+=${steps.length * 100}%`,
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
+        // Animate the PREVIOUS card as this one moves in
+        if (i > 0) {
+          gsap.to(cards[i - 1], {
+            scale: 0.9,
+            filter: "blur(20px)",
+            opacity: 0.5,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top bottom",
+              end: "top top",
+              scrub: true,
+            }
+          });
+        }
       });
     });
 
@@ -82,12 +68,12 @@ export function WorkflowSection() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[100dvh] w-full overflow-hidden bg-[#E8E4DD]">
+    <div ref={containerRef} className="relative w-full bg-[#E8E4DD]">
       {steps.map((step, i) => (
         <div
           key={i}
           ref={(el) => { if (el) cardsRef.current[i] = el; }}
-          className="absolute inset-0 flex items-center justify-center h-[100dvh] w-full p-4 md:p-6"
+          className="flex items-center justify-center h-[100dvh] w-full p-4 md:p-6"
           style={{ zIndex: i + 1 }}
         >
           <div className="relative w-full max-w-6xl aspect-auto md:aspect-video min-h-[500px] md:min-h-0 bg-[#F5F3EE] rounded-[2rem] md:rounded-[3rem] border border-black/10 shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row">
