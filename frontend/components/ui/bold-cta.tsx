@@ -105,10 +105,12 @@ export function BoldCTA() {
 
           {/* System Ready Indicator */}
           <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-            <div key={i} className="flex items-center gap-3">
-              <Zap size={14} className="text-[#E63B2E] opacity-50" />
-              <span className="font-mono text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">{["INSTANT_ACCESS", "SSL_SECURED", "GLOBAL_REACH"][i]}</span>
-            </div>
+            {["INSTANT_ACCESS", "SSL_SECURED", "GLOBAL_REACH"].map((text, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <Zap size={14} className="text-[#E63B2E] opacity-50" />
+                <span className="font-mono text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">{text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
