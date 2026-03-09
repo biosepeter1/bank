@@ -35,7 +35,7 @@ export function WorkflowSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const cards = cardsRef.current;
-      
+
       cards.forEach((card, i) => {
         if (i === 0) return;
 
@@ -127,8 +127,8 @@ export function WorkflowSection() {
               )}
 
               {i === 1 && (
-                <div className="w-full h-full p-12 flex flex-col items-center justify-center">
-                  <div className="relative w-full max-w-sm aspect-square bg-white border border-black/10 rounded-2xl overflow-hidden shadow-inner">
+                <div className="w-full h-full p-8 md:p-12 flex flex-col items-center justify-center">
+                  <div className="relative w-full max-w-[200px] md:max-w-sm aspect-square bg-white border border-black/10 rounded-2xl overflow-hidden shadow-inner scale-90 md:scale-100">
                     <div className="absolute inset-0 grid grid-cols-10 grid-rows-10 gap-px p-4 opacity-20">
                       {[...Array(100)].map((_, j) => (
                         <div key={j} className="bg-[#111111] rounded-full scale-[0.5]" />
@@ -139,7 +139,7 @@ export function WorkflowSection() {
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                       className="absolute left-0 right-0 h-1 bg-[#E63B2E] shadow-[0_0_20px_#E63B2E] z-10"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center font-mono text-black/5 text-[15rem] select-none">
+                    <div className="absolute inset-0 flex items-center justify-center font-mono text-black/5 text-[10rem] md:text-[15rem] select-none">
                       ID
                     </div>
                   </div>
